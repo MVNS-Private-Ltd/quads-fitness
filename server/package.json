@@ -4,6 +4,9 @@
   "description": "Quads Fitness REST API",
   "main": "src/index.js",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "build": "npx prisma generate",
     "start": "node src/index.js",
