@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(PORT, () => {
-  console.log(`\n🏋️  Quads Fitness API running on http://localhost:${PORT}`);
-  console.log(`📦  Database: SQLite (dev.db)\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🏋️  Quads Fitness API running on port ${PORT}`);
+  console.log(`📦  Database: Supabase PostgreSQL\n`);
 });
