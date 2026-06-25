@@ -1,0 +1,238 @@
+// Quads Fitness - Prisma Schema
+// Database: SQLite
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── MEMBERS ─────────────────────────────────────────────────────────────────
+model Member {
+  id               Int           @id @default(autoincrement())
+  userId           String?       @unique // Supabase Auth UUID (optional/new)
+  name             String
+  email            String        @unique
+  phone            String?
+  age              Int?
+  gender           String?
+  profilePhoto     String?
+  emergencyContact String?
+  healthNotes      String?
+  fitnessGoals     String?
+  membershipExpiry DateTime?
+  reminderSent     Boolean       @default(false)
+  planId           Int?
+  plan             Plan?         @relation(fields: [planId], references: [id])
+  trainerId        Int?
+  trainer          Trainer?      @relation(fields: [trainerId], references: [id])
+  status           String        @default("Active") // Active | Inactive | Suspended
+  joinedAt         DateTime      @default(now())
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  attendance       Attendance[]
+  progressLogs     ProgressLog[]
+  review           Review?
+}
+
+// ─── PROGRAMS ─────────────────────────────────────────────────────────────────
+model Program {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  instructor   String?
+  duration     String?  // e.g. "8 Weeks"
+  schedule     String?  // e.g. "Mon / Wed / Fri"
+  participants Int      @default(0)
+  imageUrl     String?
+  status       String   @default("Active") // Active | Draft | Archived
+  featured     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── PLANS (MEMBERSHIP) ───────────────────────────────────────────────────────
+model Plan {
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  billing     String   @default("month") // month | year
+  description String?
+  features    String   @default("[]")   // JSON string array
+  status      String   @default("Active") // Active | Draft
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  members     Member[]
+}
+
+// ─── TRAINERS ─────────────────────────────────────────────────────────────────
+model Trainer {
+  id          Int      @id @default(autoincrement())
+  name        String
+  specialty   String?
+  bio         String?
+  imageUrl    String?
+  instagram   String?
+  status      String   @default("Active") // Active | Inactive
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  members     Member[]
+}
+
+// ─── DIET PLANS ───────────────────────────────────────────────────────────────
+model DietPlan {
+  id          Int      @id @default(autoincrement())
+  title       String
+  goalType    String?  // e.g. Muscle Gain | Fat Loss | Maintenance
+  calories    String?
+  meals       Int      @default(3)
+  description String?
+  status      String   @default("Active") // Active | Draft
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── TESTIMONIALS ─────────────────────────────────────────────────────────────
+model Testimonial {
+  id              Int      @id @default(autoincrement())
+  clientName      String
+  transformation  String?  // e.g. "Lost 20kg in 3 months"
+  quote           String
+  imageUrl        String?
+  beforeImageUrl  String?
+  afterImageUrl   String?
+  rating          Int      @default(5)
+  status          String   @default("Published") // Published | Draft
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── GALLERY ─────────────────────────────────────────────────────────────────
+model Gallery {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  imageUrl  String
+  category  String?  // e.g. Gym | Events | Transformations
+  status    String   @default("Published") // Published | Draft
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── MEMBER REVIEWS ──────────────────────────────────────────────────────────
+model Review {
+  id          Int      @id @default(autoincrement())
+  memberId    Int      @unique
+  member      Member   @relation(fields: [memberId], references: [id])
+  memberName  String
+  rating      Int      @default(5)
+  comment     String
+  status      String   @default("Pending") // Pending | Approved | Rejected
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── OFFERS / ANNOUNCEMENTS ───────────────────────────────────────────────────
+model Offer {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  badgeText   String?  // e.g. "LIMITED TIME"
+  validUntil  DateTime?
+  status      String   @default("Draft") // Active | Draft | Expired
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── LEADS / INQUIRIES ────────────────────────────────────────────────────────
+model Lead {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  status    String   @default("Unread") // Unread | Read | Contacted | Closed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── ATTENDANCE ───────────────────────────────────────────────────────────────
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  memberId  Int
+  member    Member   @relation(fields: [memberId], references: [id])
+  date      DateTime @default(now())
+  timeIn    String?
+  timeOut   String?
+  status    String   @default("Present") // Present | Absent
+  createdAt DateTime @default(now())
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+model Settings {
+  id              Int    @id @default(1)
+  gymName         String @default("Quads Fitness")
+  tagline         String @default("Train Hard. Live Strong.")
+  email           String @default("hello@quadsfitness.com")
+  phone           String @default("+1 (555) 123-4567")
+  address         String @default("123 Iron Street, Muscle City, MC 90210")
+  instagram       String @default("")
+  facebook        String @default("")
+  twitter         String @default("")
+  youtube         String @default("")
+  mondayHours     String @default("05:00 - 23:00")
+  tuesdayHours    String @default("05:00 - 23:00")
+  wednesdayHours  String @default("05:00 - 23:00")
+  thursdayHours   String @default("05:00 - 23:00")
+  fridayHours     String @default("05:00 - 23:00")
+  saturdayHours   String @default("05:00 - 22:00")
+  sundayHours     String @default("07:00 - 20:00")
+  primaryColor    String @default("#d4af37")
+  logoUrl         String @default("/logo.png")
+  metaTitle       String @default("Quads Fitness - Train Hard. Live Strong.")
+  metaDescription String @default("Premium fitness center offering elite training programs, nutrition coaching, and a supportive community.")
+  heroTitle       String @default("FORGE YOUR BEST BODY EVER")
+  heroSubtitle    String @default("Chandigarh's most results-driven training facility. Certified coaches, heavy iron, and a culture built on discipline — for those who refuse to stop moving forward.")
+  aboutTitle      String @default("MORE THAN JUST A GYM")
+  aboutSubtitle   String @default("We built this place for people who still show up when it hurts. No excuses, no shortcuts. Quads Fitness is where courage meets the barbell — and where ordinary people discover what they are truly made of.")
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── ACTIVITY LOGS ───────────────────────────────────────────────────────────
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  details   String?
+  entity    String?  // e.g. "Member", "Program", "Settings"
+  entityId  Int?
+  user      String   @default("Admin")
+  createdAt DateTime @default(now())
+}
+
+// ─── PROGRESS LOGS ────────────────────────────────────────────────────────────
+model ProgressLog {
+  id        Int      @id @default(autoincrement())
+  memberId  Int
+  member    Member   @relation(fields: [memberId], references: [id])
+  date      DateTime @default(now())
+  weight    Float?
+  bmi       Float?
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+// ─── ADMIN NOTIFICATIONS ──────────────────────────────────────────────────────
+model AdminNotification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  type      String   // e.g. "EXPIRY", "REMINDER", "REVIEW", "LEAD"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: #050505;
+  color: #f0f0f0;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #FF6B00, #D4A853);
+  border-radius: 4px;
+}
+
+canvas {
+  display: block;
+}
+
+/* --- Premium Utilities --- */
+
+/* Subtle Noise Texture for depth */
+.bg-noise {
+  position: relative;
+}
+.bg-noise::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10;
+  transform: translateZ(0); /* Hardware acceleration for blending */
+  will-change: transform;
+}
+
+/* Glassmorphism Classes */
+.glass {
+  background: rgba(17, 17, 17, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.glass-panel {
+  background: linear-gradient(145deg, rgba(26,26,26,0.6) 0%, rgba(10,10,10,0.8) 100%);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Gradients */
+.text-gradient {
+  background: linear-gradient(135deg, #FF6B00, #D4A853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.border-gradient {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+.border-gradient::after {
+  content: '';
+  position: absolute;
+  top: -1px; bottom: -1px; left: -1px; right: -1px;
+  background: linear-gradient(135deg, #FF6B00, rgba(212, 168, 83, 0.2));
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* Animations */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker 25s linear infinite;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Hover Effects */
+.card-hover {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(255, 107, 0, 0.15);
+  border-color: rgba(212, 168, 83, 0.3);
+}
+
+/* About Scene Adjustments */
+.about-pin-spacer { overflow: hidden; }
+.about-scene { isolation: isolate; }
+.about-scene::before {
+  content: "";
+  position: absolute;
+  inset: 9% 10%;
+  border-radius: 2rem;
+  background: radial-gradient(
+    circle at calc(var(--mx, 0.5) * 100%) calc(var(--my, 0.5) * 100%),
+    rgba(212, 168, 83, 0.15),
+    transparent 40%
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+.about-arm-image {
+  filter: drop-shadow(0 38px 48px rgba(0, 0, 0, 0.6));
+  transform-origin: 76% 56%;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .card-hover:hover {
+    transform: translateY(-4px);
+  }
+  .about-arm-image {
+    width: 100%;
+    max-width: 560px;
+  }
+}
+@media (max-width: 768px) {
+  .about-scene { height: 420px; }
+  .about-scene-card {
+    height: 100%;
+    border-radius: 1.5rem;
+  }
+  .about-arm-image {
+    width: 110%;
+    margin-right: -8%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticker-track, .fade-in-up { animation: none !important; }
+  .card-hover, .card-hover:hover { transition: none !important; transform: none !important; }
+}
+
+/* --- Aggressive Gym Design Additions --- */
+
+/* Heavy Industrial Steel Armor Plate */
+.combat-plate {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.9) 0%, rgba(5, 5, 5, 0.98) 100%);
+  border-left: 4px solid #FF6B00;
+  border-top: 1px solid rgba(255, 107, 0, 0.15);
+  border-right: 1px solid rgba(212, 168, 83, 0.05);
+  border-bottom: 1px solid rgba(212, 168, 83, 0.05);
+  transform: skewX(-4deg);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Un-skew inner content so text stays perfectly readable */
+.combat-plate > * {
+  transform: skewX(4deg);
+}
+
+.combat-plate:hover {
+  border-left-color: #D4A853;
+  box-shadow: -10px 10px 30px rgba(255, 107, 0, 0.08);
+  transform: skewX(-4deg) translateY(-4px);
+}
+
+/* Sharp Tactical Aggressive Button */
+.btn-aggressive {
+  position: relative;
+  display: inline-block;
+  transform: skewX(-12deg);
+  transition: all 0.3s ease;
+}
+.btn-aggressive > * {
+  transform: skewX(12deg);
+}
+
+/* Industrial Hazard / Progress Line */
+.hazard-line {
+  height: 3px;
+  background: linear-gradient(90deg, #FF6B00 0%, #D4A853 50%, transparent 100%);
+  width: 60px;
+}

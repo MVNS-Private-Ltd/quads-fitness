@@ -1,0 +1,21 @@
+{
+  "name": "Quads Fitness",
+  "short_name": "Quads",
+  "description": "Quads Fitness - The Best Gym in Manimajra",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#FF6B00",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
