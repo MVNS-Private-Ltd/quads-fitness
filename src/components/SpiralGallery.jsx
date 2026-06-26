@@ -49,14 +49,14 @@ function CarouselImage({ url, position, rotation, onTap }) {
     <group position={position} rotation={rotation}>
       <Suspense fallback={
         <mesh>
-          <planeGeometry args={[6, 4]} />
+          <planeGeometry args={[12, 8]} />
           <meshBasicMaterial color="#1a1a1a" side={THREE.DoubleSide} />
         </mesh>
       }>
         <Image
           ref={ref}
           url={url}
-          scale={[6, 4]}
+          scale={[12, 8]}
           transparent
           toneMapped={false}
           side={THREE.DoubleSide}
@@ -121,7 +121,7 @@ export default function SpiralGallery({ images }) {
     return items.map((img, i) => ({ ...img, _key: `slot-${i}-${img.id}` }));
   }, [images]);
 
-  const RADIUS = Math.max(6, (displayImages.length * 7) / (Math.PI * 2));
+  const RADIUS = Math.max(12, (displayImages.length * 13) / (Math.PI * 2));
 
   const handleTap = (img) => {
     const originalId = String(img.id).split('-')[0];
@@ -144,7 +144,7 @@ export default function SpiralGallery({ images }) {
           <span className="text-white/35 font-body text-xs">Scroll to rotate · Tap to enlarge</span>
         </div>
 
-        <Canvas camera={{ position: [0, 0, RADIUS + 6], fov: 45, far: 1000 }}>
+        <Canvas camera={{ position: [0, 0, RADIUS + 10], fov: 45, far: 1000 }}>
           <color attach="background" args={['#050505']} />
           <fog attach="fog" args={['#050505', RADIUS + 2, RADIUS * 2 + 15]} />
           <ambientLight intensity={0.5} />
