@@ -19,16 +19,10 @@ function Lightbox({ image, onClose }) {
       <div className="relative flex flex-col items-center gap-4 px-6 w-[70vw]" onClick={e => e.stopPropagation()}>
         <img
           src={image.imageUrl}
-          alt={image.title || 'Gallery photo'}
+          alt="Gallery photo"
           className="w-full h-[70vh] object-contain rounded-2xl shadow-2xl border border-white/10"
           draggable={false}
         />
-        {(image.title || image.category) && (
-          <div className="text-center">
-            {image.category && <span className="text-brand-gold text-xs font-accent tracking-widest uppercase">{image.category}</span>}
-            {image.title && <p className="text-white font-display text-2xl mt-1">{image.title}</p>}
-          </div>
-        )}
       </div>
     </div>
   );
