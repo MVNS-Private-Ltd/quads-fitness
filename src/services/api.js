@@ -56,13 +56,19 @@ export const deleteMember = (id) => apiRequest(`/members/${id}`, { method: 'DELE
 // ── Programs ──────────────────────────────────────────────────────────
 export const getPrograms = (params = '') => apiRequest(`/programs${params}`);
 export const createProgram = (data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest('/programs', { method: 'POST', body: fd });
 };
 export const updateProgram = (id, data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest(`/programs/${id}`, { method: 'PUT', body: fd });
 };
 export const deleteProgram = (id) => apiRequest(`/programs/${id}`, { method: 'DELETE' });
@@ -76,13 +82,19 @@ export const deletePlan = (id) => apiRequest(`/plans/${id}`, { method: 'DELETE' 
 // ── Trainers ──────────────────────────────────────────────────────────
 export const getTrainers = (params = '') => apiRequest(`/trainers${params}`);
 export const createTrainer = (data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest('/trainers', { method: 'POST', body: fd });
 };
 export const updateTrainer = (id, data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest(`/trainers/${id}`, { method: 'PUT', body: fd });
 };
 export const deleteTrainer = (id) => apiRequest(`/trainers/${id}`, { method: 'DELETE' });
@@ -90,13 +102,19 @@ export const deleteTrainer = (id) => apiRequest(`/trainers/${id}`, { method: 'DE
 // ── Testimonials ──────────────────────────────────────────────────────
 export const getTestimonials = (params = '') => apiRequest(`/testimonials${params}`);
 export const createTestimonial = (data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest('/testimonials', { method: 'POST', body: fd });
 };
 export const updateTestimonial = (id, data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest(`/testimonials/${id}`, { method: 'PUT', body: fd });
 };
 export const deleteTestimonial = (id) => apiRequest(`/testimonials/${id}`, { method: 'DELETE' });
@@ -127,8 +145,11 @@ export const markAttendance = (data) => apiRequest('/attendance', { method: 'POS
 // ── Gallery ───────────────────────────────────────────────────────────
 export const getGallery = (params = '') => apiRequest(`/gallery${params}`);
 export const createGalleryItem = (data) => {
-  const fd = new FormData();
-  Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) fd.append(k, v); });
+  const fd = data instanceof FormData ? data : (() => {
+    const newFd = new FormData();
+    Object.entries(data).forEach(([k, v]) => { if (v !== undefined && v !== null) newFd.append(k, v); });
+    return newFd;
+  })();
   return apiRequest('/gallery', { method: 'POST', body: fd });
 };
 export const deleteGalleryItem = (id) => apiRequest(`/gallery/${id}`, { method: 'DELETE' });
