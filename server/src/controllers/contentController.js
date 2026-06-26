@@ -67,9 +67,14 @@ export const updateGalleryItem = async (req, res) => {
 };
 
 export const deleteGalleryItem = async (req, res) => {
-  await prisma.gallery.delete({ where: { id: Number(req.params.id) } });
-  await log('Deleted Image', 'Gallery image removed', 'Gallery', Number(req.params.id));
-  res.json({ message: 'Deleted' });
+  try {
+    await prisma.gallery.delete({ where: { id: Number(req.params.id) } });
+    await log('Deleted Image', 'Gallery image removed', 'Gallery', Number(req.params.id));
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    console.error('[Gallery Delete Error]', err);
+    res.status(500).json({ error: err.message || 'Failed to delete gallery item' });
+  }
 };
 
 // ─── OFFERS ──────────────────────────────────────────────────────────────────
