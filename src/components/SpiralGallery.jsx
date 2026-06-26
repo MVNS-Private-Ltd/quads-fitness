@@ -11,16 +11,15 @@ function Lightbox({ image, onClose }) {
     return () => window.removeEventListener('keydown', fn);
   }, [onClose]);
 
-  return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md" onClick={onClose}>
-      <div className="relative flex flex-col items-center gap-4 px-6 w-full max-w-5xl" onClick={e => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute -top-12 right-4 text-white/60 hover:text-white font-accent text-sm uppercase tracking-widest transition-colors">
-          ✕ Close
-        </button>
+      <button onClick={onClose} className="fixed top-6 right-6 w-12 h-12 flex items-center justify-center bg-black/50 hover:bg-brand-gold text-white hover:text-black rounded-full border border-white/20 transition-colors z-[60] text-xl font-bold shadow-xl">
+        ✕
+      </button>
+      <div className="relative flex flex-col items-center gap-4 px-6 w-[70vw]" onClick={e => e.stopPropagation()}>
         <img
           src={image.imageUrl}
           alt={image.title || 'Gallery photo'}
-          className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/10"
+          className="w-full h-[70vh] object-contain rounded-2xl shadow-2xl border border-white/10"
           draggable={false}
         />
         {(image.title || image.category) && (
@@ -49,14 +48,14 @@ function CarouselImage({ url, position, rotation, onTap }) {
     <group position={position} rotation={rotation}>
       <Suspense fallback={
         <mesh>
-          <planeGeometry args={[3.8, 2.6]} />
+          <planeGeometry args={[6, 4]} />
           <meshBasicMaterial color="#1a1a1a" side={THREE.DoubleSide} />
         </mesh>
       }>
         <Image
           ref={ref}
           url={url}
-          scale={[3.8, 2.6]}
+          scale={[6, 4]}
           transparent
           toneMapped={false}
           side={THREE.DoubleSide}
@@ -121,7 +120,7 @@ export default function SpiralGallery({ images }) {
     return items.map((img, i) => ({ ...img, _key: `slot-${i}-${img.id}` }));
   }, [images]);
 
-  const RADIUS = Math.max(5, (displayImages.length * 4.5) / (Math.PI * 2));
+  const RADIUS = Math.max(6, (displayImages.length * 7) / (Math.PI * 2));
 
   const handleTap = (img) => {
     const originalId = String(img.id).split('-')[0];
