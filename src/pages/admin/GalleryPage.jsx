@@ -120,15 +120,15 @@ export default function GalleryPage() {
                 className="group relative aspect-square bg-brand-dark border border-white/5 rounded-2xl overflow-hidden cursor-pointer"
                 onClick={() => setSelectedMedia(media)}
               >
-                {media.url ? (
-                  <img src={media.url} alt={media.name || 'Media'} className="w-full h-full object-cover" />
+                {media.imageUrl ? (
+                  <img src={media.imageUrl} alt={media.title || 'Media'} className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <FiImage className="text-brand-muted/50 w-12 h-12" />
                   </div>
                 )}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                  <p className="text-white text-sm font-medium truncate">{media.name || 'Untitled'}</p>
+                  <p className="text-white text-sm font-medium truncate">{media.title || 'Untitled'}</p>
                   <div className="flex justify-between items-center mt-1">
                     <span className="text-brand-muted text-xs uppercase">{media.type || 'IMAGE'}</span>
                   </div>
@@ -147,8 +147,8 @@ export default function GalleryPage() {
         {selectedMedia && (
           <div className="space-y-6">
             <div className="aspect-video bg-brand-dark rounded-xl border border-white/5 flex items-center justify-center mb-6 overflow-hidden">
-               {selectedMedia.url ? (
-                 <img src={selectedMedia.url} alt="Media preview" className="w-full h-full object-contain" />
+               {selectedMedia.imageUrl ? (
+                 <img src={selectedMedia.imageUrl} alt="Media preview" className="w-full h-full object-contain" />
                ) : (
                  <FiImage className="text-brand-muted/30 w-16 h-16" />
                )}
@@ -157,11 +157,11 @@ export default function GalleryPage() {
             <div className="space-y-4">
               <div>
                 <span className="text-xs text-brand-muted uppercase tracking-wider block mb-1">File Name</span>
-                <p className="text-white font-medium break-all">{selectedMedia.name || 'Untitled'}</p>
+                <p className="text-white font-medium break-all">{selectedMedia.title || 'Untitled'}</p>
               </div>
               <div>
                 <span className="text-xs text-brand-muted uppercase tracking-wider block mb-1">URL</span>
-                <p className="text-brand-platinum text-xs break-all bg-brand-dark p-2 rounded">{selectedMedia.url || 'No URL'}</p>
+                <p className="text-brand-platinum text-xs break-all bg-brand-dark p-2 rounded">{selectedMedia.imageUrl || 'No URL'}</p>
               </div>
               <div className="flex justify-between">
                 <div>
