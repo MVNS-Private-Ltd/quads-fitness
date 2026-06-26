@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { getGallery } from '../services/api';
 import PageTransition from '../components/PageTransition';
 import SEO from '../components/SEO';
+import SpiralGallery from '../components/SpiralGallery';
 
 export default function GalleryPage() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
+  const [viewMode, setViewMode] = useState('spiral');
 
   useEffect(() => {
     fetchGallery();
@@ -67,7 +69,30 @@ export default function GalleryPage() {
           </div>
         )}
 
-        {/* Grid */}
+        {/* View Toggle */}
+        {!loading && filteredImages.length > 0 && (
+          <div className="flex justify-center items-center mb-12">
+            <div className="bg-brand-surface2 rounded-full p-1 border border-white/5 inline-flex relative">
+              <div 
+                className={`absolute inset-y-1 w-1/2 bg-brand-gold rounded-full transition-transform duration-300 ease-in-out ${viewMode === 'grid' ? 'translate-x-[calc(100%-4px)]' : 'translate-x-0'}`} 
+              />
+              <button 
+                onClick={() => setViewMode('spiral')} 
+                className={`relative px-8 py-2.5 font-accent text-xs uppercase tracking-widest transition-colors duration-300 z-10 ${viewMode === 'spiral' ? 'text-brand-darker font-bold' : 'text-white/60 hover:text-white'}`}
+              >
+                Spiral
+              </button>
+              <button 
+                onClick={() => setViewMode('grid')} 
+                className={`relative px-8 py-2.5 font-accent text-xs uppercase tracking-widest transition-colors duration-300 z-10 ${viewMode === 'grid' ? 'text-brand-darker font-bold' : 'text-white/60 hover:text-white'}`}
+              >
+                Grid
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Content */}
         {loading ? (
           <div className="flex justify-center items-center py-24">
             <div className="w-12 h-12 border-4 border-brand-gold/30 border-t-brand-gold rounded-full animate-spin"></div>
@@ -76,6 +101,8 @@ export default function GalleryPage() {
           <div className="text-center py-24 text-brand-muted">
             <p>No visual records currently available in this sector.</p>
           </div>
+        ) : viewMode === 'spiral' ? (
+          <SpiralGallery images={filteredImages} />
         ) : (
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
             {filteredImages.map((item, i) => (
