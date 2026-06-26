@@ -59,13 +59,7 @@ export default function TrainersPage() {
       </section>
 
       <section className="pb-24 px-6 max-w-7xl mx-auto">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {loading ? (
             <div className="col-span-full text-brand-muted text-sm">Loading commanders...</div>
           ) : trainers.length === 0 ? (
@@ -74,7 +68,15 @@ export default function TrainersPage() {
             trainers.map((trainer, idx) => {
               const imgUrl = trainer.imageUrl || trainer.image_url || trainer.image;
               return (
-                <motion.div key={trainer.id ?? idx} variants={fadeInUp} className="combat-plate group p-0 overflow-hidden flex flex-col h-full rounded-none">
+                <motion.div 
+                  key={trainer.id ?? idx} 
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  variants={fadeInUp} 
+                  className="combat-plate group p-0 overflow-hidden flex flex-col h-full rounded-none"
+                >
                   <div className="relative h-80 overflow-hidden bg-brand-darker">
                     {imgUrl ? (
                       <img src={imgUrl} alt={`${trainer.name} - Personal Trainer at Quads Fitness, Manimajra`} loading="lazy" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity hover:mix-blend-normal" />
@@ -106,7 +108,7 @@ export default function TrainersPage() {
               );
             })
           )}
-        </motion.div>
+        </div>
       </section>
     </PageTransition>
   );
