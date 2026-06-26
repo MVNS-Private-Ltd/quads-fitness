@@ -11,6 +11,7 @@ function Lightbox({ image, onClose }) {
     return () => window.removeEventListener('keydown', fn);
   }, [onClose]);
 
+  return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md" onClick={onClose}>
       <button onClick={onClose} className="fixed top-6 right-6 w-12 h-12 flex items-center justify-center bg-black/50 hover:bg-brand-gold text-white hover:text-black rounded-full border border-white/20 transition-colors z-[60] text-xl font-bold shadow-xl">
         ✕
