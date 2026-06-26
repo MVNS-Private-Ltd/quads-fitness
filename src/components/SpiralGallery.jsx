@@ -143,7 +143,7 @@ export default function SpiralGallery({ images }) {
   const scrollRotRef = useRef(0);
 
   // Drag → camera orbit
-  const orbitRef = useRef({ theta: Math.PI / 2, phi: Math.PI / 2.5 });
+  const orbitRef = useRef({ theta: Math.PI / 2, phi: Math.PI / 2 }); // PI/2 = straight front view
   const isDragging = useRef(false);
   const pointerStart = useRef({ x: 0, y: 0 });
   const orbitStart = useRef({ theta: 0, phi: 0 });
@@ -192,7 +192,8 @@ export default function SpiralGallery({ images }) {
     const dy = e.clientY - pointerStart.current.y;
     if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved.current = true;
     orbitRef.current.theta = orbitStart.current.theta - dx * 0.005;
-    orbitRef.current.phi   = Math.max(0.3, Math.min(Math.PI - 0.3, orbitStart.current.phi + dy * 0.005));
+    // drag UP (negative dy) = camera goes higher = phi decreases toward 0
+    orbitRef.current.phi = Math.max(0.3, Math.min(Math.PI * 0.85, orbitStart.current.phi - dy * 0.005));
   }, []);
 
   const handlePointerUp = useCallback(() => { isDragging.current = false; }, []);
@@ -213,7 +214,8 @@ export default function SpiralGallery({ images }) {
     const dy = t.clientY - pointerStart.current.y;
     if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved.current = true;
     orbitRef.current.theta = orbitStart.current.theta - dx * 0.005;
-    orbitRef.current.phi   = Math.max(0.3, Math.min(Math.PI - 0.3, orbitStart.current.phi + dy * 0.005));
+    // drag UP = phi decreases = camera goes higher
+    orbitRef.current.phi = Math.max(0.3, Math.min(Math.PI * 0.85, orbitStart.current.phi - dy * 0.005));
   }, []);
 
   const handleTouchEnd = useCallback(() => { isDragging.current = false; }, []);
@@ -248,7 +250,7 @@ export default function SpiralGallery({ images }) {
           </span>
         </div>
 
-        <Canvas camera={{ position: [0, 4, RADIUS + 7], fov: 50, far: 1000 }}>
+        <Canvas camera={{ position: [0, 0, RADIUS + 7], fov: 50, far: 1000 }}>
           <color attach="background" args={['#050505']} />
           <fog attach="fog" args={['#050505', RADIUS + 4, RADIUS * 2 + 18]} />
           <ambientLight intensity={0.6} />
