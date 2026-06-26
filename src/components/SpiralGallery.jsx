@@ -1,7 +1,6 @@
 import React, { useRef, Suspense, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Image, ScrollControls, useScroll, Text } from '@react-three/drei';
-import { EffectComposer, DepthOfField } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 /* ── Single image card in the carousel ─────────────────────────────────── */
@@ -149,15 +148,6 @@ export default function SpiralGallery({ images }) {
         <ScrollControls pages={3} infinite damping={0.2} distance={1.2}>
           <CarouselItems images={displayImages} radius={RADIUS} />
         </ScrollControls>
-
-        <EffectComposer>
-          <DepthOfField 
-            target={[0, 0, RADIUS]} 
-            focalLength={0.03} 
-            bokehScale={5} 
-            height={480} 
-          />
-        </EffectComposer>
       </Canvas>
     </div>
   );
