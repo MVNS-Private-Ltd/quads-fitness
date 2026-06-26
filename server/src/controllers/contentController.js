@@ -46,12 +46,18 @@ export const getGallery = async (req, res) => {
 };
 
 export const createGalleryItem = async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'Image file is required' });
-  const { title, category, status, featured } = req.body;
-  const imageUrl = await uploadToSupabase(req.file);
-  const item = await prisma.gallery.create({ data: { title, imageUrl, category, status: status || 'Published', featured: !!featured } });
-  await log('Uploaded Image', `"${title || 'Untitled'}" added to gallery`, 'Gallery', item.id);
-  res.status(201).json(item);
+  try {
+    if (!req.file) return res.status(400).json({ error: 'Image file is required' });
+    const { title, category, status, featured } = req.body;
+    const imageUrl = await uploadToSupabase(req.file);
+    if (!imageUrl) return res.status(500).json({ error: 'Image upload to storage failed — no URL returned' });
+    const item = await prisma.gallery.create({ data: { title: title || req.file.originalname, imageUrl, category: category || 'Gym', status: status || 'Published', featured: !!featured } });
+    await log('Uploaded Image', `"${item.title}" added to gallery`, 'Gallery', item.id);
+    res.status(201).json(item);
+  } catch (err) {
+    console.error('[Gallery Upload Error]', err);
+    res.status(500).json({ error: err.message || 'Failed to upload image' });
+  }
 };
 
 export const updateGalleryItem = async (req, res) => {

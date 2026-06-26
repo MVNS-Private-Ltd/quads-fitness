@@ -14,6 +14,7 @@ export default function GalleryPage() {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [mediaItems, setMediaItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -60,10 +61,15 @@ export default function GalleryPage() {
   };
 
   useEffect(() => {
-    getGallery().then(data => {
-      setMediaItems(data);
+    getGallery('?all=true').then(data => {
+      console.log('[Admin Gallery] loaded:', data);
+      setMediaItems(Array.isArray(data) ? data : []);
       setLoading(false);
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('[Admin Gallery] load error:', err);
+      setError(err.message);
+      setLoading(false);
+    });
   }, []);
 
   const formatDate = (dateString) => {
