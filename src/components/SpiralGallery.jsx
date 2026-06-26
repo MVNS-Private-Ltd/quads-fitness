@@ -73,7 +73,8 @@ function SpiralItems({ images }) {
   return (
     <group ref={group}>
       {images.map((img, i) => {
-        const theta = i * ANGLE_STEP;
+        // Offset by Math.PI/2 so the first image (i=0) is at z=RADIUS, right in front of the camera
+        const theta = i * ANGLE_STEP + Math.PI / 2;
         const x = Math.cos(theta) * RADIUS;
         const z = Math.sin(theta) * RADIUS;
         const y = -i * HEIGHT_STEP;
@@ -98,9 +99,9 @@ export default function SpiralGallery({ images }) {
   const pages = Math.max(images.length / 3, 1.5);
 
   return (
-    <div className="w-full h-[80vh] relative rounded-xl overflow-hidden bg-brand-darker border border-white/5 cursor-grab active:cursor-grabbing">
+    <div className="w-full h-screen relative bg-brand-darker cursor-grab active:cursor-grabbing">
       {/* Top + bottom gradient overlays for seamless page blending */}
-      <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker opacity-80" />
+      <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker opacity-50" />
 
       <div className="absolute top-6 left-8 z-20 pointer-events-none flex flex-col gap-2">
         <span className="text-brand-orange font-accent uppercase tracking-widest text-xs opacity-90 font-bold flex items-center gap-2">

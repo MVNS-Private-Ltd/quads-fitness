@@ -102,7 +102,9 @@ export default function GalleryPage() {
             <p>No visual records currently available in this sector.</p>
           </div>
         ) : viewMode === 'spiral' ? (
-          <SpiralGallery images={filteredImages} />
+          <div className="absolute left-0 w-full pb-24">
+            <SpiralGallery images={filteredImages} />
+          </div>
         ) : (
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
             {filteredImages.map((item, i) => (
