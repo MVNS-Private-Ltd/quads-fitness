@@ -41,8 +41,8 @@ function CarouselImage({ url, position, rotation, onTap }) {
 
   useFrame(() => {
     if (!ref.current) return;
-    const t = hovered ? 1.06 : 1;
-    ref.current.scale.lerp(new THREE.Vector3(t, t, 1), 0.1);
+    const t = hovered ? 1.05 : 1;
+    ref.current.scale.lerp(new THREE.Vector3(12 * t, 8 * t, 1), 0.1);
   });
 
   return (
