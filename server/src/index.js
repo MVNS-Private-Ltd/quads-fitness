@@ -19,18 +19,26 @@ const PORT = process.env.PORT || 5000;
 initCronJobs();
 
 // ── Middleware ────────────────────────────────────────────────────────────────
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ['http://localhost:5173']; // default strictly to local dev
+const defaultAllowedOrigins = [
+  'http://localhost:5173',
+  'https://quad-fitness.netlify.app',
+];
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? [...new Set([...process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()), ...defaultAllowedOrigins])]
+  : defaultAllowedOrigins;
 
 app.use(cors({ 
   origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Postman, same-origin)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.warn('[CORS] Blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
