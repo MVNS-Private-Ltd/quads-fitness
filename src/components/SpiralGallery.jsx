@@ -1,11 +1,10 @@
 import React, { useRef, Suspense, useMemo, useState, useCallback, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Image, Text } from '@react-three/drei';
+import { Image } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ── Lightbox overlay ────────────────────────────────────────────────────── */
 function Lightbox({ image, onClose }) {
-  // Close on Escape key
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -14,37 +13,29 @@ function Lightbox({ image, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md"
       onClick={onClose}
     >
-      {/* Prevent click-through on inner container */}
       <div
-        className="relative flex flex-col items-center gap-4 px-4 max-w-5xl w-full"
+        className="relative flex flex-col items-center gap-6 px-6 w-full max-w-6xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute -top-12 right-4 text-white/60 hover:text-white font-accent text-xs uppercase tracking-widest transition-colors flex items-center gap-2"
+          className="absolute -top-14 right-4 text-white/60 hover:text-white font-accent text-sm uppercase tracking-widest transition-colors"
         >
           ✕ Close
         </button>
-
-        {/* Image */}
         <img
           src={image.imageUrl}
           alt={image.title || image.category || 'Gallery photo'}
-          className="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/5"
+          className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/10"
           draggable={false}
         />
-
-        {/* Caption */}
         {(image.title || image.category) && (
           <div className="text-center">
             {image.category && (
-              <span className="text-brand-gold text-xs font-accent tracking-widest uppercase block">
-                {image.category}
-              </span>
+              <span className="text-brand-gold text-xs font-accent tracking-widest uppercase">{image.category}</span>
             )}
             {image.title && (
               <p className="text-white font-display text-2xl mt-1">{image.title}</p>
@@ -56,49 +47,35 @@ function Lightbox({ image, onClose }) {
   );
 }
 
-/* ── Single image in the carousel ────────────────────────────────────────── */
+/* ── Single image card ───────────────────────────────────────────────────── */
 function CarouselImage({ url, position, rotation, onTap }) {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
 
   useFrame(() => {
     if (!meshRef.current) return;
-    const target = hovered ? 1.06 : 1;
-    meshRef.current.scale.lerp(
-      new THREE.Vector3(target, target, 1),
-      0.12
-    );
+    const t = hovered ? 1.05 : 1;
+    meshRef.current.scale.lerp(new THREE.Vector3(t, t, 1), 0.1);
   });
 
   return (
     <group position={position} rotation={rotation}>
       <Suspense fallback={
         <mesh>
-          <planeGeometry args={[3.8, 2.6]} />
+          <planeGeometry args={[6, 4]} />
           <meshBasicMaterial color="#1a1a1a" side={THREE.DoubleSide} />
         </mesh>
       }>
         <Image
           ref={meshRef}
           url={url}
-          scale={[3.8, 2.6]}
+          scale={[6, 4]}
           transparent
           toneMapped={false}
           side={THREE.DoubleSide}
-          onPointerOver={(e) => {
-            e.stopPropagation();
-            setHovered(true);
-            document.body.style.cursor = 'pointer';
-          }}
-          onPointerOut={(e) => {
-            e.stopPropagation();
-            setHovered(false);
-            document.body.style.cursor = 'grab';
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onTap();
-          }}
+          onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+          onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'default'; }}
+          onClick={(e) => { e.stopPropagation(); onTap(); }}
         />
       </Suspense>
     </group>
@@ -106,17 +83,15 @@ function CarouselImage({ url, position, rotation, onTap }) {
 }
 
 /* ── Carousel ring ───────────────────────────────────────────────────────── */
-function CarouselItems({ images, radius, rotRef }) {
+function CarouselItems({ images, radius, scrollRotRef }) {
   const groupRef = useRef();
   const autoRot = useRef(0);
   const ANGLE_STEP = (Math.PI * 2) / images.length;
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
-    autoRot.current += delta * 0.10; // slow ambient spin
-    groupRef.current.rotation.y = -(rotRef.current + autoRot.current);
-    groupRef.current.rotation.z = 0.04;
-    groupRef.current.rotation.x = 0.03;
+    autoRot.current += delta * 0.08; // slow ambient spin
+    groupRef.current.rotation.y = -(scrollRotRef.current + autoRot.current);
   });
 
   return (
@@ -126,13 +101,12 @@ function CarouselItems({ images, radius, rotRef }) {
         const x = Math.sin(theta) * radius;
         const z = Math.cos(theta) * radius;
         const y = Math.sin(theta * 2) * 0.3;
-        const rotY = theta;
         return (
           <CarouselImage
             key={img._key || i}
             url={img.imageUrl}
             position={[x, y, z]}
-            rotation={[0, rotY, 0]}
+            rotation={[0, theta, 0]}
             onTap={img.onTap}
           />
         );
@@ -141,13 +115,23 @@ function CarouselItems({ images, radius, rotRef }) {
   );
 }
 
-/* ── Camera ──────────────────────────────────────────────────────────────── */
-function CameraRig({ radius }) {
+/* ── Camera controlled by drag (orbit) ──────────────────────────────────── */
+function OrbitCamera({ radius, orbitRef }) {
   const { camera } = useThree();
+  
   useFrame(() => {
-    camera.position.lerp(new THREE.Vector3(0, 0, radius + 6), 0.05);
+    const phi   = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, orbitRef.phi));   // vertical clamp
+    const theta = orbitRef.theta;
+    const dist  = radius + 7;
+
+    const x = dist * Math.sin(phi) * Math.sin(theta);
+    const y = dist * Math.cos(phi);
+    const z = dist * Math.sin(phi) * Math.cos(theta);
+
+    camera.position.lerp(new THREE.Vector3(x, y, z), 0.06);
     camera.lookAt(0, 0, 0);
   });
+
   return null;
 }
 
@@ -155,66 +139,70 @@ function CameraRig({ radius }) {
 export default function SpiralGallery({ images }) {
   const [lightboxImage, setLightboxImage] = useState(null);
 
-  // Rotation controlled by scroll + drag
-  const rotRef = useRef(0);
-  const isDragging = useRef(false);
-  const pointerStart = useRef({ x: 0 });
-  const rotStart = useRef(0);
-  const moved = useRef(false); // distinguish click vs drag
+  // Scroll → carousel rotation
+  const scrollRotRef = useRef(0);
 
-  // Pad the ring so it always looks full (min 8 images)
+  // Drag → camera orbit
+  const orbitRef = useRef({ theta: Math.PI / 2, phi: Math.PI / 2.5 });
+  const isDragging = useRef(false);
+  const pointerStart = useRef({ x: 0, y: 0 });
+  const orbitStart = useRef({ theta: 0, phi: 0 });
+  const moved = useRef(false);
+
+  // Pad ring to at least 8 images
   const displayImages = useMemo(() => {
     if (images.length === 0) return [];
     let items = [...images];
-    let counter = 0;
+    let c = 0;
     while (items.length < 8) {
-      items = [...items, ...images.map(im => ({ ...im, id: `${im.id}-${++counter}` }))];
+      items = [...items, ...images.map(im => ({ ...im, id: `${im.id}-${++c}` }))];
     }
-    // Attach a handler for each slot; map back to the original image for the lightbox
     return items.map((img, i) => ({
       ...img,
-      _key: `${img.id}-slot-${i}`,
+      _key: `slot-${i}-${img.id}`,
       onTap: () => {
-        if (moved.current) return; // was a drag, not a tap
-        const original = images.find(im => String(im.id) === String(img.id).split('-')[0]) || img;
+        if (moved.current) return;
+        const originalId = String(img.id).split('-')[0];
+        const original = images.find(im => String(im.id) === originalId) || img;
         setLightboxImage(original);
       },
     }));
   }, [images]);
 
-  const itemWidth = 4.5;
-  const RADIUS = Math.max(5, (displayImages.length * itemWidth) / (Math.PI * 2));
+  const CARD_WIDTH = 7;
+  const RADIUS = Math.max(6, (displayImages.length * CARD_WIDTH) / (Math.PI * 2));
 
-  /* ── Scroll → rotate ────────────────────────────────────────────────── */
+  /* ── Scroll → rotate ring ─────────────────────────────────────────── */
   const handleWheel = useCallback((e) => {
-    rotRef.current += e.deltaY * 0.003;
+    scrollRotRef.current += e.deltaY * 0.003;
   }, []);
 
-  /* ── Pointer drag → rotate ──────────────────────────────────────────── */
+  /* ── Pointer down ─────────────────────────────────────────────────── */
   const handlePointerDown = useCallback((e) => {
     isDragging.current = true;
-    pointerStart.current = { x: e.clientX };
-    rotStart.current = rotRef.current;
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+    orbitStart.current = { theta: orbitRef.current.theta, phi: orbitRef.current.phi };
     moved.current = false;
   }, []);
 
+  /* ── Pointer move → orbit camera ──────────────────────────────────── */
   const handlePointerMove = useCallback((e) => {
     if (!isDragging.current) return;
     const dx = e.clientX - pointerStart.current.x;
-    if (Math.abs(dx) > 4) moved.current = true;
-    rotRef.current = rotStart.current - dx * 0.006;
+    const dy = e.clientY - pointerStart.current.y;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved.current = true;
+    orbitRef.current.theta = orbitStart.current.theta - dx * 0.005;
+    orbitRef.current.phi   = Math.max(0.3, Math.min(Math.PI - 0.3, orbitStart.current.phi + dy * 0.005));
   }, []);
 
-  const handlePointerUp = useCallback(() => {
-    isDragging.current = false;
-  }, []);
+  const handlePointerUp = useCallback(() => { isDragging.current = false; }, []);
 
-  /* ── Touch drag → rotate ────────────────────────────────────────────── */
+  /* ── Touch events ─────────────────────────────────────────────────── */
   const handleTouchStart = useCallback((e) => {
     const t = e.touches[0];
     isDragging.current = true;
-    pointerStart.current = { x: t.clientX };
-    rotStart.current = rotRef.current;
+    pointerStart.current = { x: t.clientX, y: t.clientY };
+    orbitStart.current = { theta: orbitRef.current.theta, phi: orbitRef.current.phi };
     moved.current = false;
   }, []);
 
@@ -222,25 +210,21 @@ export default function SpiralGallery({ images }) {
     if (!isDragging.current) return;
     const t = e.touches[0];
     const dx = t.clientX - pointerStart.current.x;
-    if (Math.abs(dx) > 4) moved.current = true;
-    rotRef.current = rotStart.current - dx * 0.006;
+    const dy = t.clientY - pointerStart.current.y;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved.current = true;
+    orbitRef.current.theta = orbitStart.current.theta - dx * 0.005;
+    orbitRef.current.phi   = Math.max(0.3, Math.min(Math.PI - 0.3, orbitStart.current.phi + dy * 0.005));
   }, []);
 
-  const handleTouchEnd = useCallback(() => {
-    isDragging.current = false;
-  }, []);
+  const handleTouchEnd = useCallback(() => { isDragging.current = false; }, []);
 
   return (
     <>
-      {/* Lightbox */}
-      {lightboxImage && (
-        <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
-      )}
+      {lightboxImage && <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />}
 
-      {/* Canvas container */}
       <div
         className="w-full h-screen relative bg-brand-darker select-none"
-        style={{ cursor: isDragging.current ? 'grabbing' : 'grab', touchAction: 'none' }}
+        style={{ touchAction: 'none' }}
         onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -250,8 +234,8 @@ export default function SpiralGallery({ images }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Subtle top/bottom vignette */}
-        <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker opacity-30" />
+        {/* Vignette */}
+        <div className="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker opacity-20" />
 
         {/* HUD */}
         <div className="absolute top-24 left-8 z-20 pointer-events-none flex flex-col gap-1">
@@ -260,20 +244,17 @@ export default function SpiralGallery({ images }) {
             GALLERY
           </span>
           <span className="text-white/35 font-body text-xs">
-            Drag to rotate · Tap photo to enlarge
+            Scroll to rotate · Drag to look around · Tap to enlarge
           </span>
         </div>
 
-        <Canvas
-          camera={{ position: [0, 0, RADIUS + 10], fov: 45, far: 1000 }}
-          style={{ pointerEvents: 'none' }} // outer div handles pointer events for drag
-        >
+        <Canvas camera={{ position: [0, 4, RADIUS + 7], fov: 50, far: 1000 }}>
           <color attach="background" args={['#050505']} />
-          <fog attach="fog" args={['#050505', RADIUS + 2, RADIUS * 2 + 15]} />
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 10]} intensity={1} />
-          <CameraRig radius={RADIUS} />
-          <CarouselItems images={displayImages} radius={RADIUS} rotRef={rotRef} />
+          <fog attach="fog" args={['#050505', RADIUS + 4, RADIUS * 2 + 18]} />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 15, 10]} intensity={1.2} />
+          <OrbitCamera radius={RADIUS} orbitRef={orbitRef.current} />
+          <CarouselItems images={displayImages} radius={RADIUS} scrollRotRef={scrollRotRef} />
         </Canvas>
       </div>
     </>
