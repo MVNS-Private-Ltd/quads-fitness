@@ -10,7 +10,6 @@ import PlansPage from './admin/PlansPage';
 import LeadsPage from './admin/LeadsPage';
 import GalleryPage from './admin/GalleryPage';
 import ReviewsPage from './admin/ReviewsPage';
-import OffersPage from './admin/OffersPage';
 import ActivityLogsPage from './admin/ActivityLogsPage';
 import SettingsPage from './admin/SettingsPage';
 import UsersPage from './admin/UsersPage';
@@ -360,7 +359,6 @@ export default function AdminDashboard() {
     { name: 'Inquiries', path: '/admin/leads', icon: FiMessageCircle },
     { name: 'Member Reviews', path: '/admin/reviews', icon: FiMessageSquare },
     { name: 'Gallery', path: '/admin/gallery', icon: FiImage },
-    { name: 'Offers', path: '/admin/offers', icon: FiTag },
     { name: 'Activity Logs', path: '/admin/logs', icon: FiActivity },
     { name: 'Members', path: '/admin/users', icon: FiUsers },
     { name: 'Programs', path: '/admin/programs', icon: FiList },
@@ -563,7 +561,6 @@ export default function AdminDashboard() {
               <Route path="leads" element={<LeadsPage />} />
               <Route path="reviews" element={<ReviewsPage />} />
               <Route path="gallery" element={<GalleryPage />} />
-              <Route path="offers" element={<OffersPage />} />
               <Route path="logs" element={<ActivityLogsPage />} />
               <Route path="programs" element={<ProgramsPage />} />
               <Route path="diet-plans" element={<DietPlansPage />} />

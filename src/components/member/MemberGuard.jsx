@@ -26,14 +26,23 @@ export default function MemberGuard({ children }) {
           return;
         }
 
-        // Verify this Supabase user has a matching Member record in our DB
-        await getMe();
+        // Optimistically authenticate for instant UI rendering
         if (isMounted) setStatus('authenticated');
-      } catch (err) {
-        console.error("Member verification error:", err);
+
+        // Verify this Supabase user has a matching Member record in our DB in the background
+        try {
+          await getMe();
+        } catch (err) {
+          console.error("Member verification error:", err);
+          if (isMounted) {
+            setStatus('not-found');
+            supabase.auth.signOut().catch(console.error);
+          }
+        }
+      } catch (outerErr) {
+        console.error("Session check error:", outerErr);
         if (isMounted) {
-          setStatus('not-found');
-          supabase.auth.signOut().catch(console.error);
+          setStatus('unauthenticated');
         }
       }
     }
@@ -46,9 +55,9 @@ export default function MemberGuard({ children }) {
       if (event === 'SIGNED_OUT') {
         setStatus('unauthenticated');
       } else if (event === 'SIGNED_IN' && session) {
+        if (isMounted) setStatus('authenticated');
         try {
           await getMe();
-          if (isMounted) setStatus('authenticated');
         } catch {
           if (isMounted) setStatus('not-found');
           supabase.auth.signOut().catch(console.error);

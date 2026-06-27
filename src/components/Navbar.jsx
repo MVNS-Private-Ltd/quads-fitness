@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSettings } from '../contexts/SettingsContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import { supabase } from '../lib/supabaseClient'
 import BrandLogo from './BrandLogo'
 
 // Updated to map names to actual URL routes
@@ -18,15 +19,29 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [session, setSession] = useState(null)
   const { settings } = useSettings()
   const location = useLocation()
   const cleanPhone = settings?.phone?.replace(/\D/g, '')
   const whatsappHref = cleanPhone ? `https://wa.me/${cleanPhone}` : null
 
   useEffect(() => {
+    // Check initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      subscription.unsubscribe()
+    }
   }, [])
 
   // Close mobile menu when route changes
@@ -91,10 +106,10 @@ export default function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            to="/member/login"
+            to={session ? "/member/dashboard" : "/member/login"}
             className="text-sm font-heading font-medium tracking-wide uppercase text-white/70 hover:text-white transition-colors duration-300"
           >
-            Member Login
+            {session ? "My Dashboard" : "Member Login"}
           </Link>
           {whatsappHref && (
             <a
@@ -148,10 +163,11 @@ export default function Navbar() {
               })}
               <li className="mt-4">
                 <Link
-                  to="/member/login"
+                  to={session ? "/member/dashboard" : "/member/login"}
+                  onClick={() => setOpen(false)}
                   className="block font-heading text-xl tracking-widest uppercase text-brand-gold/80 hover:text-brand-gold transition-colors duration-200 text-center"
                 >
-                  Member Login
+                  {session ? "My Dashboard" : "Member Login"}
                 </Link>
               </li>
               {whatsappHref && (

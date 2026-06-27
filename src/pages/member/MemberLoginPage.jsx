@@ -28,6 +28,15 @@ export default function MemberLoginPage() {
     }
   }, [location.state]);
 
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session && !location.state?.notFound) {
+        navigate('/member/dashboard', { replace: true });
+      }
+    });
+  }, [navigate, location.state]);
+
   // Fetch gym phone number from settings
   useEffect(() => {
     getSettings()
