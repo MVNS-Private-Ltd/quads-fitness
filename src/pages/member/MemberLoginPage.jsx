@@ -12,11 +12,10 @@ export default function MemberLoginPage() {
   const [loading, setLoading] = useState(false);
   const [gymPhone, setGymPhone] = useState('');
   
-  // Phone auth state
-  const [authMode, setAuthMode] = useState('main'); // 'main' | 'phone'
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
+  // Email auth state
+  const [authMode, setAuthMode] = useState('main'); // 'main' | 'email'
+  const [email, setEmail] = useState('');
+  const [linkSent, setLinkSent] = useState(false);
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,55 +61,23 @@ export default function MemberLoginPage() {
     }
   };
 
-  // Handle Phone OTP: Send OTP
-  const handleSendOtp = async (e) => {
+  // Handle Email Magic Link
+  const handleSendEmailLink = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
-    // Normalize phone: ensure +91 prefix for India
-    let normalized = phoneNumber.replace(/\s+/g, '').replace(/-/g, '');
-    if (!normalized.startsWith('+')) {
-      normalized = '+91' + normalized;
-    }
 
     try {
       const { error: otpError } = await supabase.auth.signInWithOtp({
-        phone: normalized,
+        email: email,
+        options: {
+          emailRedirectTo: window.location.origin + '/member/dashboard',
+        },
       });
       if (otpError) throw otpError;
-      setOtpSent(true);
+      setLinkSent(true);
     } catch (err) {
-      setError(err.message || 'Failed to send OTP. Please check the phone number and try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle Phone OTP: Verify OTP
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    let normalized = phoneNumber.replace(/\s+/g, '').replace(/-/g, '');
-    if (!normalized.startsWith('+')) {
-      normalized = '+91' + normalized;
-    }
-
-    try {
-      const { data, error: verifyError } = await supabase.auth.verifyOtp({
-        phone: normalized,
-        token: otpCode,
-        type: 'sms',
-      });
-      if (verifyError) throw verifyError;
-      if (data?.session) {
-        const from = location.state?.from?.pathname || '/member/dashboard';
-        navigate(from, { replace: true });
-      }
-    } catch (err) {
-      setError(err.message || 'Invalid OTP. Please try again.');
+      setError(err.message || 'Failed to send login link. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -194,14 +161,14 @@ export default function MemberLoginPage() {
                 <div className="h-px bg-white/10 flex-1"></div>
               </div>
 
-              {/* Phone Auth Button */}
+              {/* Email Magic Link Button */}
               <button
                 type="button"
-                disabled
-                className="w-full bg-brand-darker border border-white/10 text-white/50 font-semibold py-3.5 px-4 rounded-lg flex justify-center items-center cursor-not-allowed group"
+                onClick={() => setAuthMode('email')}
+                className="w-full bg-brand-darker border border-white/10 text-white font-semibold py-3.5 px-4 rounded-lg flex justify-center items-center hover:bg-white/5 transition-all duration-200 group"
               >
-                <Phone size={18} className="mr-3 text-brand-gold/50 flex-shrink-0" />
-                Sign in with Phone (Coming Soon)
+                <Mail size={18} className="mr-3 text-brand-gold flex-shrink-0" />
+                Sign in with Email Link
               </button>
 
               {/* Help Section */}
@@ -220,7 +187,7 @@ export default function MemberLoginPage() {
             </motion.div>
           ) : (
             <motion.div
-              key="phone"
+              key="email"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
@@ -230,7 +197,7 @@ export default function MemberLoginPage() {
               {/* Back button */}
               <button
                 type="button"
-                onClick={() => { setAuthMode('main'); setOtpSent(false); setOtpCode(''); setPhoneNumber(''); setError(''); }}
+                onClick={() => { setAuthMode('main'); setLinkSent(false); setEmail(''); setError(''); }}
                 className="flex items-center text-white/50 hover:text-white text-sm mb-6 transition-colors"
               >
                 <ChevronLeft size={16} className="mr-1" />
@@ -240,15 +207,15 @@ export default function MemberLoginPage() {
               {/* Header */}
               <div className="text-center mb-6">
                 <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center">
-                  <Phone size={24} className="text-brand-gold" />
+                  <Mail size={24} className="text-brand-gold" />
                 </div>
                 <h2 className="font-heading text-2xl text-white tracking-wider uppercase mb-1">
-                  {otpSent ? 'Enter OTP' : 'Phone Login'}
+                  Email Login
                 </h2>
                 <p className="text-white/50 text-sm">
-                  {otpSent 
-                    ? `We sent a code to ${phoneNumber}` 
-                    : 'Enter the phone number registered with your membership.'
+                  {linkSent 
+                    ? `We sent a magic link to ${email}` 
+                    : 'Enter your registered email address.'
                   }
                 </p>
               </div>
@@ -264,56 +231,17 @@ export default function MemberLoginPage() {
                 </motion.div>
               )}
 
-              {!otpSent ? (
-                /* Step 1: Phone Number Input */
-                <form onSubmit={handleSendOtp} className="space-y-5">
+              {!linkSent ? (
+                /* Email Input */
+                <form onSubmit={handleSendEmailLink} className="space-y-5">
                   <div>
-                    <label className="block text-white/60 text-xs mb-2 uppercase tracking-wider">Phone Number</label>
-                    <div className="flex">
-                      <span className="bg-brand-darker border border-white/10 border-r-0 text-white/50 rounded-l-lg px-3 flex items-center text-sm font-mono">+91</span>
-                      <input
-                        type="tel"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value.replace(/[^0-9]/g, ''))}
-                        className="flex-1 bg-brand-darker border border-white/10 text-white rounded-r-lg px-4 py-3 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/30 transition-all font-mono tracking-wider"
-                        placeholder="98765 43210"
-                        maxLength={10}
-                        required
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading || phoneNumber.length < 10}
-                    className="w-full bg-brand-gold text-brand-darker font-bold py-3 px-4 rounded-lg uppercase tracking-wider hover:bg-brand-gold/90 transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {loading ? (
-                      <span className="flex items-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending OTP...
-                      </span>
-                    ) : (
-                      'Send OTP'
-                    )}
-                  </button>
-                </form>
-              ) : (
-                /* Step 2: OTP Input */
-                <form onSubmit={handleVerifyOtp} className="space-y-5">
-                  <div>
-                    <label className="block text-white/60 text-xs mb-2 uppercase tracking-wider">Verification Code</label>
+                    <label className="block text-white/60 text-xs mb-2 uppercase tracking-wider">Email Address</label>
                     <input
-                      type="text"
-                      value={otpCode}
-                      onChange={(e) => setOtpCode(e.target.value.replace(/[^0-9]/g, ''))}
-                      className="w-full bg-brand-darker border border-white/10 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/30 transition-all text-center text-2xl font-mono tracking-[0.5em]"
-                      placeholder="------"
-                      maxLength={6}
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-brand-darker border border-white/10 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/30 transition-all"
+                      placeholder="you@example.com"
                       required
                       autoFocus
                     />
@@ -321,7 +249,7 @@ export default function MemberLoginPage() {
 
                   <button
                     type="submit"
-                    disabled={loading || otpCode.length < 6}
+                    disabled={loading || !email.includes('@')}
                     className="w-full bg-brand-gold text-brand-darker font-bold py-3 px-4 rounded-lg uppercase tracking-wider hover:bg-brand-gold/90 transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
@@ -330,27 +258,32 @@ export default function MemberLoginPage() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Verifying...
+                        Sending Link...
                       </span>
                     ) : (
-                      'Verify & Sign In'
+                      'Send Magic Link'
                     )}
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => { setOtpSent(false); setOtpCode(''); }}
-                    className="w-full text-white/40 hover:text-white text-sm py-2 transition-colors"
-                  >
-                    Didn't receive the code? Try again
-                  </button>
                 </form>
+              ) : (
+                /* Success Message */
+                <div className="bg-brand-darker border border-white/10 rounded-xl p-6 text-center space-y-4">
+                  <div className="w-12 h-12 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-semibold">Check your inbox!</h3>
+                  <p className="text-white/50 text-sm">
+                    Click the secure link we sent to your email to sign in instantly. You can close this window.
+                  </p>
+                </div>
               )}
 
               {/* Help Section */}
               <div className="mt-8 pt-6 border-t border-white/5">
                 <p className="text-white/40 text-xs text-center leading-relaxed">
-                  Make sure the phone number matches your gym registration.
+                  Make sure you use the email registered with your gym membership.
                 </p>
                 {gymPhone && (
                   <p className="text-white/50 text-sm text-center mt-2">
