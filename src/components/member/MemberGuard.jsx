@@ -121,6 +121,10 @@ export default function MemberGuard({ children }) {
   }
 
   if (status === 'unauthenticated') {
+    // Save intended destination to sessionStorage so it survives magic link navigations
+    if (location.pathname !== '/member/login') {
+      sessionStorage.setItem('memberLoginRedirect', location.pathname);
+    }
     return <Navigate to="/member/login" state={{ from: location }} replace />;
   }
 

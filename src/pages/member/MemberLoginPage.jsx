@@ -32,19 +32,27 @@ export default function MemberLoginPage() {
 
   // Redirect to original destination (or dashboard) if already logged in or when magic link completes
   useEffect(() => {
-    const destination = location.state?.from?.pathname || '/member/dashboard';
+    // Prefer sessionStorage (survives magic link page reloads) over router state
+    const getDestination = () => {
+      const saved = sessionStorage.getItem('memberLoginRedirect');
+      if (saved) {
+        sessionStorage.removeItem('memberLoginRedirect');
+        return saved;
+      }
+      return location.state?.from?.pathname || '/member/dashboard';
+    };
 
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session && !location.state?.notFound) {
-        navigate(destination, { replace: true });
+        navigate(getDestination(), { replace: true });
       }
     });
 
     // Listen for async magic link / OTP exchanges
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session && !location.state?.notFound) {
-        navigate(destination, { replace: true });
+        navigate(getDestination(), { replace: true });
       }
     });
 
@@ -112,7 +120,9 @@ export default function MemberLoginPage() {
       if (verifyError) throw verifyError;
       
       if (data?.session && !location.state?.notFound) {
-        const destination = location.state?.from?.pathname || '/member/dashboard';
+        const saved = sessionStorage.getItem('memberLoginRedirect');
+        const destination = saved || location.state?.from?.pathname || '/member/dashboard';
+        if (saved) sessionStorage.removeItem('memberLoginRedirect');
         navigate(destination, { replace: true });
       }
     } catch (err) {
