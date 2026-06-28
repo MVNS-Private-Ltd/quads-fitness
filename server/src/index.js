@@ -22,6 +22,7 @@ initCronJobs();
 const defaultAllowedOrigins = [
   'http://localhost:5173',
   'https://quad-fitness.netlify.app',
+  'https://quads-fitness.vercel.app',
 ];
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
