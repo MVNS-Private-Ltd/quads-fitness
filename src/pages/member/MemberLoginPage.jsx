@@ -30,19 +30,21 @@ export default function MemberLoginPage() {
     }
   }, [location.state]);
 
-  // Redirect to dashboard if already logged in or when magic link completes
+  // Redirect to original destination (or dashboard) if already logged in or when magic link completes
   useEffect(() => {
+    const destination = location.state?.from?.pathname || '/member/dashboard';
+
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session && !location.state?.notFound) {
-        navigate('/member/dashboard', { replace: true });
+        navigate(destination, { replace: true });
       }
     });
 
-    // Listen for async magic link exchanges
+    // Listen for async magic link / OTP exchanges
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session && !location.state?.notFound) {
-        navigate('/member/dashboard', { replace: true });
+        navigate(destination, { replace: true });
       }
     });
 
@@ -110,7 +112,8 @@ export default function MemberLoginPage() {
       if (verifyError) throw verifyError;
       
       if (data?.session && !location.state?.notFound) {
-        navigate('/member/dashboard', { replace: true });
+        const destination = location.state?.from?.pathname || '/member/dashboard';
+        navigate(destination, { replace: true });
       }
     } catch (err) {
       setError(err.message || 'Invalid code. Please try again.');
