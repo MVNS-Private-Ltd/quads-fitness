@@ -161,18 +161,17 @@ export default function ExplodingWeightSection() {
     }
   });
 
-  // Calculate opacities based on progress with a sustained "solid" period
-  const getOpacity = (start, peakStart, peakEnd, end) => {
+  // Calculate opacities based on progress
+  const getOpacity = (start, peak, end) => {
     if (htmlProgress < start || htmlProgress > end) return 0;
-    if (htmlProgress >= peakStart && htmlProgress <= peakEnd) return 1;
-    if (htmlProgress < peakStart) return (htmlProgress - start) / (peakStart - start);
-    return 1 - (htmlProgress - peakEnd) / (end - peakEnd);
+    if (htmlProgress < peak) return (htmlProgress - start) / (peak - start);
+    return 1 - (htmlProgress - peak) / (end - peak);
   };
 
-  const o1 = getOpacity(0.0, 0.05, 0.15, 0.25);
-  const o2 = getOpacity(0.2, 0.30, 0.45, 0.55);
-  const o3 = getOpacity(0.45, 0.55, 0.75, 0.85);
-  const o4 = getOpacity(0.75, 0.85, 1.0, 1.1);
+  const o1 = getOpacity(0.0, 0.1, 0.25);
+  const o2 = getOpacity(0.2, 0.35, 0.55);
+  const o3 = getOpacity(0.45, 0.65, 0.85);
+  const o4 = getOpacity(0.75, 0.9, 1.0);
 
   return (
     <section ref={sectionRef} className="relative w-full bg-brand-darker border-t border-white/5" style={{ height: '400vh' }}>
@@ -222,7 +221,7 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o2, transform: `translateY(${(1 - o2) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-brand-dark/80 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
               <span className="text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// THE PATH FORWARD</span>
               <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">Your Mission, Chosen</h2>
               <div className="space-y-6">
@@ -256,7 +255,7 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o3, transform: `translateY(${(1 - o3) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-brand-dark/80 backdrop-blur-md border border-brand-orange/20 p-8 shadow-[0_0_30px_rgba(255,107,0,0.1)] pointer-events-auto">
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-brand-orange/20 p-8 shadow-[0_0_30px_rgba(255,107,0,0.1)] pointer-events-auto">
               <span className="text-xs font-accent tracking-widest text-brand-orange uppercase block mb-1">// PREPARE FOR WAR</span>
               <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">The Arsenal</h2>
               <div className="space-y-6">
@@ -283,7 +282,7 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o4, transform: `translateY(${(1 - o4) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-brand-dark/80 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
               <span className="text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// WHERE CHAMPIONS ARE MADE</span>
               <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">The Environment</h2>
               <div className="space-y-6">
