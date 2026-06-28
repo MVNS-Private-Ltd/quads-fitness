@@ -15,25 +15,38 @@ export default function MemberLoginPage() {
   // Email auth state
   const [authMode, setAuthMode] = useState('main'); // 'main' | 'email'
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [linkSent, setLinkSent] = useState(false);
   
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check for not-found flag from MemberGuard redirect
+  // Check for errors or not-found flags from MemberGuard redirect
   useEffect(() => {
-    if (location.state?.notFound) {
+    if (location.state?.authError) {
+      setError(location.state.authError);
+    } else if (location.state?.notFound) {
       setError('No member profile found for this email. Contact the gym to activate your access.');
     }
   }, [location.state]);
 
-  // Redirect to dashboard if already logged in
+  // Redirect to dashboard if already logged in or when magic link completes
   useEffect(() => {
+    // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session && !location.state?.notFound) {
         navigate('/member/dashboard', { replace: true });
       }
     });
+
+    // Listen for async magic link exchanges
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session && !location.state?.notFound) {
+        navigate('/member/dashboard', { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, [navigate, location.state]);
 
   // Fetch gym phone number from settings
@@ -78,6 +91,29 @@ export default function MemberLoginPage() {
       setLinkSent(true);
     } catch (err) {
       setError(err.message || 'Failed to send login link. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const { data, error: verifyError } = await supabase.auth.verifyOtp({
+        email: email,
+        token: otp,
+        type: 'email',
+      });
+      if (verifyError) throw verifyError;
+      
+      if (data?.session && !location.state?.notFound) {
+        navigate('/member/dashboard', { replace: true });
+      }
+    } catch (err) {
+      setError(err.message || 'Invalid code. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -266,18 +302,48 @@ export default function MemberLoginPage() {
                   </button>
                 </form>
               ) : (
-                /* Success Message */
-                <div className="bg-brand-darker border border-white/10 rounded-xl p-6 text-center space-y-4">
+                /* OTP Verification */
+                <form onSubmit={handleVerifyOtp} className="bg-brand-darker border border-white/10 rounded-xl p-6 text-center space-y-5">
                   <div className="w-12 h-12 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                   <h3 className="text-white font-semibold">Check your inbox!</h3>
-                  <p className="text-white/50 text-sm">
-                    Click the secure link we sent to your email to sign in instantly. You can close this window.
+                  <p className="text-white/50 text-sm mb-2">
+                    Click the secure link we sent to your email, or enter the 6-digit code here:
                   </p>
-                </div>
+                  
+                  <div>
+                    <input
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+                      className="w-full bg-brand-dark border border-white/10 text-white text-center text-2xl tracking-widest rounded-lg px-4 py-3 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/30 transition-all"
+                      placeholder="------"
+                      maxLength={6}
+                      autoFocus
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || otp.length < 6}
+                    className="w-full bg-brand-gold text-brand-darker font-bold py-3 px-4 rounded-lg uppercase tracking-wider hover:bg-brand-gold/90 transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <span className="flex items-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Verifying...
+                      </span>
+                    ) : (
+                      'Verify Code'
+                    )}
+                  </button>
+                </form>
               )}
 
               {/* Help Section */}

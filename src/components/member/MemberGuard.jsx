@@ -13,16 +13,46 @@ export default function MemberGuard({ children }) {
 
     async function checkAuth() {
       try {
-        // Note: Supabase client is configured with detectSessionInUrl: true,
-        // so it automatically handles exchanging the ?code= for a session.
-        // We do NOT need to manually call exchangeCodeForSession here, which causes deadlocks.
+        // Check if there's an ongoing auth flow in the URL (magic link or OAuth)
+        const isAuthCallback = window.location.hash.includes('access_token=') || 
+                               window.location.search.includes('code=') ||
+                               window.location.hash.includes('error_description=');
+
+        // Check for error in URL (common when magic links are expired by Apple Mail)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const searchParams = new URLSearchParams(window.location.search);
+        const urlError = hashParams.get('error_description') || searchParams.get('error_description');
+
+        if (urlError) {
+          console.error("Auth error from URL:", urlError);
+          setStatus({ type: 'error', message: urlError.replace(/\+/g, ' ') });
+          return;
+        }
 
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (!isMounted) return;
 
-        if (error || !session) {
+        if (error) {
+          console.error("Auth session error:", error);
+          setStatus({ type: 'error', message: error.message });
+          // We will render a Navigate below with the error state
+          return;
+        }
+
+        if (!session && !isAuthCallback) {
           setStatus('unauthenticated');
+          return;
+        }
+
+        if (!session && isAuthCallback) {
+          // Keep it in 'loading' state; onAuthStateChange will handle it once the code is exchanged
+          // Add a timeout fallback in case the exchange fails or link is expired
+          setTimeout(() => {
+            if (isMounted) {
+              setStatus(prev => prev === 'loading' ? 'unauthenticated' : prev);
+            }
+          }, 5000);
           return;
         }
 
@@ -84,6 +114,10 @@ export default function MemberGuard({ children }) {
 
   if (status === 'not-found') {
     return <Navigate to="/member/login" state={{ from: location, notFound: true }} replace />;
+  }
+
+  if (status?.type === 'error') {
+    return <Navigate to="/member/login" state={{ from: location, authError: status.message || 'Your login link is invalid or has expired. Please request a new one.' }} replace />;
   }
 
   if (status === 'unauthenticated') {
