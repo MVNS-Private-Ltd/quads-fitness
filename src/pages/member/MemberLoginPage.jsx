@@ -318,17 +318,17 @@ export default function MemberLoginPage() {
                     <input
                       type="text"
                       value={otp}
-                      onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
+                      onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
                       className="w-full bg-brand-dark border border-white/10 text-white text-center text-2xl tracking-widest rounded-lg px-4 py-3 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/30 transition-all"
                       placeholder="------"
-                      maxLength={8}
+                      maxLength={6}
                       autoFocus
                     />
                   </div>
 
                   <button
                     type="submit"
-                    disabled={loading || otp.length < 8}
+                    disabled={loading || otp.length < 6}
                     className="w-full bg-brand-gold text-brand-darker font-bold py-3 px-4 rounded-lg uppercase tracking-wider hover:bg-brand-gold/90 transition-all flex justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
