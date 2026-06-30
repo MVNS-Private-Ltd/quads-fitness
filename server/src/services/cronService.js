@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import prisma from '../prisma.js';
-import { sendMemberReminderEmail, sendAdminExpiryEmail } from './emailService.js';
+import { sendMemberReminderEmail, sendAdminExpiryEmail, sendAdminReminderEmail } from './emailService.js';
 
 export const initCronJobs = () => {
   // Run every day at midnight
@@ -10,22 +10,22 @@ export const initCronJobs = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const in7Days = new Date(today);
-      in7Days.setDate(today.getDate() + 7);
+      const in5Days = new Date(today);
+      in5Days.setDate(today.getDate() + 5);
 
-      const tomorrowOf7Days = new Date(in7Days);
-      tomorrowOf7Days.setDate(in7Days.getDate() + 1);
+      const tomorrowOf5Days = new Date(in5Days);
+      tomorrowOf5Days.setDate(in5Days.getDate() + 1);
 
       // Fetch global settings for gym email
       const settings = await prisma.settings.findFirst();
-      const adminEmail = settings?.email || process.env.ADMIN_EMAIL || 'admin@quadsfitness.com';
+      const adminEmail = settings?.email || process.env.ADMIN_EMAIL || 'quadsfitness28@gmail.com';
 
-      // 1. Members expiring in exactly 7 days
+      // 1. Members expiring in exactly 5 days
       const remindingMembers = await prisma.member.findMany({
         where: {
           membershipExpiry: {
-            gte: in7Days,
-            lt: tomorrowOf7Days
+            gte: in5Days,
+            lt: tomorrowOf5Days
           },
           reminderSent: false,
           status: 'Active'
@@ -35,6 +35,7 @@ export const initCronJobs = () => {
 
       for (const member of remindingMembers) {
         await sendMemberReminderEmail(member, settings);
+        await sendAdminReminderEmail(member, adminEmail);
         
         // Update member to mark reminder sent
         await prisma.member.update({
@@ -45,7 +46,7 @@ export const initCronJobs = () => {
         // Add admin notification
         await prisma.adminNotification.create({
           data: {
-            message: `Membership for ${member.name} expires in 7 days.`,
+            message: `Membership for ${member.name} expires in 5 days.`,
             type: 'REMINDER'
           }
         });

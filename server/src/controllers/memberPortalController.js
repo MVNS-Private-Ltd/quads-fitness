@@ -62,8 +62,8 @@ export const getMe = async (req, res) => {
       include: {
         plan: true,
         trainer: true,
-        progressLogs: { orderBy: { date: 'desc' } },
-        attendance: { orderBy: { date: 'desc' }, take: 10 }
+        progressLogs: { orderBy: { date: 'desc' }, take: 5 },
+        attendance: { orderBy: { date: 'desc' }, take: 30 }
       }
     });
     if (!member) return res.status(404).json({ error: 'Member profile not found' });
@@ -240,7 +240,7 @@ export const markAttendance = async (req, res) => {
       return res.status(200).json({ success: true, message: 'Already marked present today!', attendance: existing });
     }
 
-    const timeIn = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const timeIn = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
     
     const newAttendance = await prisma.attendance.create({
       data: {

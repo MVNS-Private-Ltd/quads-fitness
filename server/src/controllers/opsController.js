@@ -25,6 +25,14 @@ export const createLead = async (req, res) => {
     if (!name || !email || !message) return res.status(400).json({ error: 'Name, email and message required' });
     const lead = await prisma.lead.create({ data: { name, email, phone, subject, message } });
     await log('New Inquiry', `${name} sent a message`, 'Lead', lead.id);
+    
+    await prisma.adminNotification.create({
+      data: {
+        type: 'INQUIRY',
+        message: `New website inquiry from ${name}`
+      }
+    });
+    
     res.status(201).json(lead);
   } catch (error) {
     console.error('Error in createLead:', error);

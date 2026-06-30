@@ -1,6 +1,8 @@
 import { supabaseAdmin } from '../lib/supabaseAdmin.js';
 import prisma from '../prisma.js';
 
+const tokenPromiseCache = new Map();
+
 // Base helper to verify token
 const verifyToken = async (req) => {
   const authHeader = req.headers.authorization;
@@ -8,9 +10,29 @@ const verifyToken = async (req) => {
     throw new Error('No token provided');
   }
   const token = authHeader.split(' ')[1];
-  const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
-  if (error || !user) throw new Error('Invalid token');
-  return user;
+
+  // Return cached promise if available and not expired
+  if (tokenPromiseCache.has(token)) {
+    const cached = tokenPromiseCache.get(token);
+    if (Date.now() < cached.expires) {
+      return await cached.promise;
+    }
+    tokenPromiseCache.delete(token);
+  }
+
+  // Fetch from Supabase
+  const fetchUserPromise = supabaseAdmin.auth.getUser(token).then(({ data: { user }, error }) => {
+    if (error || !user) throw new Error('Invalid token');
+    return user;
+  }).catch(err => {
+    tokenPromiseCache.delete(token); // cleanup on fail
+    throw err;
+  });
+
+  // Cache it for 5 minutes
+  tokenPromiseCache.set(token, { promise: fetchUserPromise, expires: Date.now() + 5 * 60 * 1000 });
+
+  return await fetchUserPromise;
 };
 
 // Base Guard (Token only, no role check)
