@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quads-fitness-v3';
+const CACHE_NAME = 'quads-fitness-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -9,7 +9,7 @@ const STATIC_ASSETS = [
 
 // ─── Install: cache static shell ────────────────────────────────────────────
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  // Don't skipWaiting automatically — wait for user to approve update
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
@@ -22,6 +22,13 @@ self.addEventListener('activate', (event) => {
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
+});
+
+// ─── Message: handle skipWaiting from app ───────────────────────────────────
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // ─── Fetch: network-first for API / auth, cache-first for assets ────────────
@@ -41,15 +48,11 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          // Cache a copy of successful navigation responses
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
         })
-        .catch(() =>
-          // If offline, serve the cached app shell (index.html)
-          caches.match('/index.html')
-        )
+        .catch(() => caches.match('/index.html'))
     );
     return;
   }

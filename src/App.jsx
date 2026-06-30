@@ -53,6 +53,7 @@ import WhatsAppButton from './components/WhatsAppButton'
 import NotFoundPage from './pages/NotFoundPage'
 import TermsPage from './pages/TermsPage'
 import PrivacyPage from './pages/PrivacyPage'
+import PWAUpdatePrompt from './components/member/PWAUpdatePrompt'
 
 export default function App() {
   const location = useLocation();
@@ -65,6 +66,7 @@ export default function App() {
   return (
     <div className="bg-brand-darker min-h-screen bg-noise flex flex-col">
       <ScrollToTop />
+      <PWAUpdatePrompt />
       {!hidePublicNavbar && <Navbar />}
 
       <main className={(isAdminRoute || (isMemberRoute && !isLoginPage)) && !isLoginPage ? "flex-grow flex flex-col h-screen overflow-hidden" : "flex-grow"}>
@@ -152,3 +154,4 @@ export default function App() {
     </div>
   )
 }
+
