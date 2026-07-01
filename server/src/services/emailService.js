@@ -1,9 +1,9 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY || 're_MxB9oahL_GFPBMNqNXoJnsCPdHj3mEYUs');
-// Resend does not allow sending *from* @gmail.com domains to prevent spoofing. 
-// You must use a verified domain (like hello@quadsfitness.com) or their testing domain.
-const FROM_EMAIL = 'onboarding@resend.dev';
+
+// We are now using the official Quads Fitness domain!
+const FROM_EMAIL = 'admin@quadsfitness.com';
 
 /**
  * Send 5-day reminder email to the member.
