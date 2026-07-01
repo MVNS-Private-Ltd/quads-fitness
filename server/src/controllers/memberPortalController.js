@@ -251,6 +251,14 @@ export const markAttendance = async (req, res) => {
       }
     });
 
+    // Notify Admin
+    await prisma.adminNotification.create({
+      data: {
+        message: `${member.name} just checked in!`,
+        type: 'SYSTEM'
+      }
+    });
+
     res.status(201).json({ success: true, message: 'Attendance marked successfully!', attendance: newAttendance });
   } catch (err) {
     console.error("Error marking attendance:", err);
