@@ -7,11 +7,15 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+import MemberQRScanner from '../../components/member/MemberQRScanner';
+import { QrCode } from 'lucide-react';
+
 export default function MemberDashboard() {
   const [member, setMember] = useState(getCachedMe() || null);
   const [offers, setOffers] = useState(getCachedOffers() || []);
   const [loading, setLoading] = useState(!getCachedMe());
   const [error, setError] = useState('');
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   useEffect(() => {
     loadDashboard();
@@ -75,6 +79,8 @@ export default function MemberDashboard() {
 
   return (
     <div className="space-y-8 pb-10">
+      <MemberQRScanner isOpen={isScannerOpen} onClose={() => setIsScannerOpen(false)} />
+
       {/* ── Welcome Hero ────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
@@ -86,7 +92,7 @@ export default function MemberDashboard() {
         <div className="absolute top-0 right-0 w-72 h-72 bg-brand-gold/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-10 w-40 h-40 bg-blue-500/3 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <p className="text-brand-gold text-sm font-medium uppercase tracking-widest mb-1">Member Portal</p>
             <h1 className="text-3xl md:text-4xl font-heading font-bold text-white mb-2">
@@ -98,14 +104,14 @@ export default function MemberDashboard() {
                 : `Your membership status is: ${member.status}. Please contact the front desk.`}
             </p>
           </div>
-          <div className="flex gap-3 flex-shrink-0">
-            <Link
-              to="/member/progress"
-              className="flex items-center gap-2 bg-brand-gold text-brand-darker font-bold px-5 py-2.5 rounded-xl hover:bg-brand-gold/90 transition-all hover:scale-105 active:scale-95 text-sm"
+          <div className="flex flex-wrap gap-3 flex-shrink-0">
+            <button
+              onClick={() => setIsScannerOpen(true)}
+              className="flex items-center gap-2 bg-brand-gold text-brand-darker font-bold px-5 py-3 rounded-xl hover:bg-brand-gold/90 transition-all hover:scale-105 active:scale-95 text-sm shadow-lg shadow-brand-gold/20"
             >
-              <Activity size={16} />
-              Log Progress
-            </Link>
+              <QrCode size={18} />
+              Scan QR to Check In
+            </button>
           </div>
         </div>
       </motion.div>
