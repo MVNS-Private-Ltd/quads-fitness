@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /member/
 Disallow: /api/
 
-Sitemap: https://quadsfitness.com/sitemap.xml
+Sitemap: https://thequadsfitness.com/sitemap.xml
