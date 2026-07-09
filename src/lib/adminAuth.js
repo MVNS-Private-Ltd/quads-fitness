@@ -77,7 +77,7 @@ export const verifyAdminSession = async () => {
 export const requireAdmin = async () => {
   const isAdmin = await verifyAdminSession();
   if (!isAdmin) {
-    window.location.href = '/admin/login';
+    window.location.href = '/shubham8the8admin/login';
     return false;
   }
   return true;

@@ -114,7 +114,7 @@ export default function AttendancePage() {
           <p className="text-brand-muted font-body">Monitor member check-ins and check-outs.</p>
         </div>
         <div className="flex gap-3">
-          <Link to="/admin/attendance/qr" className="px-6 py-3 bg-brand-dark border border-brand-gold/50 text-brand-gold font-heading font-bold rounded-xl hover:bg-brand-gold/10 transition-colors flex items-center gap-2">
+          <Link to="/shubham8the8admin/attendance/qr" className="px-6 py-3 bg-brand-dark border border-brand-gold/50 text-brand-gold font-heading font-bold rounded-xl hover:bg-brand-gold/10 transition-colors flex items-center gap-2">
             Print QR Code
           </Link>
           <button onClick={openModal} className="px-6 py-3 bg-brand-gold text-brand-darker font-heading font-bold rounded-xl hover:bg-white transition-colors shadow-glow-gold flex items-center gap-2">

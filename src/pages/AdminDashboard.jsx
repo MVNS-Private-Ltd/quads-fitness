@@ -241,7 +241,7 @@ const Overview = () => {
               <p className="text-brand-muted text-sm truncate">{msg.subject || 'New Inquiry'}</p>
             </div>
           ))}
-          <Link to="/admin/leads" className="block text-center w-full py-3 mt-2 text-sm font-heading text-brand-gold hover:text-white transition-colors border border-brand-gold/20 hover:border-brand-gold rounded-xl">
+          <Link to="/shubham8the8admin/leads" className="block text-center w-full py-3 mt-2 text-sm font-heading text-brand-gold hover:text-white transition-colors border border-brand-gold/20 hover:border-brand-gold rounded-xl">
             View All Messages
           </Link>
         </div>
@@ -334,12 +334,12 @@ export default function AdminDashboard() {
 
   const getNotifRoute = (type) => {
     const routes = {
-      EXPIRY: '/admin/users',
-      REMINDER: '/admin/users',
-      REVIEW: '/admin/reviews',
-      LEAD: '/admin/leads',
+      EXPIRY: '/shubham8the8admin/users',
+      REMINDER: '/shubham8the8admin/users',
+      REVIEW: '/shubham8the8admin/reviews',
+      LEAD: '/shubham8the8admin/leads',
     };
-    return routes[type] || '/admin';
+    return routes[type] || '/shubham8the8admin';
   };
 
   const formatTimeAgo = (dateStr) => {
@@ -352,19 +352,19 @@ export default function AdminDashboard() {
   };
 
   const navItems = [
-    { name: 'Overview', path: '/admin', icon: FiGrid },
-    { name: 'Website Content', path: '/admin/cms', icon: FiGlobe },
-    { name: 'Trainers', path: '/admin/trainers', icon: FiUserPlus },
-    { name: 'Plans', path: '/admin/plans', icon: FiDollarSign },
-    { name: 'Inquiries', path: '/admin/leads', icon: FiMessageCircle },
-    { name: 'Member Reviews', path: '/admin/reviews', icon: FiMessageSquare },
-    { name: 'Gallery', path: '/admin/gallery', icon: FiImage },
-    { name: 'Activity Logs', path: '/admin/logs', icon: FiActivity },
-    { name: 'Members', path: '/admin/users', icon: FiUsers },
-    { name: 'Programs', path: '/admin/programs', icon: FiList },
-    { name: 'Diet Plans', path: '/admin/diet-plans', icon: FiClipboard },
-    { name: 'Attendance', path: '/admin/attendance', icon: FiCheckSquare },
-    { name: 'Settings', path: '/admin/settings', icon: FiSettings },
+    { name: 'Overview', path: '/shubham8the8admin', icon: FiGrid },
+    { name: 'Website Content', path: '/shubham8the8admin/cms', icon: FiGlobe },
+    { name: 'Trainers', path: '/shubham8the8admin/trainers', icon: FiUserPlus },
+    { name: 'Plans', path: '/shubham8the8admin/plans', icon: FiDollarSign },
+    { name: 'Inquiries', path: '/shubham8the8admin/leads', icon: FiMessageCircle },
+    { name: 'Member Reviews', path: '/shubham8the8admin/reviews', icon: FiMessageSquare },
+    { name: 'Gallery', path: '/shubham8the8admin/gallery', icon: FiImage },
+    { name: 'Activity Logs', path: '/shubham8the8admin/logs', icon: FiActivity },
+    { name: 'Members', path: '/shubham8the8admin/users', icon: FiUsers },
+    { name: 'Programs', path: '/shubham8the8admin/programs', icon: FiList },
+    { name: 'Diet Plans', path: '/shubham8the8admin/diet-plans', icon: FiClipboard },
+    { name: 'Attendance', path: '/shubham8the8admin/attendance', icon: FiCheckSquare },
+    { name: 'Settings', path: '/shubham8the8admin/settings', icon: FiSettings },
   ];
 
   return (
@@ -401,7 +401,7 @@ export default function AdminDashboard() {
           <p className="text-xs font-bold text-brand-muted tracking-widest uppercase mb-4">Menu</p>
           <nav className="space-y-2">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
+              const isActive = location.pathname === item.path || (item.path !== '/shubham8the8admin' && location.pathname.startsWith(item.path));
               return (
                 <Link 
                   key={item.name} 
@@ -438,7 +438,7 @@ export default function AdminDashboard() {
               <FiMenu size={24} />
             </button>
             <h1 className="text-xl font-heading text-white hidden sm:block">
-              {navItems.find(item => location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path)))?.name || 'Dashboard'}
+              {navItems.find(item => location.pathname === item.path || (item.path !== '/shubham8the8admin' && location.pathname.startsWith(item.path)))?.name || 'Dashboard'}
             </h1>
           </div>
           
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                     <div className="p-3 border-t border-white/5 text-center bg-brand-dark">
-                      <Link to="/admin/logs" className="text-xs text-brand-gold hover:text-white transition-colors" onClick={() => setShowNotifications(false)}>View Activity Logs</Link>
+                      <Link to="/shubham8the8admin/logs" className="text-xs text-brand-gold hover:text-white transition-colors" onClick={() => setShowNotifications(false)}>View Activity Logs</Link>
                     </div>
                   </motion.div>
                 )}

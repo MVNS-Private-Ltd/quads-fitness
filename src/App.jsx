@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 
 // Shared Components
 import Navbar from './components/Navbar'
@@ -58,9 +58,9 @@ const PWAUpdatePrompt = lazy(() => import('./components/member/PWAUpdatePrompt')
 
 export default function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location.pathname.startsWith('/shubham8the8admin');
   const isMemberRoute = location.pathname.startsWith('/member');
-  const isLoginPage = location.pathname === '/admin/login' || location.pathname === '/member/login';
+  const isLoginPage = location.pathname === '/shubham8the8admin/login' || location.pathname === '/member/login';
   
   const hidePublicNavbar = isAdminRoute || isMemberRoute;
 
@@ -104,12 +104,15 @@ export default function App() {
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
 
+              {/* ── Admin Redirect (Safety) ──────────────────────────── */}
+              <Route path="/admin/*" element={<Navigate to="/shubham8the8admin" replace />} />
+
               {/* ── Admin Login (unprotected) ────────────────────────── */}
-              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/shubham8the8admin/login" element={<AdminLoginPage />} />
 
               {/* ── Admin Dashboard (guarded) ────────────────────────── */}
               <Route
-                path="/admin/*"
+                path="/shubham8the8admin/*"
                 element={
                   <AdminGuard>
                     <AdminDashboard />

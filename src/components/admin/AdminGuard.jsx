@@ -34,7 +34,7 @@ export default function AdminGuard({ children }) {
   }
 
   if (status === 'unauthenticated') {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/shubham8the8admin/login" replace />;
   }
 
   return children;

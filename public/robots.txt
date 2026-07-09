@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
+Disallow: /shubham8the8admin/
 Disallow: /member/
 Disallow: /api/
 
