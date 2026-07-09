@@ -48,12 +48,14 @@ const MemberDietPage = lazy(() => import('./pages/member/MemberDietPage'))
 const MemberReviewPage = lazy(() => import('./pages/member/MemberReviewPage'))
 
 // Additional UI & Pages
-import CookieBanner from './components/CookieBanner'
-import WhatsAppButton from './components/WhatsAppButton'
-import PWAUpdatePrompt from './components/member/PWAUpdatePrompt'
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 const TermsPage = lazy(() => import('./pages/TermsPage'))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+// Non-critical UI (deferred from initial bundle)
+const ChatBot = lazy(() => import('./components/ChatBot'))
+const CookieBanner = lazy(() => import('./components/CookieBanner'))
+const WhatsAppButton = lazy(() => import('./components/WhatsAppButton'))
+const PWAUpdatePrompt = lazy(() => import('./components/member/PWAUpdatePrompt'))
 
 export default function App() {
   const location = useLocation();

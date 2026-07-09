@@ -31,6 +31,8 @@ export default function Hero() {
             src="/images/gym-bg-1.jpg"
             alt="Quads Fitness Gym Floor"
             className="w-full h-full object-cover object-center"
+            width="1920"
+            height="1080"
             fetchpriority="high"
             loading="eager"
           />

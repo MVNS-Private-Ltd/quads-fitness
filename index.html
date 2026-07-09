@@ -37,6 +37,8 @@
     <link rel="preconnect" href="https://xuohvspujqysijppnjgd.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <!-- Preload hero image so browser fetches it before JS loads -->
+    <link rel="preload" as="image" href="/images/gym-bg-1.webp" type="image/webp" />
 
     <!-- ══════ PWA Support ══════ -->
     <link rel="manifest" href="/manifest.json" />
@@ -62,12 +64,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1KZQ9YL0J4"></script>
+    <!-- Google Analytics deferred after page load to avoid blocking -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-1KZQ9YL0J4');
+      window.addEventListener('load', function() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1KZQ9YL0J4';
+        document.head.appendChild(s);
+      });
     </script>
   </head>
   <body>
