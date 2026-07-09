@@ -1,16 +1,5 @@
-import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useSettings } from '../contexts/SettingsContext'
-
-const containerVar = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12 } }
-}
-
-const itemVar = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
-}
 
 export default function Hero() {
   const { settings } = useSettings();
@@ -39,8 +28,6 @@ export default function Hero() {
         </picture>
       </div>
 
-
-
       {/* readability overlay */}
       <div className="absolute inset-0 z-10 bg-black/70" />
 
@@ -66,29 +53,19 @@ export default function Hero() {
 
       {/* content */}
       <div className="relative z-20 min-h-screen max-w-7xl mx-auto px-6 pt-36 pb-12 flex items-center">
-        <motion.div
-          variants={containerVar}
-          initial="hidden"
-          animate="show"
-          className="w-full max-w-3xl flex flex-col gap-10"
-        >
-          <motion.h1
-            variants={itemVar}
-            className="font-display text-[clamp(3.5rem,8.5vw,7.5rem)] leading-[0.95] tracking-tight uppercase text-white"
-          >
+        <div className="w-full max-w-3xl flex flex-col gap-10">
+
+          <h1 className="fade-in-up hero-d0 font-display text-[clamp(3.5rem,8.5vw,7.5rem)] leading-[0.95] tracking-tight uppercase text-white">
             {heroTitle}
-          </motion.h1>
+          </h1>
 
           {heroSubtitle && (
-            <motion.p
-              variants={itemVar}
-              className="text-white/65 text-base md:text-lg leading-relaxed max-w-xl font-body"
-            >
+            <p className="fade-in-up hero-d1 text-white/65 text-base md:text-lg leading-relaxed max-w-xl font-body">
               {heroSubtitle}
-            </motion.p>
+            </p>
           )}
 
-          <motion.div variants={itemVar} className="flex flex-wrap gap-6 mt-2">
+          <div className="fade-in-up hero-d2 flex flex-wrap gap-6 mt-2">
             {whatsappHref && (
               <a
                 href={whatsappHref}
@@ -106,21 +83,18 @@ export default function Hero() {
             >
               <span>View Training Plans</span>
             </Link>
-          </motion.div>
+          </div>
 
           {phoneHref && (
-            <motion.div variants={itemVar} className="mt-1">
+            <div className="fade-in-up hero-d3 mt-1">
               <p className="text-white/50 text-xs font-accent tracking-widest uppercase flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 Call Us: <a href={phoneHref} className="text-brand-orange hover:text-brand-gold transition-colors font-bold">{settings.phone}</a>
               </p>
-            </motion.div>
+            </div>
           )}
 
-          <motion.div
-            variants={itemVar}
-            className="flex flex-wrap gap-8 pt-6 border-t border-white/10 mt-4 max-w-xl"
-          >
+          <div className="fade-in-up hero-d4 flex flex-wrap gap-8 pt-6 border-t border-white/10 mt-4 max-w-xl">
             {[
               { val: '480+', label: 'Lives Transformed' },
               { val: '15+', label: 'Expert Coaches' },
@@ -135,23 +109,15 @@ export default function Hero() {
                 </p>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       {/* scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-          className="w-0.5 h-8 bg-gradient-to-b from-brand-orange to-transparent"
-        />
-      </motion.div>
+      <div className="fade-in-up hero-d5 absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+        <div className="scroll-bounce w-0.5 h-8 bg-gradient-to-b from-brand-orange to-transparent" />
+      </div>
     </section>
   )
 }
+

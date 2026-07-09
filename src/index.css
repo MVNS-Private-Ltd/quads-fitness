@@ -104,7 +104,23 @@ canvas {
   to { opacity: 1; transform: translateY(0); }
 }
 .fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Hero stagger delays */
+.hero-d0  { animation-delay: 0s; }
+.hero-d1  { animation-delay: 0.12s; }
+.hero-d2  { animation-delay: 0.24s; }
+.hero-d3  { animation-delay: 0.36s; }
+.hero-d4  { animation-delay: 0.48s; }
+.hero-d5  { animation-delay: 1.5s; }
+
+/* Scroll bounce indicator */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+.scroll-bounce {
+  animation: scrollBounce 1.5s ease-in-out infinite;
 }
 
 /* Hover Effects */
@@ -161,7 +177,7 @@ canvas {
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker-track, .fade-in-up { animation: none !important; }
+  .ticker-track, .fade-in-up, .scroll-bounce { animation: none !important; }
   .card-hover, .card-hover:hover { transition: none !important; transform: none !important; }
 }
 
