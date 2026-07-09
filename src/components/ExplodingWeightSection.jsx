@@ -169,10 +169,10 @@ export default function ExplodingWeightSection() {
     return 1 - (htmlProgress - peakEnd) / (end - peakEnd);
   };
 
-  const o1 = getOpacity(0.0, 0.05, 0.15, 0.25);
-  const o2 = getOpacity(0.2, 0.28, 0.42, 0.55);
-  const o3 = getOpacity(0.45, 0.55, 0.75, 0.85);
-  const o4 = getOpacity(0.75, 0.85, 1.0, 1.0);
+  const o1 = getOpacity(0.00, 0.03, 0.17, 0.25);
+  const o2 = getOpacity(0.17, 0.25, 0.47, 0.55);
+  const o3 = getOpacity(0.47, 0.55, 0.75, 0.83);
+  const o4 = getOpacity(0.75, 0.83, 1.00, 1.00);
 
   return (
     <section ref={sectionRef} className="relative w-full bg-brand-darker border-t border-white/5" style={{ height: '400vh' }}>
