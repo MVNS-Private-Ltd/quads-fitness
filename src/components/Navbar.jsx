@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useSettings } from '../contexts/SettingsContext'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabaseClient'
+import BrandLogo from './BrandLogo'
 
 // Updated to map names to actual URL routes
 const navLinks = [
