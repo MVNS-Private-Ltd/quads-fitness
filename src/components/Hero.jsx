@@ -25,7 +25,16 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen overflow-hidden bg-brand-darker">
       {/* HD Background Image */}
       <div className="absolute inset-0 z-0">
-        <img src="/images/gym-bg-1.jpg" alt="Quads Fitness Gym Floor" className="w-full h-full object-cover object-center" />
+        <picture>
+          <source srcSet="/images/gym-bg-1.webp" type="image/webp" />
+          <img
+            src="/images/gym-bg-1.jpg"
+            alt="Quads Fitness Gym Floor"
+            className="w-full h-full object-cover object-center"
+            fetchpriority="high"
+            loading="eager"
+          />
+        </picture>
       </div>
 
 
