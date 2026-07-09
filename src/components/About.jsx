@@ -1,7 +1,6 @@
-import { motion, useInView } from 'framer-motion'
+import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { useSettings } from '../contexts/SettingsContext'
-import AboutCurlScene from './AboutCurlScene'
 
 const features = [
   {

@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
-  StatusChip, EmptyState, TableFilterBar, PreviewDrawer,
-  FormModal, ConfirmDialog, FormField, AvatarPlaceholder,
   inputCls, selectCls
 } from '../../components/admin/SharedAdminUI';
-import { FiUsers, FiPlus, FiEdit2, FiTrash2, FiEye, FiRefreshCw } from 'react-icons/fi';
+import { FiUsers } from 'react-icons/fi';
 import { getMembers, createMember, updateMember, deleteMember, getTrainers, getPlans } from '../../services/api';
-import MemberProfileDrawer from '../../components/admin/MemberProfileDrawer';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },

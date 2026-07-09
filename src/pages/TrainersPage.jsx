@@ -1,8 +1,3 @@
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { FaChevronRight } from 'react-icons/fa';
-import PageTransition from '../components/PageTransition';
-import SEO from '../components/SEO';
 import { useEffect, useState } from 'react';
 import { getTrainers } from '../services/api';
 
@@ -79,7 +74,7 @@ export default function TrainersPage() {
                 >
                   <div className="relative h-80 overflow-hidden bg-brand-darker">
                     {imgUrl ? (
-                      <img src={imgUrl} alt={`${trainer.name} - Personal Trainer at Quads Fitness, Manimajra`} loading="lazy" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity hover:mix-blend-normal" />
+                      <img src={imgUrl} alt={`${trainer.name} - Personal Trainer at Quads Fitness, Manimajra`} loading="lazy" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity hover:mix-blend-normal"  width="800" height="600" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-brand-muted font-display text-4xl opacity-20 uppercase tracking-widest">{trainer.name?.charAt(0) || 'T'}</div>
                     )}

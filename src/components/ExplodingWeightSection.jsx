@@ -1,9 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Sparkles, PerformanceMonitor } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { FaBolt, FaCrosshairs, FaShieldAlt, FaDumbbell, FaUsers, FaCalendarAlt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
 
 // --- CACHED GEOMETRIES & MATERIALS ---
 const plateGeo1 = new THREE.CylinderGeometry(1, 1, 1, 24, 1, false)

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, Loader2, CalendarCheck, Clock } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { markMyAttendance, getCachedMe } from '../../services/memberApi';
 
 export default function MemberMarkAttendancePage() {
@@ -64,7 +62,7 @@ export default function MemberMarkAttendancePage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8 text-center"
       >
-        <img src="/icons/icon-96x96.png" alt="Quads Fitness" className="w-16 h-16 rounded-2xl mx-auto mb-3 shadow-lg" />
+        <img src="/icons/icon-96x96.png" alt="Quads Fitness" className="w-16 h-16 rounded-2xl mx-auto mb-3 shadow-lg"  width="800" height="600" loading="lazy" />
         <p className="text-brand-gold text-xs font-bold uppercase tracking-[0.3em]">Quads Fitness</p>
       </motion.div>
 

@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
-  StatusChip, EmptyState, TableFilterBar,
-  FormModal, ConfirmDialog, FormField,
   inputCls, selectCls, textareaCls
 } from '../../components/admin/SharedAdminUI';
-import { FiList, FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
+import { FiList } from 'react-icons/fi';
 import { getPrograms, createProgram, updateProgram, deleteProgram } from '../../services/api';
 
 const pageVariants = {

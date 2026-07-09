@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getGallery } from '../services/api';
-import PageTransition from '../components/PageTransition';
-import SEO from '../components/SEO';
-import SpiralGallery from '../components/SpiralGallery';
 
 export default function GalleryPage() {
   const [images, setImages] = useState([]);

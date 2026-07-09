@@ -1,59 +1,48 @@
-import { Suspense } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import { lazy } from 'react'
+import { useLocation } from 'react-router-dom'
 
 // Shared Components
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import ChatBot from './components/ChatBot'
-import ScrollToTop from './components/ScrollToTop'
-import AdminGuard from './components/admin/AdminGuard'
 
 // Member Components
-import MemberGuard from './components/member/MemberGuard'
-import MemberLayout from './components/member/MemberLayout'
 
 // Pages
-import HomePage from './pages/HomePage'
-import AboutPage from './pages/AboutPage'
-import ProgramsPage from './pages/ProgramsPage'
-import TrainersPage from './pages/TrainersPage'
-import GalleryPage from './pages/GalleryPage'
-import ContactPage from './pages/ContactPage'
-import AdminDashboard from './pages/AdminDashboard'
-import AdminLoginPage from './pages/admin/AdminLoginPage'
+const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ProgramsPage = lazy(() => import('./pages/ProgramsPage'));
+const TrainersPage = lazy(() => import('./pages/TrainersPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminLoginPage = lazy(() => import('./pages/admin/AdminLoginPage'));
 
 // Blog Pages
-import BlogIndexPage from './pages/blog/BlogIndexPage'
-import Article1 from './pages/blog/Article1'
-import Article2 from './pages/blog/Article2'
-import Article3 from './pages/blog/Article3'
-import Article4 from './pages/blog/Article4'
-import Article5 from './pages/blog/Article5'
+const BlogIndexPage = lazy(() => import('./pages/blog/BlogIndexPage'));
+const Article1 = lazy(() => import('./pages/blog/Article1'));
+const Article2 = lazy(() => import('./pages/blog/Article2'));
+const Article3 = lazy(() => import('./pages/blog/Article3'));
+const Article4 = lazy(() => import('./pages/blog/Article4'));
+const Article5 = lazy(() => import('./pages/blog/Article5'));
 
 // Landing Pages
-import PersonalTrainingManimajra from './pages/landing/PersonalTrainingManimajra'
-import GymMembershipManimajra from './pages/landing/GymMembershipManimajra'
-import WeightLossGymManimajra from './pages/landing/WeightLossGymManimajra'
+const PersonalTrainingManimajra = lazy(() => import('./pages/landing/PersonalTrainingManimajra'));
+const GymMembershipManimajra = lazy(() => import('./pages/landing/GymMembershipManimajra'));
+const WeightLossGymManimajra = lazy(() => import('./pages/landing/WeightLossGymManimajra'));
 
 // Member Pages
-import MemberLoginPage from './pages/member/MemberLoginPage'
-import MemberDashboard from './pages/member/MemberDashboard'
-import MemberProfilePage from './pages/member/MemberProfilePage'
-import MemberProgressPage from './pages/member/MemberProgressPage'
-import MemberAttendancePage from './pages/member/MemberAttendancePage'
-import MemberMarkAttendancePage from './pages/member/MemberMarkAttendancePage'
-import MemberMembershipPage from './pages/member/MemberMembershipPage'
-import MemberDietPage from './pages/member/MemberDietPage'
-import MemberReviewPage from './pages/member/MemberReviewPage'
+const MemberLoginPage = lazy(() => import('./pages/member/MemberLoginPage'));
+const MemberDashboard = lazy(() => import('./pages/member/MemberDashboard'));
+const MemberProfilePage = lazy(() => import('./pages/member/MemberProfilePage'));
+const MemberProgressPage = lazy(() => import('./pages/member/MemberProgressPage'));
+const MemberAttendancePage = lazy(() => import('./pages/member/MemberAttendancePage'));
+const MemberMarkAttendancePage = lazy(() => import('./pages/member/MemberMarkAttendancePage'));
+const MemberMembershipPage = lazy(() => import('./pages/member/MemberMembershipPage'));
+const MemberDietPage = lazy(() => import('./pages/member/MemberDietPage'));
+const MemberReviewPage = lazy(() => import('./pages/member/MemberReviewPage'));
 
 // Additional UI & Pages
-import CookieBanner from './components/CookieBanner'
-import WhatsAppButton from './components/WhatsAppButton'
-import NotFoundPage from './pages/NotFoundPage'
-import TermsPage from './pages/TermsPage'
-import PrivacyPage from './pages/PrivacyPage'
-import PWAUpdatePrompt from './components/member/PWAUpdatePrompt'
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 
 export default function App() {
   const location = useLocation();

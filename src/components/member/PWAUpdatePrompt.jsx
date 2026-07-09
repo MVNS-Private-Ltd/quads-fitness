@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { RefreshCw, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PWAUpdatePrompt() {
   const [showUpdate, setShowUpdate] = useState(false);

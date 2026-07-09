@@ -1,17 +1,14 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   User, 
   Activity, 
   CalendarCheck, 
   CreditCard,
-  LogOut,
-  X,
   MessageSquare,
   Utensils
 } from 'lucide-react';
 import { logoutMember } from '../../lib/memberAuth';
-import BrandLogo from '../../components/BrandLogo';
 
 const navItems = [
   { name: 'Dashboard', path: '/member/dashboard', icon: LayoutDashboard },

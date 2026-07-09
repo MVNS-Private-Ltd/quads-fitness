@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getMyProgressLogs, addMyProgressLog, getCachedProgressLogs } from '../../services/memberApi';
-import { Activity, Plus, TrendingUp, TrendingDown, Minus, Scale, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MemberProgressPage() {
   const [logs, setLogs] = useState(getCachedProgressLogs() || []);

@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FiSave, FiUpload } from 'react-icons/fi';
 import { getSettings, updateSettings } from '../../services/api';
-import BrandLogo from '../../components/BrandLogo';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },

@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import BrandLogo from './BrandLogo';
 import { useSettings } from '../contexts/SettingsContext';
 
 export default function Footer() {

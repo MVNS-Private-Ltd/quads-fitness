@@ -1,6 +1,3 @@
-import PageTransition from '../components/PageTransition';
-import SEO from '../components/SEO';
-import { motion } from 'framer-motion';
 
 export default function TermsPage() {
   return (

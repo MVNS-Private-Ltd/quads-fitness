@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { StatusChip, EmptyState, TableFilterBar } from '../../components/admin/SharedAdminUI';
-import { FiClipboard, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiClipboard } from 'react-icons/fi';
 import { getDietPlans } from '../../services/api';
 
 const pageVariants = {

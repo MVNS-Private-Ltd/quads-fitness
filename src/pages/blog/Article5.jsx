@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import BlogArticle from '../../components/BlogArticle';
 
 const meta = {
   slug: 'beginners-guide-fitness-manimajra',

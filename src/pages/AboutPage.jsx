@@ -1,7 +1,3 @@
-import { motion } from 'framer-motion';
-import { FaDumbbell, FaUsers, FaMedal } from 'react-icons/fa';
-import PageTransition from '../components/PageTransition';
-import About from '../components/About';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,7 +11,7 @@ export default function AboutPage() {
       <section className="relative pt-44 pb-12 px-6 overflow-hidden">
         {/* HD Background Image */}
         <div className="absolute inset-0 z-0">
-          <img src="/images/gym-bg-2.jpg" alt="Quads Fitness Facility" className="w-full h-full object-cover object-center" />
+          <img src="/images/gym-bg-2.webp" alt="Quads Fitness Facility" className="w-full h-full object-cover object-center"  width="800" height="600" loading="lazy" />
         </div>
         <div className="absolute inset-0 z-10 bg-brand-darker/80" />
         

@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { StatusChip, EmptyState, TableFilterBar, PreviewDrawer, AvatarPlaceholder } from '../../components/admin/SharedAdminUI';
-import { FiMessageSquare, FiPlus, FiEdit2, FiStar } from 'react-icons/fi';
+import { FiMessageSquare } from 'react-icons/fi';
 import { getTestimonials } from '../../services/api';
 
 const pageVariants = {

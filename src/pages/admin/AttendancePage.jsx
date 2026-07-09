@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { StatusChip, EmptyState, TableFilterBar, AvatarPlaceholder, FormModal, FormField, selectCls, inputCls } from '../../components/admin/SharedAdminUI';
-import { FiCheckSquare, FiPlus } from 'react-icons/fi';
+import { selectCls, inputCls } from '../../components/admin/SharedAdminUI';
+import { FiCheckSquare } from 'react-icons/fi';
 import { getAttendance, getMembers, markAttendance } from '../../services/api';
 
 const pageVariants = {

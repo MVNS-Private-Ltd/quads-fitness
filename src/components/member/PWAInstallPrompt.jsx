@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Download, X, Smartphone } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Detects if the user is on iOS Safari
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -68,7 +66,7 @@ export default function PWAInstallPrompt() {
             <div className="max-w-sm mx-auto bg-brand-dark border border-brand-gold/30 rounded-2xl p-4 shadow-2xl shadow-black/60 flex items-center gap-4">
               {/* Icon */}
               <div className="w-12 h-12 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center flex-shrink-0">
-                <img src="/icons/icon-72x72.png" alt="Quads App" className="w-9 h-9 rounded-lg" />
+                <img src="/icons/icon-72x72.png" alt="Quads App" className="w-9 h-9 rounded-lg"  width="800" height="600" loading="lazy" />
               </div>
 
               {/* Text */}
@@ -119,7 +117,7 @@ export default function PWAInstallPrompt() {
               {/* Close */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                  <img src="/icons/icon-72x72.png" alt="Quads" className="w-10 h-10 rounded-xl" />
+                  <img src="/icons/icon-72x72.png" alt="Quads" className="w-10 h-10 rounded-xl"  width="800" height="600" loading="lazy" />
                   <div>
                     <p className="text-white font-bold text-sm">Install Quads Fitness</p>
                     <p className="text-brand-gray text-xs">on your iPhone / iPad</p>

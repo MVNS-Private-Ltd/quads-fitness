@@ -1,25 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiGrid, FiUsers, FiMessageSquare, FiSettings, FiLogOut, FiMenu, FiX, FiActivity, FiTrendingUp, FiDollarSign, FiCalendar, FiCheckSquare, FiList, FiEdit2, FiTrash2, FiClipboard, FiSearch, FiBell, FiPlus, FiFileText, FiUpload, FiGlobe, FiUserPlus, FiMessageCircle, FiStar, FiImage, FiTag } from 'react-icons/fi';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, Legend } from 'recharts';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FiGrid, FiUsers, FiMessageSquare, FiSettings, FiActivity, FiDollarSign, FiCheckSquare, FiList, FiClipboard, FiGlobe, FiUserPlus, FiMessageCircle, FiImage } from 'react-icons/fi';
 
-import CMSPage from './admin/CMSPage';
-import TrainersPage from './admin/TrainersPage';
-import PlansPage from './admin/PlansPage';
-import LeadsPage from './admin/LeadsPage';
-import GalleryPage from './admin/GalleryPage';
-import ReviewsPage from './admin/ReviewsPage';
-import ActivityLogsPage from './admin/ActivityLogsPage';
-import SettingsPage from './admin/SettingsPage';
-import UsersPage from './admin/UsersPage';
-import ProgramsPage from './admin/ProgramsPage';
-import DietPlansPage from './admin/DietPlansPage';
-import AttendancePage from './admin/AttendancePage';
-import AdminQrAttendancePage from './admin/AdminQrAttendancePage';
 import { getStats, getMembers, getLeads, getAdminNotifications, markNotificationRead } from '../services/api';
 import { logoutAdmin } from '../lib/adminAuth';
-import BrandLogo from '../components/BrandLogo';
 
 
 

@@ -1,7 +1,3 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import PageTransition from '../../components/PageTransition';
-import SEO from '../../components/SEO';
 import { useSettings } from '../../contexts/SettingsContext';
 
 const faqItems = [

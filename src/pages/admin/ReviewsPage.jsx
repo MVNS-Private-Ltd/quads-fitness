@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { getAdminReviews, updateReviewStatus, deleteReview } from '../../services/api';
-import { FiCheck, FiX, FiTrash2, FiMessageSquare } from 'react-icons/fi';
-import { StatusChip } from '../../components/admin/SharedAdminUI';
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
@@ -81,7 +78,7 @@ export default function ReviewsPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold font-bold overflow-hidden">
                           {review.member?.profilePhoto ? (
-                            <img src={review.member.profilePhoto} alt={review.memberName} className="w-full h-full object-cover" />
+                            <img src={review.member.profilePhoto} alt={review.memberName} className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
                           ) : (
                             review.memberName.charAt(0).toUpperCase()
                           )}

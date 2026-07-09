@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { StatusChip, EmptyState, TableFilterBar, PreviewDrawer } from '../../components/admin/SharedAdminUI';
-import { FiImage, FiUploadCloud, FiTrash2 } from 'react-icons/fi';
+import { FiImage } from 'react-icons/fi';
 import { getGallery, createGalleryItem, deleteGalleryItem } from '../../services/api';
 
 const pageVariants = {
@@ -127,7 +125,7 @@ export default function GalleryPage() {
                 onClick={() => setSelectedMedia(media)}
               >
                 {media.imageUrl ? (
-                  <img src={media.imageUrl} alt={media.title || 'Media'} className="w-full h-full object-cover" />
+                  <img src={media.imageUrl} alt={media.title || 'Media'} className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <FiImage className="text-brand-muted/50 w-12 h-12" />
@@ -154,7 +152,7 @@ export default function GalleryPage() {
           <div className="space-y-6">
             <div className="aspect-video bg-brand-dark rounded-xl border border-white/5 flex items-center justify-center mb-6 overflow-hidden">
                {selectedMedia.imageUrl ? (
-                 <img src={selectedMedia.imageUrl} alt="Media preview" className="w-full h-full object-contain" />
+                 <img src={selectedMedia.imageUrl} alt="Media preview" className="w-full h-full object-contain"  width="800" height="600" loading="lazy" />
                ) : (
                  <FiImage className="text-brand-muted/30 w-16 h-16" />
                )}

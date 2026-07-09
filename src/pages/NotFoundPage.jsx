@@ -1,6 +1,3 @@
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import PageTransition from '../components/PageTransition';
 
 export default function NotFoundPage() {
   return (

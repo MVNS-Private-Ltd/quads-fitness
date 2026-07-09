@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
-  StatusChip, EmptyState, TableFilterBar, PreviewDrawer,
-  FormModal, ConfirmDialog, FormField, AvatarPlaceholder,
   inputCls, selectCls, textareaCls
 } from '../../components/admin/SharedAdminUI';
-import { FiEdit2, FiUserPlus, FiEye, FiTrash2, FiInstagram } from 'react-icons/fi';
 import { getTrainers, createTrainer, updateTrainer, deleteTrainer } from '../../services/api';
 
 const pageVariants = {
@@ -153,7 +149,7 @@ export default function TrainersPage() {
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
                         {trainer.imageUrl ? (
-                          <img src={trainer.imageUrl} alt={trainer.name} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                          <img src={trainer.imageUrl} alt={trainer.name} className="w-10 h-10 rounded-full object-cover border border-white/10"  width="800" height="600" loading="lazy" />
                         ) : (
                           <AvatarPlaceholder name={trainer.name} size="sm" />
                         )}
@@ -192,7 +188,7 @@ export default function TrainersPage() {
           <div className="space-y-5">
             <div className="flex items-center gap-4 border-b border-white/5 pb-5">
               {selectedTrainer.imageUrl ? (
-                <img src={selectedTrainer.imageUrl} alt={selectedTrainer.name} className="w-20 h-20 rounded-full object-cover border border-brand-gold/40" />
+                <img src={selectedTrainer.imageUrl} alt={selectedTrainer.name} className="w-20 h-20 rounded-full object-cover border border-brand-gold/40"  width="800" height="600" loading="lazy" />
               ) : (
                 <AvatarPlaceholder name={selectedTrainer.name} size="xl" />
               )}
