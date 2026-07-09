@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 // Shared Components
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import ChatBot from './components/ChatBot'
+
 import ScrollToTop from './components/ScrollToTop'
 import AdminGuard from './components/admin/AdminGuard'
 
