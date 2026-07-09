@@ -1,9 +1,17 @@
-import { lazy } from 'react'
-import { useLocation } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 
 // Shared Components
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import ChatBot from './components/ChatBot'
+import ScrollToTop from './components/ScrollToTop'
+import AdminGuard from './components/admin/AdminGuard'
 
 // Member Components
+import MemberGuard from './components/member/MemberGuard'
+import MemberLayout from './components/member/MemberLayout'
 
 // Pages
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -40,6 +48,10 @@ const MemberDietPage = lazy(() => import('./pages/member/MemberDietPage'));
 const MemberReviewPage = lazy(() => import('./pages/member/MemberReviewPage'));
 
 // Additional UI & Pages
+import CookieBanner from './components/CookieBanner'
+import WhatsAppButton from './components/WhatsAppButton'
+import PWAUpdatePrompt from './components/member/PWAUpdatePrompt'
+
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
