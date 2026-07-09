@@ -1,6 +1,5 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 
 // Shared Components
 import Navbar from './components/Navbar'
@@ -79,7 +78,6 @@ export default function App() {
             </div>
           }
         >
-          <AnimatePresence mode="wait">
             <Routes location={location} key={isAdminRoute ? 'admin' : isMemberRoute ? 'member' : location.pathname}>
               {/* ── Public Routes ────────────────────────────────────── */}
               <Route path="/" element={<HomePage />} />
@@ -145,7 +143,6 @@ export default function App() {
               {/* ── Catch-All ────────────────────────────────────────── */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
-          </AnimatePresence>
         </Suspense>
       </main>
 

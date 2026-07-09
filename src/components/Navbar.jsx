@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSettings } from '../contexts/SettingsContext'
-import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabaseClient'
 import BrandLogo from './BrandLogo'
 
@@ -50,11 +49,8 @@ export default function Navbar() {
   }, [location.pathname])
 
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav
+      className={`nav-enter fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? 'glass border-b border-brand-gold/10 py-2' : 'bg-transparent py-4'
       }`}
     >
@@ -88,14 +84,9 @@ export default function Navbar() {
                   }`}
                 >
                   {link.name}
-                  {/* Premium Animated Underline for Active Route */}
+                  {/* Premium Underline for Active Route */}
                   {isActive && (
-                    <motion.div
-                      layoutId="navUnderline"
-                      className="absolute left-0 right-0 -bottom-1 h-[2px] bg-brand-gold"
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
+                    <div className="absolute left-0 right-0 -bottom-1 h-[2px] bg-brand-gold rounded-full" />
                   )}
                 </Link>
               </li>
@@ -136,15 +127,11 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: '100vh', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden absolute top-full left-0 w-full glass-panel border-t border-brand-gold/10 overflow-hidden"
-          >
+      <div
+        className={`md:hidden absolute top-full left-0 w-full glass-panel border-t border-brand-gold/10 overflow-hidden transition-all duration-300 ease-in-out ${
+          open ? 'max-h-[100vh] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
             <ul className="px-6 flex flex-col items-center justify-center h-[80vh] gap-8">
               {navLinks.map(link => {
                 const isActive = location.pathname === link.path;
@@ -183,9 +170,7 @@ export default function Navbar() {
               </li>
               )}
             </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+      </div>
+    </nav>
   )
 }
