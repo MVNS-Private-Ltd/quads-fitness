@@ -162,16 +162,17 @@ export default function ExplodingWeightSection() {
   });
 
   // Calculate opacities based on progress
-  const getOpacity = (start, peak, end) => {
+  const getOpacity = (start, peakStart, peakEnd, end) => {
     if (htmlProgress < start || htmlProgress > end) return 0;
-    if (htmlProgress < peak) return (htmlProgress - start) / (peak - start);
-    return 1 - (htmlProgress - peak) / (end - peak);
+    if (htmlProgress < peakStart) return (htmlProgress - start) / (peakStart - start);
+    if (htmlProgress <= peakEnd) return 1;
+    return 1 - (htmlProgress - peakEnd) / (end - peakEnd);
   };
 
-  const o1 = getOpacity(0.0, 0.1, 0.25);
-  const o2 = getOpacity(0.2, 0.35, 0.55);
-  const o3 = getOpacity(0.45, 0.65, 0.85);
-  const o4 = getOpacity(0.75, 0.9, 1.0);
+  const o1 = getOpacity(0.0, 0.05, 0.15, 0.25);
+  const o2 = getOpacity(0.2, 0.28, 0.42, 0.55);
+  const o3 = getOpacity(0.45, 0.55, 0.75, 0.85);
+  const o4 = getOpacity(0.75, 0.85, 1.0, 1.0);
 
   return (
     <section ref={sectionRef} className="relative w-full bg-brand-darker border-t border-white/5" style={{ height: '400vh' }}>
