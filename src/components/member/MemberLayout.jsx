@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import MemberSidebar from './MemberSidebar';
+import PWAInstallPrompt from './PWAInstallPrompt';
+import { Menu } from 'lucide-react';
 
 export default function MemberLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

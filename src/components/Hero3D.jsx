@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls, Float, Sparkles, PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
 
 // --- CACHED GEOMETRIES & MATERIALS FOR PERFORMANCE ---

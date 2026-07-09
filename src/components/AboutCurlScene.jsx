@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
-import { useScroll, useSpring } from 'framer-motion'
-import { useFrame } from '@react-three/fiber'
+import { motion, useScroll, useSpring } from 'framer-motion'
+import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { shouldReduce3DQuality } from '../utils/perf'
 

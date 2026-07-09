@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import PageTransition from '../../components/PageTransition';
+import SEO from '../../components/SEO';
 
 const articles = [
   {

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FiLock, FiEye, FiEyeOff, FiShield } from 'react-icons/fi';
 import { loginAdmin } from '../../lib/adminAuth';
+import BrandLogo from '../../components/BrandLogo';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');

@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { Printer } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AdminQrAttendancePage() {
   // The URL that members will scan to mark attendance

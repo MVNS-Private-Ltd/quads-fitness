@@ -1,6 +1,6 @@
-import { useRef, useMemo, useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useScroll } from '@react-three/drei';
+import React, { useRef, Suspense, useMemo, useState, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Image, ScrollControls, useScroll } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ── Lightbox ────────────────────────────────────────────────────────────── */
@@ -22,7 +22,7 @@ function Lightbox({ image, onClose }) {
           alt="Gallery photo"
           className="w-full h-[70vh] object-contain rounded-2xl shadow-2xl border border-white/10"
           draggable={false}
-         width="800" height="600" loading="lazy" />
+        />
       </div>
     </div>
   );

@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 import { getMe, getMemberOffers, getCachedMe, getCachedOffers } from '../../services/memberApi';
+import {
+  Dumbbell, CalendarCheck, TrendingUp, UserCheck,
+  Megaphone, Clock, AlertCircle, ChevronRight, Target, Activity
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-
+import MemberQRScanner from '../../components/member/MemberQRScanner';
+import { QrCode } from 'lucide-react';
 
 export default function MemberDashboard() {
   const [member, setMember] = useState(getCachedMe() || null);

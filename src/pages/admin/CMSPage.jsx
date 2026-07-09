@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { StatusChip, TableFilterBar, PreviewDrawer } from '../../components/admin/SharedAdminUI';
+import { FiEdit2, FiGlobe, FiEye } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },

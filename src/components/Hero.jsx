@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { useSettings } from '../contexts/SettingsContext'
 
 const containerVar = {
@@ -23,7 +25,7 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen overflow-hidden bg-brand-darker">
       {/* HD Background Image */}
       <div className="absolute inset-0 z-0">
-        <img src="/images/gym-bg-1.webp" alt="Quads Fitness Gym Floor" width="1920" height="1080" className="w-full h-full object-cover object-center" />
+        <img src="/images/gym-bg-1.jpg" alt="Quads Fitness Gym Floor" className="w-full h-full object-cover object-center" />
       </div>
 
 

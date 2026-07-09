@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMe, updateMe, getCachedMe } from '../../services/memberApi';
+import { User, Save, Upload, Edit2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function MemberProfilePage() {
   const [member, setMember] = useState(getCachedMe() || null);
@@ -110,7 +112,7 @@ export default function MemberProfilePage() {
           <div className="bg-brand-dark border border-brand-gray/10 rounded-xl p-6 text-center">
             <div className="w-32 h-32 mx-auto bg-brand-darker rounded-full flex items-center justify-center border-2 border-brand-gold mb-4 overflow-hidden relative">
               {previewUrl || member.profilePhoto ? (
-                <img src={previewUrl || member.profilePhoto} alt="Profile" className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
+                <img src={previewUrl || member.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 <User size={48} className="text-brand-gold" />
               )}
@@ -148,7 +150,7 @@ export default function MemberProfilePage() {
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-brand-darker rounded-full overflow-hidden mr-4 border border-brand-gold/30 flex items-center justify-center">
                   {member.trainer.imageUrl ? (
-                    <img src={member.trainer.imageUrl} alt={member.trainer.name} className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
+                    <img src={member.trainer.imageUrl} alt={member.trainer.name} className="w-full h-full object-cover" />
                   ) : (
                     <User size={24} className="text-brand-gray" />
                   )}

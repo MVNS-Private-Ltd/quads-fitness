@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { verifyAdminSession } from '../../lib/adminAuth';
 
 export default function AdminGuard({ children }) {

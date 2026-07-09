@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMemberDietPlans, getCachedDietPlans } from '../../services/memberApi';
-import { Salad, Flame, Zap, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Salad, Flame, UtensilsCrossed, Clock, ChevronDown, ChevronUp, Zap, Target } from 'lucide-react';
 
 const GOAL_META = {
   'Muscle Gain':  { color: 'text-blue-400',   bg: 'bg-blue-500/10',   border: 'border-blue-500/20',   icon: Zap },

@@ -1,4 +1,9 @@
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
+import { FaFire, FaClock, FaBolt, FaChevronRight, FaShieldAlt } from 'react-icons/fa';
+import PageTransition from '../components/PageTransition';
+import SEO from '../components/SEO';
 import { useSettings } from '../contexts/SettingsContext';
 
 const fadeInUp = {
@@ -63,7 +68,7 @@ export default function ProgramsPage() {
       <section className="relative pt-44 pb-16 px-6 overflow-hidden">
         {/* HD Background Image */}
         <div className="absolute inset-0 z-0">
-          <img src="/images/gym-bg-3.webp" alt="Quads Fitness Weight Floor" className="w-full h-full object-cover object-center"  width="800" height="600" loading="lazy" />
+          <img src="/images/gym-bg-3.jpg" alt="Quads Fitness Weight Floor" className="w-full h-full object-cover object-center" />
         </div>
         <div className="absolute inset-0 z-10 bg-brand-darker/80" />
 

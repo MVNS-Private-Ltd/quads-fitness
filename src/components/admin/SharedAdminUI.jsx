@@ -1,4 +1,5 @@
-import { FiInbox } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiSearch, FiFilter, FiCalendar, FiX, FiInbox, FiAlertTriangle } from 'react-icons/fi';
 
 export const StatusChip = ({ status }) => {
   let styles = 'bg-gray-500/10 text-gray-400 border-gray-500/20';
@@ -212,7 +213,7 @@ export const AvatarPlaceholder = ({ name, imageUrl, size = 'md' }) => {
   if (imageUrl) {
     return (
       <div className={`${sizeClasses[size]} rounded-full overflow-hidden shrink-0 border border-brand-gold/20`}>
-        <img src={imageUrl} alt={name || 'Avatar'} className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
+        <img src={imageUrl} alt={name || 'Avatar'} className="w-full h-full object-cover" />
       </div>
     );
   }

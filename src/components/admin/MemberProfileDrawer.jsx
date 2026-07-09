@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
-
-
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FiX, FiEdit2, FiSave, FiUser, FiMail, FiPhone, FiCalendar,
+  FiActivity, FiAlertCircle, FiStar, FiCheckCircle, FiClock, FiTrendingUp
+} from 'react-icons/fi';
 import { getMember, updateMember, getTrainers, getPlans } from '../../services/api';
-import { inputCls, selectCls } from './SharedAdminUI';
+import { StatusChip, inputCls, selectCls, FormField } from './SharedAdminUI';
 
 const formatDate = (d) => d ? new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
 const formatDateInput = (d) => d ? new Date(d).toISOString().split('T')[0] : '';
@@ -167,7 +170,7 @@ export default function MemberProfileDrawer({ memberId, onClose, onUpdate }) {
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-2xl bg-brand-surface2 border border-brand-gold/30 flex items-center justify-center text-brand-gold font-display text-2xl font-bold overflow-hidden">
                       {member.profilePhoto ? (
-                        <img src={member.profilePhoto} alt={member.name} className="w-full h-full object-cover"  width="800" height="600" loading="lazy" />
+                        <img src={member.profilePhoto} alt={member.name} className="w-full h-full object-cover" />
                       ) : (
                         member.name.charAt(0).toUpperCase()
                       )}

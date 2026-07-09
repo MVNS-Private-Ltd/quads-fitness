@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMe, getCachedMe } from '../../services/memberApi';
+import { CalendarCheck, Clock, TrendingDown, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const ITEMS_PER_PAGE = 10;
 

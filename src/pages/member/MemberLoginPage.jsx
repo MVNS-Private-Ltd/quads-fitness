@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { loginMember } from '../../lib/memberAuth';
 import { supabase } from '../../lib/supabaseClient';
+import { ArrowLeft, Phone, Mail, ChevronLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import BrandLogo from '../../components/BrandLogo';
 import { getSettings } from '../../services/api';
 
 export default function MemberLoginPage() {

@@ -1,4 +1,11 @@
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { FaChevronRight, FaBolt, FaShieldAlt, FaCrosshairs, FaStar, FaQuoteLeft, FaMapMarkerAlt } from 'react-icons/fa';
+import PageTransition from '../components/PageTransition';
+import Hero from '../components/Hero'; 
+import ExplodingWeightSection from '../components/ExplodingWeightSection';
+import SEO from '../components/SEO';
 import { getPublicReviews } from '../services/api';
 import { useSettings } from '../contexts/SettingsContext';
 

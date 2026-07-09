@@ -1,5 +1,9 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { createLead } from '../services/api';
+import { FaPhone, FaMapMarkerAlt, FaClock, FaPaperPlane, FaWhatsapp } from 'react-icons/fa';
+import PageTransition from '../components/PageTransition';
+import SEO from '../components/SEO';
 import { useSettings } from '../contexts/SettingsContext';
 
 const fadeInUp = {
@@ -46,7 +50,7 @@ export default function ContactPage() {
       <section className="relative pt-44 pb-12 px-6 overflow-hidden">
         {/* HD Background Image */}
         <div className="absolute inset-0 z-0">
-          <img src="/images/gym-bg-4.webp" alt="Quads Fitness Reception" width="1920" height="1080" loading="lazy" className="w-full h-full object-cover object-center" />
+          <img src="/images/gym-bg-4.jpg" alt="Quads Fitness Reception" className="w-full h-full object-cover object-center" />
         </div>
         <div className="absolute inset-0 z-10 bg-brand-darker/80" />
 

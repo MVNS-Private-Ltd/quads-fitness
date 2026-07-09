@@ -11,6 +11,6 @@ export default function BrandLogo({ settings, className = 'h-10 w-auto', alt = '
       src={getLogoUrl(settings)}
       alt={alt}
       className={`object-contain ${className}`}
-     width="800" height="600" loading="lazy" />
+    />
   );
 }

@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getMe, getCachedMe } from '../../services/memberApi';
-
+import {
+  CreditCard, CheckCircle2, AlertTriangle, Calendar,
+  Clock, User, Dumbbell, Star
+} from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function MemberMembershipPage() {
   const [member, setMember] = useState(getCachedMe() || null);
