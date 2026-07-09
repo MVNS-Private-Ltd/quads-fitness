@@ -31,7 +31,7 @@ export default function SEO({
   const gymAddress = settings?.address;
   const gymEmail   = settings?.email;
 
-  const siteUrl    = 'https://quadsfitness.com';
+  const siteUrl    = 'https://thequadsfitness.com';
   const pageUrl    = `${siteUrl}${url || location.pathname}`;
   const ogImage    = image || `${siteUrl}/og-image.jpg`;
 
