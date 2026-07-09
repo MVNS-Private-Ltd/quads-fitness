@@ -175,7 +175,7 @@ export default function ExplodingWeightSection() {
   const o4 = getOpacity(0.75, 0.83, 1.00, 1.00);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-brand-darker border-t border-white/5" style={{ height: '400vh' }}>
+    <section ref={sectionRef} className="relative w-full bg-brand-darker border-t border-white/5" style={{ height: '800vh' }}>
       <div className="sticky top-0 w-full h-screen overflow-hidden">
         
         {/* 3D Canvas Layer */}
