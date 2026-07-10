@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quads-fitness-v4';
+const CACHE_NAME = 'quads-fitness-v5';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
