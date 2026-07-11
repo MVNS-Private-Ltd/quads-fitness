@@ -45,12 +45,12 @@ export default function ChatBot() {
       fetch(buildApiUrl('plans')).then(r => r.ok ? r.json() : []),
       fetch(buildApiUrl('trainers')).then(r => r.ok ? r.json() : [])
     ]).then(([programs, plans, trainers]) => {
-      const contextStr = \`
-Programs: \${JSON.stringify(programs)}
-Plans: \${JSON.stringify(plans)}
-Trainers: \${JSON.stringify(trainers)}
+      const contextStr = `
+Programs: ${JSON.stringify(programs)}
+Plans: ${JSON.stringify(plans)}
+Trainers: ${JSON.stringify(trainers)}
 Timings: Morning 5 AM-10 AM, Evening 11 AM-9 PM. Sunday Closed.
-\`;
+`;
       const fullPrompt = BASE_SYSTEM_PROMPT + contextStr;
       setSystemPrompt(fullPrompt);
       conversation.current = [{ role: 'system', content: fullPrompt }];
