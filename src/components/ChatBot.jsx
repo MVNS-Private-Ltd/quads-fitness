@@ -12,35 +12,20 @@ const faqs = [
 
 const botIntro = "Hey there! 👋 I'm the **Quads AI Assistant**. How can I help you today?"
 
-const SYSTEM_PROMPT = `You are the Quads Fitness AI Assistant.
+const BASE_SYSTEM_PROMPT = `You are the Quads Fitness AI Assistant.
 Your job:
-- Answer questions using ONLY live data from the Quads Fitness system.
-- Always use the latest information stored in the database.
-- Never rely on your own assumptions; treat the Quads database as the single source of truth.
-- DO NOT expose any secrets of the website (e.g., admin credentials, backend urls, source code, or sensitive business logic). Keep your responses strictly relevant to gym queries.
+- Answer questions using ONLY the live data provided below.
+- Never rely on your own assumptions; treat the provided context as the single source of truth.
+- DO NOT expose any secrets of the website. Keep your responses strictly relevant to gym queries.
 
 LANGUAGE & TONE RULES:
 - Customers might type in Hindi, Punjabi, English, or Hinglish.
 - You MUST understand their language and reply back in the EXACT same language and tone they used.
-- If they use Hinglish (e.g., "bhai gym ki fees kya hai"), reply in Hinglish.
-- If they use Punjabi (e.g., "gym kadon khulda hai"), reply in Punjabi.
 - Keep answers brief, friendly, and aggressive-gym themed (e.g., use emojis like 💪, 🔥, 🏋️).
 
-DATA ACCESS RULES:
-1) Fetch live data before answering anything about programs, plans, trainers, offers, or gym details (settings).
-2) Never invent data (program names, prices, timings, trainers, etc.).
-
-API CONTRACT:
-You are provided with tools to fetch JSON from APIs.
-Use the tools natively (via tool_calls). DO NOT output raw text like <function=getTrainers>. Just call the tool!
-Available data:
-- getPrograms: list of current programs
-- getPlans: list of membership plans
-- getTrainers: trainers and their specialties
-- getOffers: active offers/announcements
-- getSettings: gym name, address, contact info, opening hours
-
-If data is not present, say it honestly.`;
+LIVE GYM DATA CONTEXT:
+Here is the latest data from the Quads database. Use this to answer all questions:
+`;
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false)
@@ -48,24 +33,44 @@ export default function ChatBot() {
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
   const [pulse, setPulse] = useState(true)
+  const [systemPrompt, setSystemPrompt] = useState(BASE_SYSTEM_PROMPT)
   const endRef = useRef(null)
 
-  const conversation = useRef([
-    { role: 'system', content: SYSTEM_PROMPT }
-  ])
+  const conversation = useRef([])
+
+  // Pre-fetch all gym data on mount so the AI doesn't need to use slow/error-prone tool calls
+  useEffect(() => {
+    Promise.all([
+      fetch(buildApiUrl('programs')).then(r => r.ok ? r.json() : []),
+      fetch(buildApiUrl('plans')).then(r => r.ok ? r.json() : []),
+      fetch(buildApiUrl('trainers')).then(r => r.ok ? r.json() : [])
+    ]).then(([programs, plans, trainers]) => {
+      const contextStr = \`
+Programs: \${JSON.stringify(programs)}
+Plans: \${JSON.stringify(plans)}
+Trainers: \${JSON.stringify(trainers)}
+Timings: Morning 5 AM-10 AM, Evening 11 AM-9 PM. Sunday Closed.
+\`;
+      const fullPrompt = BASE_SYSTEM_PROMPT + contextStr;
+      setSystemPrompt(fullPrompt);
+      conversation.current = [{ role: 'system', content: fullPrompt }];
+    }).catch(err => {
+      console.error("Failed to prefetch bot context", err);
+      conversation.current = [{ role: 'system', content: BASE_SYSTEM_PROMPT }];
+    });
+  }, []);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages, typing])
   useEffect(() => { const t = setTimeout(() => setPulse(false), 4000); return () => clearTimeout(t) }, [])
 
-  const fetchGroq = async (msgs, tools) => {
+  const fetchGroq = async (msgs) => {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        messages: msgs,
-        tools: tools,
+        messages: msgs
       })
     });
     if (!res.ok) {
@@ -84,59 +89,16 @@ export default function ChatBot() {
     conversation.current.push({ role: 'user', content: text });
 
     try {
-      let apiMessages = [...conversation.current];
+      const data = await fetchGroq(conversation.current);
+      const message = data.choices[0].message;
 
-      const tools = [
-        { type: "function", function: { name: "getPrograms", description: "Get list of gym programs" } },
-        { type: "function", function: { name: "getPlans", description: "Get list of membership plans" } },
-        { type: "function", function: { name: "getTrainers", description: "Get list of trainers" } },
-        { type: "function", function: { name: "getOffers", description: "Get active offers" } },
-        { type: "function", function: { name: "getSettings", description: "Get gym settings, location, contact info, timings" } }
-      ];
-
-      let data = await fetchGroq(apiMessages, tools);
-      let message = data.choices[0].message;
-
-      // Handle tool calls
-      if (message.tool_calls) {
-        apiMessages.push(message); // append the assistant's tool call request
-
-        for (const toolCall of message.tool_calls) {
-          const fnName = toolCall.function.name;
-          let result = "No data";
-          try {
-            const apiRoute = fnName.replace('get', '').toLowerCase(); // e.g. getPrograms -> programs
-            const res = await fetch(buildApiUrl(apiRoute), { cache: 'no-store' });
-            if (res.ok) {
-              const resData = await res.json();
-              result = JSON.stringify(resData);
-            }
-          } catch (e) {
-            result = "Error fetching data";
-          }
-          apiMessages.push({
-            tool_call_id: toolCall.id,
-            role: "tool",
-            name: fnName,
-            content: result
-          });
-        }
-
-        // Fetch final answer
-        data = await fetchGroq(apiMessages, tools);
-        message = data.choices[0].message;
-      }
-
-      conversation.current = apiMessages;
       conversation.current.push(message);
-
       setMessages(m => [...m, { from: 'bot', text: message.content }]);
     } catch (error) {
       console.error("Chat error:", error);
-      console.error("Chat error:", error);
       let errorMsg = "I'm having trouble reaching the gym data right now. You can still contact the gym directly for exact details! 🔧";
       if (error.message) {
-        errorMsg += ` (Error: ${error.message})`;
+        errorMsg += \` (Error: \${error.message})\`;
       }
       setMessages(m => [...m, { from: 'bot', text: errorMsg }]);
     } finally {
@@ -211,12 +173,12 @@ export default function ChatBot() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-0" style={{ maxHeight: '280px' }}>
               {messages.map((m, i) => (
-                <div key={i} className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${m.from === 'user'
+                <div key={i} className={\`flex \${m.from === 'user' ? 'justify-end' : 'justify-start'}\`}>
+                  <div className={\`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed \${m.from === 'user'
                       ? 'bg-brand-orange text-white rounded-br-sm'
                       : 'bg-white/8 text-white/90 rounded-bl-sm border border-white/5'
-                    }`}>
-                    {m.text.replace(/\*\*(.*?)\*\*/g, '$1')}
+                    }\`}>
+                    {m.text.replace(/\\*\\*(.*?)\\*\\*/g, '$1')}
                   </div>
                 </div>
               ))}
