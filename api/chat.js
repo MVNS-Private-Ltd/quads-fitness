@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const { messages, tools } = req.body;
     
     // Read the key from Vercel's environment variables
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: 'System Error: GROQ_API_KEY is missing in Vercel environment variables.' });
     }
