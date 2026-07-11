@@ -49,7 +49,7 @@ export default function Footer() {
             {settings?.mondayHours && <p><strong>Mon-Fri:</strong> {settings.mondayHours}</p>}
             {settings?.saturdayHours && <p><strong>Saturday:</strong> {settings.saturdayHours}</p>}
             {settings?.sundayHours && <p><strong>Sunday:</strong> {settings.sundayHours}</p>}
-            <p className="mt-2 text-xs text-white/30">Open 7 Days a Week</p>
+            <p className="mt-2 text-xs text-white/30">Mon – Sat &nbsp;|&nbsp; Closed on Sundays</p>
           </div>
         </div>
         <div>

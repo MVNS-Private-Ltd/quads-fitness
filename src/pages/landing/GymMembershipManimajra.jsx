@@ -52,7 +52,7 @@ export default function GymMembershipManimajra() {
             No hidden fees. No lock-in surprises. Quads Fitness offers Manimajra's most straightforward membership pricing with premium facilities that back it up.
           </p>
           <div className="flex flex-wrap justify-center gap-3 text-xs font-accent uppercase tracking-widest">
-            {['Starting ₹2,800', 'No Joining Fee', 'Open 7 Days', '5AM – 9PM'].map(tag => (
+            {['Starting ₹2,800', 'No Joining Fee', 'Mon – Sat', '5AM – 9PM'].map(tag => (
               <span key={tag} className="bg-brand-surface2 border border-white/10 px-4 py-2 text-white/60">{tag}</span>
             ))}
           </div>

@@ -150,7 +150,7 @@ export default function ContactPage() {
                         </span>
                       </div>
                     )}
-                    <p className="text-[10px] font-accent text-white/30 pt-1">Open 7 days a week</p>
+                    <p className="text-[10px] font-accent text-white/30 pt-1">Mon – Sat &nbsp;|&nbsp; Closed on Sundays</p>
                   </div>
                 </div>
               </div>
