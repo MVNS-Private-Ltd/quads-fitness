@@ -62,7 +62,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="text-6xl md:text-8xl font-display text-white uppercase tracking-tight leading-none mb-4"
           >
-            INITIALIZE <span className="text-gradient">COMMS</span>
+            CONTACT <span className="text-gradient">US</span>
           </motion.h1>
           <div className="hazard-line mb-6"></div>
           <p className="text-white/50 font-body text-sm max-w-xl leading-relaxed">
@@ -84,8 +84,8 @@ export default function ContactPage() {
                   <FaMapMarkerAlt />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// PHYSICAL GRID</div>
-                  <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">HEADQUARTERS</h4>
+                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OUR LOCATION</div>
+                  <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">LOCATION</h4>
                   {settings?.address && <p className="text-xs font-body text-white/60 leading-relaxed">{settings.address}</p>}
                 </div>
               </div>
@@ -97,8 +97,8 @@ export default function ContactPage() {
                   <FaPhone />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// DIRECT SECURE LINK</div>
-                  <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">COMMUNICATION</h4>
+                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// DIRECT CONTACT</div>
+                  <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">GET IN TOUCH</h4>
                   <div className="text-xs font-body text-white/60 space-y-2 mt-2">
                     {phoneHref && <a href={phoneHref} className="block hover:text-brand-orange transition-colors">{settings.phone}</a>}
                     {settings?.email && <a href={`mailto:${settings.email}`} className="block hover:text-brand-orange transition-colors">{settings.email}</a>}
@@ -110,7 +110,7 @@ export default function ContactPage() {
                         className="inline-flex items-center gap-2 mt-3 text-brand-gold hover:text-brand-orange transition-colors font-bold uppercase tracking-widest text-[10px]"
                       >
                         <FaWhatsapp className="text-sm" />
-                        WhatsApp Secure Link
+                        WhatsApp Message
                       </a>
                     )}
                   </div>
@@ -124,7 +124,7 @@ export default function ContactPage() {
                   <FaClock />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OPERATIONAL WINDOW</div>
+                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OPENING HOURS</div>
                   <h4 className="text-lg font-display text-white uppercase mt-1 mb-3">GYM TIMINGS</h4>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between border-b border-white/5 pb-2">
@@ -172,7 +172,7 @@ export default function ContactPage() {
                     value={form.name}
                     onChange={set('name')}
                     className="w-full bg-brand-dark/80 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-orange transition-colors rounded-none font-body"
-                    placeholder="e.g. John Doe"
+                    placeholder="e.g. Rahul Sharma"
                   />
                 </div>
                 <div className="space-y-2">
@@ -183,7 +183,7 @@ export default function ContactPage() {
                     value={form.phone}
                     onChange={set('phone')}
                     className="w-full bg-brand-dark/80 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-orange transition-colors rounded-none font-body"
-                    placeholder="+1 (555) 000-0000"
+                    placeholder="+91 98765 43210"
                   />
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function ContactPage() {
                   value={form.email}
                   onChange={set('email')}
                   className="w-full bg-brand-dark/80 border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-gold transition-colors rounded-none font-body"
-                  placeholder="operator@domain.com"
+                  placeholder="rahul@example.com"
                 />
               </div>
 
@@ -210,7 +210,7 @@ export default function ContactPage() {
                   <option value="hypertrophy">BUILD MUSCLE — STRENGTH TRAINING</option>
                   <option value="athleticism">ATHLETIC PERFORMANCE — SPEED & POWER</option>
                   <option value="combat">FAT LOSS — CONDITIONING</option>
-                  <option value="transformation">FULL BODY TRANSFORMATION — 16 WEEKS</option>
+                  <option value="transformation">FULL BODY TRANSFORMATION</option>
                 </select>
               </div>
 
@@ -228,7 +228,7 @@ export default function ContactPage() {
 
               {success && (
                 <div className="text-green-400 text-xs font-accent bg-green-500/10 border border-green-500/20 px-4 py-3 uppercase tracking-widest">
-                  ✓ Transmission received — we will respond within 24 hours.
+                  ✓ Message received — we will respond within 24 hours.
                 </div>
               )}
               {error && (
@@ -274,7 +274,7 @@ export default function ContactPage() {
       {/* 4. Gym Membership Plans Manimajra — Keyword Section */}
       <section className="py-20 px-6 border-t border-white/5 bg-brand-dark">
         <div className="max-w-5xl mx-auto text-center">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// ACCESS TIERS</span>
+          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// MEMBERSHIP PLANS</span>
           <h2 className="text-3xl md:text-4xl font-display text-white uppercase tracking-wide mb-4">
             GYM MEMBERSHIP PLANS <span className="text-gradient">MANIMAJRA</span>
           </h2>
