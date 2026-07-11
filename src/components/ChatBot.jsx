@@ -98,7 +98,7 @@ Timings: Morning 5 AM-10 AM, Evening 11 AM-9 PM. Sunday Closed.
       console.error("Chat error:", error);
       let errorMsg = "I'm having trouble reaching the gym data right now. You can still contact the gym directly for exact details! 🔧";
       if (error.message) {
-        errorMsg += \` (Error: \${error.message})\`;
+        errorMsg += ' (Error: ' + error.message + ')';
       }
       setMessages(m => [...m, { from: 'bot', text: errorMsg }]);
     } finally {
