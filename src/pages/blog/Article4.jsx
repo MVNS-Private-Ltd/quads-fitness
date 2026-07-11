@@ -10,7 +10,7 @@ const meta = {
 };
 
 const faqItems = [
-  { question: 'What are the gym timings at Quads Fitness Manimajra?', answer: 'Quads Fitness is open Morning: 5:00 AM – 10:00 AM and Evening: 11:00 AM – 9:00 PM, seven days a week.' },
+  { question: 'What are the gym timings at Quads Fitness Manimajra?', answer: 'Quads Fitness is open Morning: 5:00 AM – 10:00 AM and Evening: 11:00 AM – 9:00 PM, six days a week (Closed on Sunday).' },
   { question: 'Is it better to work out in the morning or evening for weight loss?', answer: 'Both work well for weight loss. Morning sessions can boost metabolism for the day, while evening sessions often allow for heavier lifts due to peak body temperature and testosterone levels.' },
   { question: 'Are morning gym sessions less crowded in Manimajra?', answer: 'Generally yes. Early morning sessions at Quads Fitness tend to be quieter, which means easier access to equipment and a more focused environment.' },
   { question: 'Can I book personal training for morning sessions at Quads Fitness?', answer: 'Yes — our personal trainers are available for both morning and evening sessions. Contact us to schedule your preferred slot.' },

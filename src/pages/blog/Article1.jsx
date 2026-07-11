@@ -44,7 +44,7 @@ export default function Article1() {
 
         <h2>Flexible Timings That Fit Your Life</h2>
         <p>
-          One of the biggest complaints about gyms in Manimajra is inconvenient hours. Quads Fitness runs two sessions daily: <strong>Morning: 5:00 AM – 10:00 AM</strong> and <strong>Evening: 11:00 AM – 9:00 PM</strong>. Whether you're an early riser or prefer post-work sessions, we're there for you — seven days a week.
+          One of the biggest complaints about gyms in Manimajra is inconvenient hours. Quads Fitness runs two sessions daily: <strong>Morning: 5:00 AM – 10:00 AM</strong> and <strong>Evening: 11:00 AM – 9:00 PM</strong>. Whether you're an early riser or prefer post-work sessions, we're there for you — six days a week (Closed on Sunday).
         </p>
 
         <h2>Affordable Membership Plans for Every Budget</h2>

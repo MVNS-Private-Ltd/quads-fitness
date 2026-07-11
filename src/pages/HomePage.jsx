@@ -15,7 +15,7 @@ const fadeInUp = {
 };
 
 const faqItems = [
-  { question: "What are the gym timings?", answer: "We are open Morning: 5:00 AM – 10:00 AM and Evening: 11:00 AM – 9:00 PM, seven days a week. No matter your schedule, there is no excuse not to show up." },
+  { question: "What are the gym timings?", answer: "We are open Morning: 5:00 AM – 10:00 AM and Evening: 11:00 AM – 9:00 PM, six days a week (Closed on Sunday). No matter your schedule, there is no excuse not to show up." },
   { question: "What membership plans are available?", answer: "We offer a 3 Months Plan, a 13 Months Plan, and dedicated Personal Training packages for 1 and 3 months — designed for every level of commitment." },
   { question: "Do you offer personal training?", answer: "Yes. Our certified coaches provide 1-on-1 personal training tailored to your goals — whether that is building strength, losing weight, or transforming your body from the ground up." },
   { question: "Where is Quads Fitness located?", answer: "Quads Fitness is located at Manimajra near Shivalik Garden, Police Station Shubhash Nagar, Manimajra. Contact us or view the map on our Contact page for exact directions." },
@@ -88,7 +88,7 @@ export default function HomePage() {
             <p className="text-xs font-accent uppercase tracking-widest text-white/50">Expert Trainers</p>
           </div>
           <div>
-            <p className="text-4xl font-display text-brand-gold font-black mb-2">7</p>
+            <p className="text-4xl font-display text-brand-gold font-black mb-2">6</p>
             <p className="text-xs font-accent uppercase tracking-widest text-white/50">Days A Week</p>
           </div>
           <div>

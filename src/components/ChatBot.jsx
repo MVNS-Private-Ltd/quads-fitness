@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { buildApiUrl } from '../lib/apiBase'
 
 const faqs = [
-  { q: "What are your timings?", a: "We're open Mon–Sat: 5 AM – 10 PM and Sunday: 7 AM – 7 PM. 💪" },
+  { q: "What are your timings?", a: "We're open Mon–Sat: 5 AM – 10 PM and Evening: 11 AM – 9 PM. We are closed on Sundays. 💪" },
   { q: "Do you offer a free trial?", a: "Yes! Your first class is absolutely FREE. Just walk in or WhatsApp us to book your slot. 🎉" },
   { q: "What programs do you offer?", a: "We offer Strength Training, HIIT, Yoga, Zumba, CrossFit, Boxing, and Personal Training. 🏋️" },
   { q: "Monthly membership price?", a: "Plans start from ₹999/month. We also have 3-month and yearly packages with great discounts! 📋" },

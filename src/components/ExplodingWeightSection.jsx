@@ -298,7 +298,7 @@ export default function ExplodingWeightSection() {
                   <FaCalendarAlt className="text-brand-gold text-2xl shrink-0" />
                   <div>
                     <h3 className="text-white font-display tracking-wider mb-1">No Rest for the Devoted</h3>
-                    <p className="text-white/60 text-xs font-body leading-relaxed">Morning: 5 AM – 10 AM. Evening: 11 AM – 9 PM. Seven days a week. The doors are open. The only question is whether you will walk through them.</p>
+                    <p className="text-white/60 text-xs font-body leading-relaxed">Morning: 5 AM – 10 AM. Evening: 11 AM – 9 PM. Six days a week. The doors are open. The only question is whether you will walk through them.</p>
                   </div>
                 </div>
               </div>
