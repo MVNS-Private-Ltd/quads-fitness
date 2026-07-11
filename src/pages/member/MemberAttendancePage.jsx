@@ -59,7 +59,7 @@ export default function MemberAttendancePage() {
     <div className="max-w-5xl mx-auto space-y-8 pb-10">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold text-white mb-1">My Attendance</h1>
+        <h1 className="text-3xl font-heading font-bold text-white mb-1">My History</h1>
         <p className="text-brand-gray">Your complete gym check-in history.</p>
       </motion.div>
 

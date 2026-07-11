@@ -17,7 +17,7 @@ const navItems = [
   { name: 'Dashboard', path: '/member/dashboard', icon: LayoutDashboard },
   { name: 'Profile', path: '/member/profile', icon: User },
   { name: 'Progress', path: '/member/progress', icon: Activity },
-  { name: 'Attendance', path: '/member/attendance', icon: CalendarCheck },
+  { name: 'History', path: '/member/attendance', icon: CalendarCheck },
   { name: 'Membership', path: '/member/membership', icon: CreditCard },
   { name: 'Diet Plans', path: '/member/diet', icon: Utensils },
   { name: 'Rate Us', path: '/member/review', icon: MessageSquare },
