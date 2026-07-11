@@ -173,12 +173,12 @@ Timings: Morning 5 AM-10 AM, Evening 11 AM-9 PM. Sunday Closed.
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-0" style={{ maxHeight: '280px' }}>
               {messages.map((m, i) => (
-                <div key={i} className={\`flex \${m.from === 'user' ? 'justify-end' : 'justify-start'}\`}>
-                  <div className={\`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed \${m.from === 'user'
+                <div key={i} className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${m.from === 'user'
                       ? 'bg-brand-orange text-white rounded-br-sm'
                       : 'bg-white/8 text-white/90 rounded-bl-sm border border-white/5'
-                    }\`}>
-                    {m.text.replace(/\\*\\*(.*?)\\*\\*/g, '$1')}
+                    }`}>
+                    {(m.text || "").replace(/\*\*(.*?)\*\*/g, '$1')}
                   </div>
                 </div>
               ))}
