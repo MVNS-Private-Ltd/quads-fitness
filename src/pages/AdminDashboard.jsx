@@ -531,9 +531,6 @@ export default function AdminDashboard() {
                 )}
               </AnimatePresence>
             </div>
-            <button className="relative p-2 text-brand-muted hover:text-white transition-colors">
-              <FiMessageSquare size={20} />
-            </button>
             <div className="h-8 w-px bg-white/10 mx-2"></div>
             <div className="flex items-center space-x-3 cursor-pointer group">
               <div className="text-right hidden sm:block">
