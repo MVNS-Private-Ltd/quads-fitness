@@ -127,18 +127,29 @@ export default function ContactPage() {
                   <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OPENING HOURS</div>
                   <h4 className="text-lg font-display text-white uppercase mt-1 mb-3">GYM TIMINGS</h4>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                      <span className="text-xs font-accent text-white/50 uppercase tracking-widest">Morning</span>
-                      <span className="text-xs font-body text-brand-gold font-bold">
-                        {settings?.mondayHours?.split('|')[0]?.trim() || ''}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between border-b border-white/5 pb-2">
-                      <span className="text-xs font-accent text-white/50 uppercase tracking-widest">Evening</span>
-                      <span className="text-xs font-body text-brand-gold font-bold">
-                        {settings?.mondayHours?.split('|')[1]?.trim() || ''}
-                      </span>
-                    </div>
+                    {settings?.mondayHours?.includes('|') ? (
+                      <>
+                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                          <span className="text-xs font-accent text-white/50 uppercase tracking-widest">Morning</span>
+                          <span className="text-xs font-body text-brand-gold font-bold">
+                            {settings.mondayHours.split('|')[0].trim()}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                          <span className="text-xs font-accent text-white/50 uppercase tracking-widest">Evening</span>
+                          <span className="text-xs font-body text-brand-gold font-bold">
+                            {settings.mondayHours.split('|')[1].trim()}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                        <span className="text-xs font-accent text-white/50 uppercase tracking-widest">Hours</span>
+                        <span className="text-xs font-body text-brand-gold font-bold">
+                          {settings?.mondayHours || ''}
+                        </span>
+                      </div>
+                    )}
                     <p className="text-[10px] font-accent text-white/30 pt-1">Open 7 days a week</p>
                   </div>
                 </div>
