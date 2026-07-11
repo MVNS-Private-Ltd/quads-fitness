@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { StatusChip, EmptyState, TableFilterBar, PreviewDrawer } from '../../components/admin/SharedAdminUI';
-import { FiMessageCircle, FiEye, FiCheck } from 'react-icons/fi';
-import { getLeads, updateLead, replyToLead } from '../../services/api';
+import { FiMessageCircle, FiEye, FiCheck, FiTrash2 } from 'react-icons/fi';
+import { getLeads, updateLead, replyToLead, deleteLead } from '../../services/api';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -65,6 +65,19 @@ export default function LeadsPage() {
     } catch (err) {
       console.error('Failed to update lead status:', err);
       alert('Failed to update status.');
+    }
+  };
+
+  const handleDelete = async (lead, e) => {
+    if (e) e.stopPropagation();
+    if (!window.confirm(`Delete inquiry from ${lead.name}? This cannot be undone.`)) return;
+    try {
+      await deleteLead(lead.id);
+      setAllLeads(prev => prev.filter(l => l.id !== lead.id));
+      if (selectedLead?.id === lead.id) setSelectedLead(null);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete inquiry.');
     }
   };
 
@@ -156,8 +169,19 @@ export default function LeadsPage() {
                     <td className="py-4 px-4"><StatusChip status={lead.status} /></td>
                     <td className="py-4 px-4 text-right">
                       <div className="flex items-center justify-end space-x-2">
-                        <button className="p-2 text-brand-muted hover:text-white bg-brand-dark rounded-lg border border-white/5 hover:border-white/20 transition-colors">
+                        <button
+                          onClick={() => setSelectedLead(lead)}
+                          className="p-2 text-brand-muted hover:text-white bg-brand-dark rounded-lg border border-white/5 hover:border-white/20 transition-colors"
+                          title="View details"
+                        >
                           <FiEye size={16} />
+                        </button>
+                        <button
+                          onClick={(e) => handleDelete(lead, e)}
+                          className="p-2 text-brand-muted hover:text-red-400 bg-brand-dark rounded-lg border border-white/5 hover:border-red-500/30 transition-colors"
+                          title="Delete inquiry"
+                        >
+                          <FiTrash2 size={16} />
                         </button>
                       </div>
                     </td>
@@ -244,6 +268,12 @@ export default function LeadsPage() {
                   <FiCheck size={16} /> {selectedLead.status === 'Contacted' ? 'Contacted' : 'Mark Contacted'}
                 </button>
               </div>
+              <button
+                onClick={(e) => handleDelete(selectedLead, e)}
+                className="w-full py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
+              >
+                <FiTrash2 size={15} /> Delete Inquiry
+              </button>
             )}
           </div>
         )}
