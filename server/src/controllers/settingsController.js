@@ -100,19 +100,38 @@ export const getStats = async (req, res) => {
     });
   }
 
-  // Populate Monthly Data
-  allMembersData.forEach(member => {
-    const joinedAt = new Date(member.joinedAt);
-    const mYear = joinedAt.getFullYear();
-    const mMonth = joinedAt.getMonth();
+  // Populate Monthly Data (Calculate Monthly Recurring Revenue and Active Members)
+  monthlyData.forEach(monthBucket => {
+    const startOfMonth = new Date(monthBucket.year, monthBucket.monthIndex, 1);
+    const endOfMonth = new Date(monthBucket.year, monthBucket.monthIndex + 1, 0, 23, 59, 59);
 
-    const monthBucket = monthlyData.find(m => m.year === mYear && m.monthIndex === mMonth);
-    if (monthBucket) {
-      monthBucket.members += 1;
-      if (member.plan && member.plan.price) {
-        monthBucket.revenue += member.plan.price;
+    allMembersData.forEach(member => {
+      const joinedAt = new Date(member.joinedAt);
+      
+      // A member is considered active in this month if they joined before the month ended
+      if (joinedAt <= endOfMonth) {
+        const expiry = member.membershipExpiry ? new Date(member.membershipExpiry) : null;
+        
+        // And their membership hasn't expired before the month started (or they are still marked Active)
+        const isActiveInMonth = !expiry || expiry >= startOfMonth || member.status === 'Active';
+
+        if (isActiveInMonth) {
+          monthBucket.members += 1;
+          
+          if (member.plan && member.plan.price) {
+            let mrr = member.plan.price;
+            // Standardize yearly plans to monthly recurring revenue
+            if (member.plan.billing === 'year') {
+              mrr = member.plan.price / 12;
+            }
+            monthBucket.revenue += mrr;
+          }
+        }
       }
-    }
+    });
+
+    // Round revenue to avoid floating point precision issues
+    monthBucket.revenue = Math.round(monthBucket.revenue);
   });
 
   // Clean up extra fields before sending
