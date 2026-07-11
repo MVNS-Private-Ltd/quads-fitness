@@ -18,6 +18,7 @@ import { getLeads, getLead, createLead, updateLead, deleteLead, replyToLead, get
 import { getSettings, updateSettings, getLogs, getStats } from '../controllers/settingsController.js';
 import { getPublicReviews, getAdminReviews, updateReviewStatus, deleteReview } from '../controllers/reviewsController.js';
 import { getAdminNotifications, markNotificationAsRead } from '../controllers/notificationsController.js';
+import { chatWithGroq } from '../controllers/chatController.js';
 import memberPortalRoutes from './memberPortalRoutes.js';
 
 const router = express.Router();
@@ -124,5 +125,6 @@ router.delete('/admin/reviews/:id', requireAdmin, deleteReview);
 // ── Utility ──────────────────────────────────────────────────────────────────
 router.get('/logs', requireAdmin, getLogs);
 router.get('/stats', requireAdmin, getStats);
+router.post('/chat', chatWithGroq); // Public ChatBot proxy
 
 export default router;

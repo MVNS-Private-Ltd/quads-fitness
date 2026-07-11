@@ -17,6 +17,14 @@ Your job:
 - Answer questions using ONLY live data from the Quads Fitness system.
 - Always use the latest information stored in the database.
 - Never rely on your own assumptions; treat the Quads database as the single source of truth.
+- DO NOT expose any secrets of the website (e.g., admin credentials, backend urls, source code, or sensitive business logic). Keep your responses strictly relevant to gym queries.
+
+LANGUAGE & TONE RULES:
+- Customers might type in Hindi, Punjabi, English, or Hinglish.
+- You MUST understand their language and reply back in the EXACT same language and tone they used.
+- If they use Hinglish (e.g., "bhai gym ki fees kya hai"), reply in Hinglish.
+- If they use Punjabi (e.g., "gym kadon khulda hai"), reply in Punjabi.
+- Keep answers brief, friendly, and aggressive-gym themed (e.g., use emojis like 💪, 🔥, 🏋️).
 
 DATA ACCESS RULES:
 1) Fetch live data before answering anything about programs, plans, trainers, offers, or gym details (settings).
@@ -30,7 +38,7 @@ Use the provided tools to fetch JSON from APIs:
 - getOffers: active offers/announcements
 - getSettings: gym name, address, contact info, opening hours
 
-If data is not present, say it honestly. Keep answers brief, friendly, and aggressive-gym themed.`;
+If data is not present, say it honestly.`;
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false)
@@ -48,22 +56,20 @@ export default function ChatBot() {
   useEffect(() => { const t = setTimeout(() => setPulse(false), 4000); return () => clearTimeout(t) }, [])
 
   const fetchGroq = async (msgs, tools) => {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const res = await fetch(buildApiUrl('chat'), {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
         messages: msgs,
         tools: tools,
-        tool_choice: 'auto',
-        max_tokens: 300,
-        temperature: 0.1
       })
     });
-    if (!res.ok) throw new Error("Groq API error");
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.error || "Backend Chat API error");
+    }
     return res.json();
   };
 
@@ -125,7 +131,12 @@ export default function ChatBot() {
       setMessages(m => [...m, { from: 'bot', text: message.content }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(m => [...m, { from: 'bot', text: "I'm having trouble reaching the gym data right now. You can still contact the gym directly for exact details! 🔧" }]);
+      console.error("Chat error:", error);
+      let errorMsg = "I'm having trouble reaching the gym data right now. You can still contact the gym directly for exact details! 🔧";
+      if (error.message) {
+        errorMsg += ` (Error: ${error.message})`;
+      }
+      setMessages(m => [...m, { from: 'bot', text: errorMsg }]);
     } finally {
       setTyping(false);
     }
