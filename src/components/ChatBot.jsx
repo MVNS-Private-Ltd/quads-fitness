@@ -56,7 +56,7 @@ export default function ChatBot() {
   useEffect(() => { const t = setTimeout(() => setPulse(false), 4000); return () => clearTimeout(t) }, [])
 
   const fetchGroq = async (msgs, tools) => {
-    const res = await fetch(buildApiUrl('chat'), {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
