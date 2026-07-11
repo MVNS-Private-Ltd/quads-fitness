@@ -25,6 +25,13 @@ async function memberApiRequest(endpoint, options = {}) {
   const response = await fetch(url, { ...options, headers, cache: 'no-store' });
   
   if (!response.ok) {
+    // If token expired or member profile not found, clear session and redirect to login
+    if (response.status === 401 || response.status === 403) {
+      const { supabase } = await import('../lib/supabaseClient');
+      await supabase.auth.signOut();
+      window.location.href = '/member/login';
+      return; // stop execution
+    }
     const errorData = await response.json().catch(() => ({}));
     throw new Error(errorData.error || `HTTP Error ${response.status}`);
   }

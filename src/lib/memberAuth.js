@@ -23,12 +23,14 @@ export const getMemberSession = async () => {
 };
 
 export const getMemberToken = async () => {
-  const session = await getMemberSession();
-  return session?.access_token || null;
+  // Always call getSession - Supabase auto-refreshes expired tokens using the refresh token
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session) return null;
+  return session.access_token || null;
 };
 
 export const requireMember = async () => {
-  const session = await getMemberSession();
+  const { data: { session } } = await supabase.auth.getSession();
   if (!session) {
     window.location.href = '/member/login';
     return false;
