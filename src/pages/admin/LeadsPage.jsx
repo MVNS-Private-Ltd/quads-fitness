@@ -13,10 +13,14 @@ const pageVariants = {
 export default function LeadsPage() {
   const [selectedLead, setSelectedLead] = useState(null);
   const [leads, setLeads] = useState([]);
+  const [allLeads, setAllLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState('');
   const [isReplying, setIsReplying] = useState(false);
   const [sendingReply, setSendingReply] = useState(false);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [interestFilter, setInterestFilter] = useState('');
 
   useEffect(() => {
     if (selectedLead) {
@@ -27,15 +31,36 @@ export default function LeadsPage() {
 
   useEffect(() => {
     getLeads().then(data => {
+      setAllLeads(data);
       setLeads(data);
       setLoading(false);
     }).catch(console.error);
   }, []);
 
+  // Apply filters whenever search/status/interest change
+  useEffect(() => {
+    let filtered = allLeads;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(l =>
+        l.name?.toLowerCase().includes(q) ||
+        l.email?.toLowerCase().includes(q) ||
+        l.phone?.toLowerCase().includes(q)
+      );
+    }
+    if (statusFilter) {
+      filtered = filtered.filter(l => l.status === statusFilter);
+    }
+    if (interestFilter) {
+      filtered = filtered.filter(l => (l.interest || '').toLowerCase().includes(interestFilter.toLowerCase()));
+    }
+    setLeads(filtered);
+  }, [search, statusFilter, interestFilter, allLeads]);
+
   const handleUpdateStatus = async (status) => {
     try {
       await updateLead(selectedLead.id, { status });
-      setLeads(leads.map(l => l.id === selectedLead.id ? { ...l, status } : l));
+      setAllLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, status } : l));
       setSelectedLead({ ...selectedLead, status });
     } catch (err) {
       console.error('Failed to update lead status:', err);
@@ -49,14 +74,23 @@ export default function LeadsPage() {
     try {
       await replyToLead(selectedLead.id, replyText);
       const newStatus = 'Contacted';
-      setLeads(leads.map(l => l.id === selectedLead.id ? { ...l, status: newStatus } : l));
+      setAllLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, status: newStatus } : l));
       setSelectedLead({ ...selectedLead, status: newStatus });
       setIsReplying(false);
       setReplyText('');
       alert('Reply sent successfully!');
     } catch (err) {
       console.error(err);
-      alert('Failed to send reply. Please try again.');
+      // Still mark as contacted even if email failed
+      try {
+        await updateLead(selectedLead.id, { status: 'Contacted' });
+        const newStatus = 'Contacted';
+        setAllLeads(prev => prev.map(l => l.id === selectedLead.id ? { ...l, status: newStatus } : l));
+        setSelectedLead({ ...selectedLead, status: newStatus });
+      } catch (_) {}
+      alert('Email could not be sent, but the lead has been marked as Contacted.');
+      setIsReplying(false);
+      setReplyText('');
     } finally {
       setSendingReply(false);
     }
@@ -77,7 +111,11 @@ export default function LeadsPage() {
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
         <TableFilterBar 
-          filters={[{ label: 'Status', options: ['New', 'Contacted'] }, { label: 'Interest', options: ['Personal Training', 'Membership', 'Diet Plan'] }]} 
+          onSearch={setSearch}
+          filters={[
+            { label: 'Status', options: ['Unread', 'Contacted', 'Closed'], onChange: (e) => setStatusFilter(e.target.value) },
+            { label: 'Interest', options: ['Personal Training', 'Membership', 'Diet Plan', 'General'], onChange: (e) => setInterestFilter(e.target.value) }
+          ]} 
         />
 
         {loading ? (

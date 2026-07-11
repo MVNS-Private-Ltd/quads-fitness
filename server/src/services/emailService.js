@@ -115,7 +115,7 @@ export const sendAdminExpiryEmail = async (member, adminEmail) => {
 
 export const sendLeadReplyEmail = async (lead, replyMessage, settings) => {
   try {
-    const gymName = settings?.gymName || 'Quads Fitness';
+    const gymName = settings?.name || 'Quads Fitness';
     
     const { data, error } = await resend.emails.send({
       from: `"${gymName}" <${FROM_EMAIL}>`,
