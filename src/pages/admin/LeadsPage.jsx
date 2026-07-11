@@ -253,27 +253,29 @@ export default function LeadsPage() {
                 </div>
               </div>
             ) : (
-              <div className="pt-6 border-t border-white/5 flex gap-3">
-                <button 
-                  onClick={() => setIsReplying(true)}
-                  className="flex-1 py-3 bg-brand-dark border border-white/10 text-white rounded-xl hover:border-brand-gold transition-colors flex items-center justify-center gap-2"
+              <>
+                <div className="pt-6 border-t border-white/5 flex gap-3">
+                  <button 
+                    onClick={() => setIsReplying(true)}
+                    className="flex-1 py-3 bg-brand-dark border border-white/10 text-white rounded-xl hover:border-brand-gold transition-colors flex items-center justify-center gap-2"
+                  >
+                    <FiMessageCircle size={16} /> Write Reply
+                  </button>
+                  <button 
+                    onClick={() => handleUpdateStatus('Contacted')}
+                    disabled={selectedLead.status === 'Contacted'}
+                    className="flex-1 py-3 bg-brand-gold text-brand-darker font-bold rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <FiCheck size={16} /> {selectedLead.status === 'Contacted' ? 'Contacted' : 'Mark Contacted'}
+                  </button>
+                </div>
+                <button
+                  onClick={(e) => handleDelete(selectedLead, e)}
+                  className="w-full py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm mt-3"
                 >
-                  <FiMessageCircle size={16} /> Write Reply
+                  <FiTrash2 size={15} /> Delete Inquiry
                 </button>
-                <button 
-                  onClick={() => handleUpdateStatus('Contacted')}
-                  disabled={selectedLead.status === 'Contacted'}
-                  className="flex-1 py-3 bg-brand-gold text-brand-darker font-bold rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <FiCheck size={16} /> {selectedLead.status === 'Contacted' ? 'Contacted' : 'Mark Contacted'}
-                </button>
-              </div>
-              <button
-                onClick={(e) => handleDelete(selectedLead, e)}
-                className="w-full py-3 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm"
-              >
-                <FiTrash2 size={15} /> Delete Inquiry
-              </button>
+              </>
             )}
           </div>
         )}
