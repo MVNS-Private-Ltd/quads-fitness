@@ -61,7 +61,6 @@ export default function BlogIndexPage() {
       {/* Header */}
       <section className="relative pt-40 pb-16 px-6">
         <div className="max-w-7xl mx-auto">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// INSIGHTS & GUIDES</span>
           <motion.h1
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}

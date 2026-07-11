@@ -45,7 +45,7 @@ export default function TrainersPage() {
       <section className="relative pt-44 pb-16 px-6 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/5 font-display text-[24rem] text-white/[0.02] select-none pointer-events-none font-black transform translate-x-20 -translate-y-20">T</div>
         <div className="max-w-7xl mx-auto z-10 text-left">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// ELITE KINETIC COACHES</span>
+
           <motion.h1 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}

@@ -74,7 +74,7 @@ export default function ProgramsPage() {
 
         <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/5 font-display text-[24rem] text-white/[0.02] select-none pointer-events-none font-black transform translate-x-20 -translate-y-20 z-20">X</div>
         <div className="max-w-7xl mx-auto z-20 relative text-left">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// PERFORMANCE BLUEPRINTS</span>
+
           <motion.h1 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -148,7 +148,7 @@ export default function ProgramsPage() {
       <section className="py-24 px-6 border-t border-white/5 bg-brand-dark">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
-            <span className="text-xs font-accent tracking-widest text-brand-gold uppercase block mb-2">// ACCESS ALLOCATION</span>
+
             <h2 className="text-4xl md:text-5xl font-display text-white uppercase tracking-wide">MEMBERSHIP TIERS</h2>
           </div>
 
@@ -222,7 +222,7 @@ export default function ProgramsPage() {
       <section id="personal-training" className="py-24 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// 1-ON-1 ELITE COACHING</span>
+
             <h2 className="text-4xl md:text-5xl font-display text-white uppercase tracking-tight leading-tight mb-6">
               PERSONAL TRAINING<br /><span className="text-gradient">IN MANIMAJRA</span>
             </h2>
@@ -271,7 +271,7 @@ export default function ProgramsPage() {
             ))}
             <div className="bg-brand-orange/5 border border-brand-orange/20 p-6 rounded-none">
               <p className="text-white/60 font-body text-xs leading-relaxed">
-                <strong className="text-brand-gold uppercase tracking-widest text-[10px] block mb-2">// GYM TIMINGS</strong>
+                <strong className="text-brand-gold uppercase tracking-widest text-[10px] block mb-2">GYM TIMINGS</strong>
                 Morning: 5:00 AM – 10:00 AM &nbsp;|&nbsp; Evening: 11:00 AM – 9:00 PM<br />
                 Personal Training sessions can be scheduled during any open slot.
               </p>

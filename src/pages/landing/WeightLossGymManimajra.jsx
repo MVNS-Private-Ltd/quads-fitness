@@ -32,7 +32,7 @@ export default function WeightLossGymManimajra() {
       <section className="relative pt-40 pb-20 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,107,0,0.06),transparent_70%)] pointer-events-none" />
         <div className="max-w-7xl mx-auto text-center">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// FAT LOSS PROGRAMMES</span>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

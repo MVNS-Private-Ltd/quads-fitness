@@ -54,7 +54,7 @@ export default function HomePage() {
       <section className="py-24 px-6 max-w-7xl mx-auto relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5">
-            <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-2">// SECURITY CLEARANCE ACTIVE</span>
+
             <h2 className="text-4xl md:text-5xl font-display text-white uppercase tracking-tight leading-none mb-4">
               ABOUT QUADS <br /> <span className="text-gradient">FITNESS</span>
             </h2>
@@ -106,7 +106,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-orange/[0.01] pointer-events-none"></div>
         <div className="relative z-10">
           <div className="text-center mb-16">
-            <span className="text-xs font-accent tracking-widest text-brand-orange uppercase block mb-2">// METRIC PROOF INDEX</span>
+
             <h3 className="text-4xl md:text-5xl font-display text-white uppercase tracking-wider mb-2">VERIFIED <span className="text-gradient">TESTIMONIALS</span></h3>
             {averageRating && (
               <div className="flex items-center justify-center gap-2 mb-6">
@@ -209,7 +209,7 @@ export default function HomePage() {
       <section className="py-24 px-6 border-t border-white/5 bg-brand-darker">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-accent tracking-widest text-brand-orange uppercase block mb-2">// INTEL ARCHIVE</span>
+
             <h3 className="text-3xl md:text-4xl font-display text-white uppercase tracking-wider mb-6">FREQUENTLY ASKED <span className="text-gradient">QUESTIONS</span></h3>
           </div>
           

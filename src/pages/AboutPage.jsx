@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 z-10 bg-brand-darker/80" />
         
         <div className="max-w-7xl mx-auto relative z-20">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-gold block mb-2">// MISSION PROFILE</span>
+
           <motion.h1 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

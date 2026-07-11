@@ -55,7 +55,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 z-10 bg-brand-darker/80" />
 
         <div className="max-w-7xl mx-auto z-20 relative text-left">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-2">// TAKE THE FIRST STEP</span>
+
           <motion.h1
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -84,7 +84,7 @@ export default function ContactPage() {
                   <FaMapMarkerAlt />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OUR LOCATION</div>
+
                   <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">LOCATION</h4>
                   {settings?.address && <p className="text-xs font-body text-white/60 leading-relaxed">{settings.address}</p>}
                 </div>
@@ -97,7 +97,7 @@ export default function ContactPage() {
                   <FaPhone />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// DIRECT CONTACT</div>
+
                   <h4 className="text-lg font-display text-white uppercase mt-1 mb-2">GET IN TOUCH</h4>
                   <div className="text-xs font-body text-white/60 space-y-2 mt-2">
                     {phoneHref && <a href={phoneHref} className="block hover:text-brand-orange transition-colors">{settings.phone}</a>}
@@ -124,7 +124,7 @@ export default function ContactPage() {
                   <FaClock />
                 </div>
                 <div>
-                  <div className="text-[10px] font-accent text-white/30 tracking-widest uppercase">// OPENING HOURS</div>
+
                   <h4 className="text-lg font-display text-white uppercase mt-1 mb-3">GYM TIMINGS</h4>
                   <div className="space-y-2">
                     {settings?.mondayHours?.includes('|') ? (
@@ -285,7 +285,7 @@ export default function ContactPage() {
       {/* 4. Gym Membership Plans Manimajra — Keyword Section */}
       <section className="py-20 px-6 border-t border-white/5 bg-brand-dark">
         <div className="max-w-5xl mx-auto text-center">
-          <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// MEMBERSHIP PLANS</span>
+
           <h2 className="text-3xl md:text-4xl font-display text-white uppercase tracking-wide mb-4">
             GYM MEMBERSHIP PLANS <span className="text-gradient">MANIMAJRA</span>
           </h2>

@@ -11,7 +11,7 @@ export default function TermsPage() {
         url="/terms" 
       />
       <section className="pt-36 pb-24 px-6 max-w-4xl mx-auto">
-        <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// LEGAL</span>
+
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

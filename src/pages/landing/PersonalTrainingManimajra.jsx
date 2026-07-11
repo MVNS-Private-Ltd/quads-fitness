@@ -32,7 +32,7 @@ export default function PersonalTrainingManimajra() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,107,0,0.08),transparent_60%)] pointer-events-none" />
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-3">// 1-ON-1 ELITE COACHING</span>
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export default function PersonalTrainingManimajra() {
       <section className="py-20 px-6 border-t border-white/5 bg-brand-dark">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-accent uppercase tracking-widest text-brand-gold block mb-2">// WHY 1-ON-1</span>
+
             <h2 className="text-4xl font-display text-white uppercase tracking-wide">Benefits of Personal Training</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
