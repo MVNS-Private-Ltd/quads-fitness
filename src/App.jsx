@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
+import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom'
+import { supabase } from './lib/supabaseClient'
 
 // Shared Components
 import Navbar from './components/Navbar'
@@ -58,6 +59,36 @@ const PWAUpdatePrompt = lazy(() => import('./components/member/PWAUpdatePrompt')
 
 export default function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Handle global auth redirects (e.g. from Magic Links or Google OAuth landing on the root domain)
+  useEffect(() => {
+    // 1. Catch auth tokens in the URL immediately before they are processed/cleared
+    const hash = window.location.hash;
+    if (hash && (hash.includes('access_token=') || hash.includes('error_description='))) {
+      if (location.pathname === '/' || !location.pathname.startsWith('/member/')) {
+        // Send them to the login page so it can process the auth and redirect them smoothly
+        navigate('/member/login' + window.location.search + hash, { replace: true });
+        return;
+      }
+    }
+
+    // 2. Catch SIGNED_IN events globally just in case the above missed it
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // If they just logged in and are sitting on a public page (like the homepage), send them to the dashboard
+        if (window.location.pathname === '/' || window.location.pathname === '/member/login') {
+          const saved = sessionStorage.getItem('memberLoginRedirect');
+          const destination = saved || '/member/dashboard';
+          if (saved) sessionStorage.removeItem('memberLoginRedirect');
+          navigate(destination, { replace: true });
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, location.pathname]);
+
   const isAdminRoute = location.pathname.startsWith('/shubham8the8admin');
   const isMemberRoute = location.pathname.startsWith('/member');
   const isLoginPage = location.pathname === '/shubham8the8admin/login' || location.pathname === '/member/login';
