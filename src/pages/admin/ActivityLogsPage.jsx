@@ -42,7 +42,7 @@ export default function ActivityLogsPage() {
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-6">
       <div>
-        <h2 className="text-3xl font-display text-white mb-2">Activity Logs</h2>
+        <h2 className="text-3xl font-display text-white mb-2">History</h2>
         <p className="text-brand-muted font-body">System-wide audit trail of all actions and changes.</p>
       </div>
 
@@ -54,7 +54,7 @@ export default function ActivityLogsPage() {
         {loading ? (
            <div className="text-brand-muted py-8 text-center">Loading logs...</div>
         ) : logs.length === 0 ? (
-           <EmptyState message="No activity logs found." icon={FiActivity} />
+           <EmptyState message="No history found." icon={FiActivity} />
         ) : (
           <div className="space-y-4">
             {logs.map((log, idx) => (

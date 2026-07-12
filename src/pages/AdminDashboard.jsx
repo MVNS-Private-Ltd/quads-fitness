@@ -359,7 +359,7 @@ export default function AdminDashboard() {
     { name: 'Inquiries', path: '/shubham8the8admin/leads', icon: FiMessageCircle },
     { name: 'Member Reviews', path: '/shubham8the8admin/reviews', icon: FiMessageSquare },
     { name: 'Gallery', path: '/shubham8the8admin/gallery', icon: FiImage },
-    { name: 'Activity Logs', path: '/shubham8the8admin/logs', icon: FiActivity },
+    { name: 'History', path: '/shubham8the8admin/logs', icon: FiActivity },
     { name: 'Members', path: '/shubham8the8admin/users', icon: FiUsers },
     { name: 'Programs', path: '/shubham8the8admin/programs', icon: FiList },
     { name: 'Diet Plans', path: '/shubham8the8admin/diet-plans', icon: FiClipboard },
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                     <div className="p-3 border-t border-white/5 text-center bg-brand-dark">
-                      <Link to="/shubham8the8admin/logs" className="text-xs text-brand-gold hover:text-white transition-colors" onClick={() => setShowNotifications(false)}>View Activity Logs</Link>
+                      <Link to="/shubham8the8admin/logs" className="text-xs text-brand-gold hover:text-white transition-colors" onClick={() => setShowNotifications(false)}>View History</Link>
                     </div>
                   </motion.div>
                 )}
