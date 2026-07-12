@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMemberDietPlans, getCachedDietPlans } from '../../services/memberApi';
-import { motion } from 'framer-motion';
-import { Salad, Flame, UtensilsCrossed, Clock, ChevronDown, ChevronUp, Zap, Target } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Salad, Flame, UtensilsCrossed, Clock, ChevronDown, ChevronUp, Zap, Target, X } from 'lucide-react';
 
 const GOAL_META = {
   'Muscle Gain':  { color: 'text-blue-400',   bg: 'bg-blue-500/10',   border: 'border-blue-500/20',   icon: Zap },
@@ -13,8 +13,7 @@ function getGoalMeta(goalType) {
   return GOAL_META[goalType] || { color: 'text-brand-gold', bg: 'bg-brand-gold/10', border: 'border-brand-gold/20', icon: Salad };
 }
 
-function DietCard({ plan, index }) {
-  const [expanded, setExpanded] = useState(false);
+function DietCard({ plan, index, onClick }) {
   const meta = getGoalMeta(plan.goalType);
   const GoalIcon = meta.icon;
 
@@ -23,17 +22,18 @@ function DietCard({ plan, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.07, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-brand-dark border border-brand-gray/10 rounded-2xl overflow-hidden hover:border-brand-gold/20 transition-all duration-300 group"
+      onClick={onClick}
+      className="bg-brand-dark border border-brand-gray/10 rounded-2xl overflow-hidden hover:border-brand-gold/40 hover:shadow-lg hover:shadow-brand-gold/5 transition-all duration-300 group cursor-pointer"
     >
       {/* Card Header */}
       <div className="p-6">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-3">
-            <div className={`w-11 h-11 rounded-xl ${meta.bg} ${meta.border} border flex items-center justify-center flex-shrink-0`}>
+            <div className={`w-11 h-11 rounded-xl ${meta.bg} ${meta.border} border flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
               <GoalIcon size={20} className={meta.color} />
             </div>
             <div>
-              <h3 className="text-white font-heading font-bold text-lg leading-tight">{plan.title}</h3>
+              <h3 className="text-white font-heading font-bold text-lg leading-tight group-hover:text-brand-gold transition-colors">{plan.title}</h3>
               {plan.goalType && (
                 <span className={`text-xs font-semibold uppercase tracking-wider ${meta.color}`}>
                   {plan.goalType}
@@ -61,24 +61,14 @@ function DietCard({ plan, index }) {
 
         {/* Description preview */}
         {plan.description && (
-          <p className={`text-brand-gray text-sm leading-relaxed ${!expanded ? 'line-clamp-2' : ''}`}>
+          <p className="text-brand-gray text-sm leading-relaxed line-clamp-2">
             {plan.description}
           </p>
         )}
 
-        {/* Expand toggle */}
-        {plan.description && plan.description.length > 100 && (
-          <button
-            onClick={() => setExpanded(e => !e)}
-            className="flex items-center gap-1 mt-3 text-xs text-brand-gold hover:text-brand-gold/80 font-medium transition-colors"
-          >
-            {expanded ? (
-              <><ChevronUp size={14} /> Show less</>
-            ) : (
-              <><ChevronDown size={14} /> Read more</>
-            )}
-          </button>
-        )}
+        <div className="mt-4 flex items-center gap-1 text-xs text-brand-gold font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+          View Plan Details &rarr;
+        </div>
       </div>
 
       {/* Bottom accent bar */}
@@ -91,12 +81,15 @@ export default function MemberDietPage() {
   const [plans, setPlans] = useState(getCachedDietPlans() || []);
   const [loading, setLoading] = useState(!getCachedDietPlans());
   const [error, setError] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   useEffect(() => {
-    if (getCachedDietPlans()) return; // already cached, no need to refetch
-    getMemberDietPlans()
+    // Always fetch fresh data in the background, but use cache for instant initial render
+    getMemberDietPlans(true)
       .then(data => { setPlans(data); })
-      .catch(() => setError('Failed to load diet plans. Please try again.'))
+      .catch(err => {
+        if (!plans.length) setError('Failed to load diet plans. Please try again.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -120,7 +113,7 @@ export default function MemberDietPage() {
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-3xl font-heading font-bold text-white mb-1">Diet Plans</h1>
         <p className="text-brand-gray text-sm">
-          Nutrition plans curated by our trainers to support your fitness goals.
+          Nutrition plans curated by our trainers to support your fitness goals. Select a plan to view details.
         </p>
       </motion.div>
 
@@ -170,7 +163,7 @@ export default function MemberDietPage() {
           {/* Plans Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {plans.map((plan, i) => (
-              <DietCard key={plan.id} plan={plan} index={i} />
+              <DietCard key={plan.id} plan={plan} index={i} onClick={() => setSelectedPlan(plan)} />
             ))}
           </div>
 
@@ -184,6 +177,103 @@ export default function MemberDietPage() {
           </motion.p>
         </>
       )}
+
+      {/* Plan Details Modal */}
+      <AnimatePresence>
+        {selectedPlan && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedPlan(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-brand-darker border border-brand-gray/20 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl shadow-brand-gold/5"
+            >
+              {/* Modal Header */}
+              <div className="p-6 border-b border-brand-gray/10 flex justify-between items-start bg-brand-dark relative overflow-hidden">
+                <div className={`absolute top-0 left-0 w-1 h-full ${getGoalMeta(selectedPlan.goalType).bg.replace('/10', '')}`} />
+                <div className="flex items-start gap-4">
+                  <div className={`w-14 h-14 rounded-xl ${getGoalMeta(selectedPlan.goalType).bg} ${getGoalMeta(selectedPlan.goalType).border} border flex items-center justify-center flex-shrink-0`}>
+                    {(() => {
+                      const Icon = getGoalMeta(selectedPlan.goalType).icon;
+                      return <Icon size={26} className={getGoalMeta(selectedPlan.goalType).color} />;
+                    })()}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-heading font-bold text-white mb-1">{selectedPlan.title}</h2>
+                    {selectedPlan.goalType && (
+                      <span className={`text-xs font-bold uppercase tracking-widest ${getGoalMeta(selectedPlan.goalType).color}`}>
+                        {selectedPlan.goalType}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedPlan(null)}
+                  className="p-2 text-brand-gray hover:text-white bg-brand-darker hover:bg-brand-gray/10 rounded-xl transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
+                <div className="flex flex-wrap gap-4 mb-8 pb-6 border-b border-brand-gray/10">
+                  {selectedPlan.calories && (
+                    <div className="bg-brand-dark border border-brand-gray/5 rounded-xl p-4 flex-1 min-w-[120px]">
+                      <div className="flex items-center gap-2 text-orange-400 mb-1">
+                        <Flame size={16} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Calories</span>
+                      </div>
+                      <p className="text-xl font-bold text-white">{selectedPlan.calories}</p>
+                    </div>
+                  )}
+                  {selectedPlan.meals && (
+                    <div className="bg-brand-dark border border-brand-gray/5 rounded-xl p-4 flex-1 min-w-[120px]">
+                      <div className="flex items-center gap-2 text-brand-gold mb-1">
+                        <UtensilsCrossed size={16} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Meals</span>
+                      </div>
+                      <p className="text-xl font-bold text-white">{selectedPlan.meals} <span className="text-sm font-normal text-brand-gray">/ day</span></p>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className="text-white font-bold mb-3 flex items-center gap-2">
+                    <Salad size={18} className="text-brand-gold" />
+                    Plan Guidelines & Details
+                  </h3>
+                  {selectedPlan.description ? (
+                    <div className="text-brand-gray leading-relaxed space-y-4 text-sm whitespace-pre-wrap">
+                      {selectedPlan.description}
+                    </div>
+                  ) : (
+                    <p className="text-brand-gray/50 italic text-sm">No additional details provided for this plan.</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="p-6 border-t border-brand-gray/10 bg-brand-dark">
+                <button
+                  onClick={() => setSelectedPlan(null)}
+                  className="w-full py-3 bg-brand-gold text-brand-darker font-bold rounded-xl hover:bg-brand-gold/90 transition-colors"
+                >
+                  Close Plan
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }
