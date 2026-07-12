@@ -35,6 +35,16 @@ async function apiRequest(endpoint, options = {}) {
         message = errorText.slice(0, 200) || message;
       }
     }
+    
+    // Auto-redirect to login for 401/403 on admin routes
+    if ((response.status === 401 || response.status === 403) && typeof window !== 'undefined' && window.location.pathname.startsWith('/shubham8the8admin')) {
+      // Delay redirect slightly so user can read the alert if it's shown, or just change the message
+      message = 'Your session has expired or is invalid. Please log in again.';
+      setTimeout(() => {
+        window.location.href = '/shubham8the8admin/login';
+      }, 1500);
+    }
+    
     throw new Error(message);
   }
 
