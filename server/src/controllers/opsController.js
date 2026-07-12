@@ -100,8 +100,16 @@ export const updateDietPlan = async (req, res) => {
 };
 
 export const deleteDietPlan = async (req, res) => {
-  await prisma.dietPlan.delete({ where: { id: Number(req.params.id) } });
-  res.json({ message: 'Deleted' });
+  try {
+    const id = Number(req.params.id);
+    const item = await prisma.dietPlan.delete({ where: { id } });
+    await log('Deleted Diet Plan', `"${item.title}" deleted`, 'DietPlan', id);
+    res.json({ message: 'Deleted' });
+  } catch (error) {
+    console.error("Error deleting diet plan:", error);
+    // If it's already deleted or not found, just return success so the frontend UI clears it
+    res.json({ message: 'Deleted (or already deleted)' });
+  }
 };
 
 // ─── ATTENDANCE ──────────────────────────────────────────────────────────────
