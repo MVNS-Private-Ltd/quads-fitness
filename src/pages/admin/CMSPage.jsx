@@ -13,10 +13,12 @@ const pageVariants = {
 // CMS pages map directly to the React router pages — this is the admin view
 // of the live public pages. No separate DB model needed.
 const SITE_PAGES = [
-  { id: 'home', title: 'Home Page', path: '/', adminPath: '/admin/settings', description: 'Hero, programs teaser, stat block', status: 'Published' },
-  { id: 'about', title: 'About Us', path: '/about', adminPath: '/admin/settings', description: 'Mission, 3D scene, core values', status: 'Published' },
-  { id: 'programs', title: 'Programs & Plans', path: '/programs', adminPath: '/admin/programs', description: 'Training programs + membership tiers', status: 'Published' },
-  { id: 'contact', title: 'Contact', path: '/contact', adminPath: '/admin/leads', description: 'Inquiry form feeds the Leads page', status: 'Published' },
+  { id: 'home', title: 'Home Page', path: '/', adminPath: '/shubham8the8admin/settings', description: 'Hero, programs teaser, stat block', status: 'Published' },
+  { id: 'about', title: 'About Us', path: '/about', adminPath: '/shubham8the8admin/settings', description: 'Mission, 3D scene, core values', status: 'Published' },
+  { id: 'programs', title: 'Programs & Plans', path: '/programs', adminPath: '/shubham8the8admin/programs', description: 'Training programs + membership tiers', status: 'Published' },
+  { id: 'contact', title: 'Contact', path: '/contact', adminPath: '/shubham8the8admin/leads', description: 'Inquiry form feeds the Leads page', status: 'Published' },
+  { id: 'trainers', title: 'Trainers', path: '/trainers', adminPath: '/shubham8the8admin/trainers', description: 'Trainer profiles and specialties', status: 'Published' },
+  { id: 'gallery', title: 'Gallery', path: '/gallery', adminPath: '/shubham8the8admin/gallery', description: 'Gym photo gallery', status: 'Published' },
 ];
 
 export default function CMSPage() {
