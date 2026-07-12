@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { verifyAdminSession } from '../../lib/adminAuth';
+import { verifyAdminSession, getSession } from '../../lib/adminAuth';
 
 export default function AdminGuard({ children }) {
   const [status, setStatus] = useState('checking');
@@ -19,9 +19,16 @@ export default function AdminGuard({ children }) {
           setStatus('unauthenticated');
         }
       });
+      
+    // Proactively refresh the session every 10 minutes while the tab is open
+    // to prevent the token from expiring if the user stays on the page
+    const interval = setInterval(() => {
+      getSession().catch(console.error);
+    }, 10 * 60 * 1000);
 
     return () => {
       isMounted = false;
+      clearInterval(interval);
     };
   }, []);
 
