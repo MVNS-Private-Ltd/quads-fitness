@@ -162,7 +162,7 @@ export default function PlansPage() {
                       <span className="text-white font-medium">{plan.name}</span>
                       {plan.featured && <span className="ml-2 text-xs bg-brand-gold/20 text-brand-gold px-1.5 py-0.5 rounded uppercase">Featured</span>}
                     </td>
-                    <td className="py-4 px-4 text-brand-gold font-medium">${plan.price}</td>
+                    <td className="py-4 px-4 text-brand-gold font-medium">₹{plan.price}</td>
                     <td className="py-4 px-4 text-brand-muted text-sm capitalize">{plan.billing}</td>
                     <td className="py-4 px-4"><StatusChip status={plan.status} /></td>
                     <td className="py-4 px-4 text-right">
@@ -191,7 +191,7 @@ export default function PlansPage() {
               <FiDollarSign className="text-brand-gold/40 w-10 h-10 mb-2" />
               <h3 className="text-2xl font-display text-white mb-2">{selectedPlan.name}</h3>
               <div className="flex items-end gap-1 mb-3">
-                <span className="text-4xl font-display text-brand-gold">${selectedPlan.price}</span>
+                <span className="text-4xl font-display text-brand-gold">₹{selectedPlan.price}</span>
                 <span className="text-brand-muted text-sm mb-1">/{selectedPlan.billing?.toLowerCase()}</span>
               </div>
               <StatusChip status={selectedPlan.status} />
@@ -234,7 +234,7 @@ export default function PlansPage() {
           <textarea className={textareaCls} rows={2} value={form.description} onChange={set('description')} placeholder="Short description..." />
         </FormField>
         <div className="grid grid-cols-2 gap-4">
-          <FormField label="Price ($/mo)" required>
+          <FormField label="Price (₹/mo)" required>
             <input type="number" className={inputCls} value={form.price} onChange={set('price')} placeholder="99" min="0" />
           </FormField>
           <FormField label="Billing Cycle">
