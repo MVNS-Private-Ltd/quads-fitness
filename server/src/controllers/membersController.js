@@ -39,104 +39,126 @@ export const getMember = async (req, res) => {
 
 // POST /api/members
 export const createMember = async (req, res) => {
-  const { 
-    name, email, phone, planId, trainerId, status, 
-    age, gender, emergencyContact, healthNotes, membershipExpiry, joinedAt 
-  } = req.body;
+  try {
+    const { 
+      name, email, phone, planId, trainerId, status, 
+      age, gender, emergencyContact, healthNotes, membershipExpiry, joinedAt 
+    } = req.body;
 
-  if (!name || !email) return res.status(400).json({ error: 'Name and email are required' });
-  if (!phone) return res.status(400).json({ error: 'Phone is required' });
-  if (!gender) return res.status(400).json({ error: 'Gender is required' });
-  if (!age) return res.status(400).json({ error: 'Age is required' });
-  if (!planId) return res.status(400).json({ error: 'Membership plan is required' });
-  if (!joinedAt) return res.status(400).json({ error: 'Membership start date is required' });
-  if (!membershipExpiry) return res.status(400).json({ error: 'Membership expiry date is required' });
+    if (!name || !email) return res.status(400).json({ error: 'Name and email are required' });
+    if (!phone) return res.status(400).json({ error: 'Phone is required' });
+    if (!gender) return res.status(400).json({ error: 'Gender is required' });
+    if (!age) return res.status(400).json({ error: 'Age is required' });
+    if (!planId) return res.status(400).json({ error: 'Membership plan is required' });
+    if (!joinedAt) return res.status(400).json({ error: 'Membership start date is required' });
+    if (!membershipExpiry) return res.status(400).json({ error: 'Membership expiry date is required' });
 
-  // Provision Supabase Auth account
-  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-    email,
-    password: 'Welcome123!',
-    email_confirm: true
-  });
+    // Provision Supabase Auth account
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: 'Welcome123!',
+      email_confirm: true
+    });
 
-  if (authError && !authError.message.toLowerCase().includes('already')) {
-    return res.status(400).json({ error: 'Failed to create auth user: ' + authError.message });
+    if (authError && !authError.message.toLowerCase().includes('already')) {
+      return res.status(400).json({ error: 'Failed to create auth user: ' + authError.message });
+    }
+
+    const member = await prisma.member.create({ 
+      data: { 
+        name, 
+        email, 
+        phone, 
+        age: Number(age),
+        gender,
+        emergencyContact,
+        healthNotes,
+        membershipExpiry: new Date(membershipExpiry),
+        joinedAt: new Date(joinedAt),
+        planId: Number(planId), 
+        trainerId: trainerId ? Number(trainerId) : null,
+        status 
+      } 
+    });
+    await log('Added Member', `${name} registered`, 'Member', member.id);
+    res.status(201).json(member);
+  } catch (error) {
+    console.error("Error creating member:", error);
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'A member with this email or phone number already exists.' });
+    }
+    res.status(500).json({ error: 'Failed to create member.' });
   }
-
-  const member = await prisma.member.create({ 
-    data: { 
-      name, 
-      email, 
-      phone, 
-      age: Number(age),
-      gender,
-      emergencyContact,
-      healthNotes,
-      membershipExpiry: new Date(membershipExpiry),
-      joinedAt: new Date(joinedAt),
-      planId: Number(planId), 
-      trainerId: trainerId ? Number(trainerId) : null,
-      status 
-    } 
-  });
-  await log('Added Member', `${name} registered`, 'Member', member.id);
-  res.status(201).json(member);
 };
 
 // PUT /api/members/:id
 export const updateMember = async (req, res) => {
-  const { name, email, phone, planId, trainerId, status, age, gender,
-    emergencyContact, healthNotes, fitnessGoals, membershipExpiry } = req.body;
-  const member = await prisma.member.update({
-    where: { id: Number(req.params.id) },
-    data: {
-      name,
-      email,
-      phone,
-      age: age ? Number(age) : undefined,
-      gender,
-      emergencyContact,
-      healthNotes,
-      fitnessGoals,
-      membershipExpiry: membershipExpiry ? new Date(membershipExpiry) : undefined,
-      planId: planId ? Number(planId) : null,
-      trainerId: trainerId ? Number(trainerId) : null,
-      status,
-      // Reset reminderSent if admin changed expiry date
-      ...(membershipExpiry ? { reminderSent: false } : {}),
-    },
-    include: { plan: true, trainer: true }
-  });
-  await log('Updated Member', `${name} record updated`, 'Member', member.id);
-  res.json(member);
+  try {
+    const { name, email, phone, planId, trainerId, status, age, gender,
+      emergencyContact, healthNotes, fitnessGoals, membershipExpiry } = req.body;
+    const member = await prisma.member.update({
+      where: { id: Number(req.params.id) },
+      data: {
+        name,
+        email,
+        phone,
+        age: age ? Number(age) : undefined,
+        gender,
+        emergencyContact,
+        healthNotes,
+        fitnessGoals,
+        membershipExpiry: membershipExpiry ? new Date(membershipExpiry) : undefined,
+        planId: planId ? Number(planId) : null,
+        trainerId: trainerId ? Number(trainerId) : null,
+        status,
+        // Reset reminderSent if admin changed expiry date
+        ...(membershipExpiry ? { reminderSent: false } : {}),
+      },
+      include: { plan: true, trainer: true }
+    });
+    await log('Updated Member', `${name} record updated`, 'Member', member.id);
+    res.json(member);
+  } catch (error) {
+    console.error("Error updating member:", error);
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: 'A member with this email or phone number already exists.' });
+    }
+    res.status(500).json({ error: 'Failed to update member.' });
+  }
 };
 
 // DELETE /api/members/:id
 export const deleteMember = async (req, res) => {
-  const memberId = Number(req.params.id);
-  const member = await prisma.member.findUnique({ where: { id: memberId } });
-  if (!member) return res.status(404).json({ error: 'Member not found' });
-
-  // Delete related records first to avoid foreign key constraint errors
-  await prisma.attendance.deleteMany({ where: { memberId } });
-  await prisma.progressLog.deleteMany({ where: { memberId } });
-  await prisma.review.deleteMany({ where: { memberId } });
-
-  await prisma.member.delete({ where: { id: memberId } });
-
-  // Also try to delete the Supabase Auth user if possible
   try {
-    const { data: users } = await supabaseAdmin.auth.admin.listUsers();
-    if (users && users.users) {
-      const authUser = users.users.find(u => u.email === member.email);
-      if (authUser) {
-        await supabaseAdmin.auth.admin.deleteUser(authUser.id);
+    const memberId = Number(req.params.id);
+    const member = await prisma.member.findUnique({ where: { id: memberId } });
+    if (!member) return res.status(404).json({ error: 'Member not found' });
+
+    // Delete related records first to avoid foreign key constraint errors
+    await prisma.attendance.deleteMany({ where: { memberId } });
+    await prisma.progressLog.deleteMany({ where: { memberId } });
+    await prisma.review.deleteMany({ where: { memberId } });
+    
+    // Delete the member record
+    await prisma.member.delete({ where: { id: memberId } });
+
+    // Try to delete auth account (fail gracefully)
+    if (member.email) {
+      try {
+        const { data: users } = await supabaseAdmin.auth.admin.listUsers();
+        const user = users?.users?.find(u => u.email === member.email);
+        if (user) {
+          await supabaseAdmin.auth.admin.deleteUser(user.id);
+        }
+      } catch (authErr) {
+        console.error('Error deleting auth user:', authErr);
       }
     }
-  } catch (e) {
-    // Silently continue if auth user deletion fails
-  }
 
-  await log('Deleted Member', `${member.name} removed`, 'Member', memberId);
-  res.json({ message: 'Member deleted' });
+    await log('Deleted Member', `${member.name} removed`, 'Member', memberId);
+    res.json({ message: 'Deleted' });
+  } catch (error) {
+    console.error("Error deleting member:", error);
+    res.status(500).json({ error: 'Failed to delete member.' });
+  }
 };
