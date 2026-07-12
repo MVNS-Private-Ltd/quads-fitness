@@ -13,6 +13,9 @@ const pageVariants = {
 
 export default function AttendancePage() {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
+  const [filteredRecords, setFilteredRecords] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -33,6 +36,7 @@ export default function AttendancePage() {
     Promise.all([getAttendance(), getMembers()])
       .then(([a, m]) => {
         setAttendanceRecords(a);
+        setFilteredRecords(a);
         setMembers(m);
         setLoading(false);
       })
@@ -42,6 +46,18 @@ export default function AttendancePage() {
   useEffect(() => {
     load();
   }, []);
+
+  useEffect(() => {
+    let result = [...attendanceRecords];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(r => r.member?.name?.toLowerCase().includes(q));
+    }
+    if (statusFilter) {
+      result = result.filter(r => r.status === statusFilter);
+    }
+    setFilteredRecords(result);
+  }, [attendanceRecords, searchQuery, statusFilter]);
 
   const openModal = () => {
     setError('');
@@ -123,15 +139,16 @@ export default function AttendancePage() {
         </div>
       </div>
       
-      <div className="bg-brand-surface2 border border-white/5 rounded-2xl overflow-hidden p-6">
+      <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
         <TableFilterBar 
-          filters={[{ label: 'Status', options: ['Active (Present)', 'Inactive (Absent)'] }]} 
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Status', options: ['Present', 'Absent', 'Late'], onChange: (e) => setStatusFilter(e.target.value) }]} 
         />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center">Loading attendance...</div>
-        ) : attendanceRecords.length === 0 ? (
-          <EmptyState title="No Records" message="No attendance records found for today." icon={FiCheckSquare} />
+        ) : filteredRecords.length === 0 ? (
+          <EmptyState title="No Records" message="No attendance records found for current filters." icon={FiCheckSquare} />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -145,7 +162,7 @@ export default function AttendancePage() {
                 </tr>
               </thead>
               <tbody>
-                {attendanceRecords.map((record, idx) => (
+                {filteredRecords.map((record, idx) => (
                   <motion.tr 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

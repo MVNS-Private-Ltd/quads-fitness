@@ -12,17 +12,40 @@ const pageVariants = {
 
 export default function ActivityLogsPage() {
   const [logs, setLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [actionTypeFilter, setActionTypeFilter] = useState('');
+  const [userFilter, setUserFilter] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getLogs().then(data => {
       setLogs(data);
+      setFilteredLogs(data);
       setLoading(false);
     }).catch(err => {
       console.error(err);
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    let result = [...logs];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(l => l.details?.toLowerCase().includes(q) || l.action?.toLowerCase().includes(q) || l.user?.toLowerCase().includes(q));
+    }
+    if (actionTypeFilter) {
+      if (actionTypeFilter === 'Updates') result = result.filter(l => l.action?.toLowerCase().includes('update'));
+      else if (actionTypeFilter === 'Deletions') result = result.filter(l => l.action?.toLowerCase().includes('delete') || l.action?.toLowerCase().includes('remove'));
+      else if (actionTypeFilter === 'System') result = result.filter(l => l.action?.toLowerCase().includes('system') || l.action?.toLowerCase().includes('setting'));
+    }
+    if (userFilter) {
+      if (userFilter === 'Admin User') result = result.filter(l => l.user !== 'System');
+      else if (userFilter === 'System') result = result.filter(l => l.user === 'System');
+    }
+    setFilteredLogs(result);
+  }, [logs, searchQuery, actionTypeFilter, userFilter]);
 
   const getIcon = (actionStr) => {
     const action = actionStr.toLowerCase();
@@ -48,7 +71,11 @@ export default function ActivityLogsPage() {
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
         <TableFilterBar 
-          filters={[{ label: 'Action Type', options: ['Updates', 'Deletions', 'System'] }, { label: 'User', options: ['Admin User', 'System'] }]} 
+          onSearch={setSearchQuery}
+          filters={[
+            { label: 'Action Type', options: ['Updates', 'Deletions', 'System'], onChange: (e) => setActionTypeFilter(e.target.value) },
+            { label: 'User', options: ['Admin User', 'System'], onChange: (e) => setUserFilter(e.target.value) }
+          ]} 
         />
 
         {loading ? (
@@ -57,7 +84,7 @@ export default function ActivityLogsPage() {
            <EmptyState message="No history found." icon={FiActivity} />
         ) : (
           <div className="space-y-4">
-            {logs.map((log, idx) => (
+            {filteredLogs.map((log, idx) => (
               <motion.div 
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}

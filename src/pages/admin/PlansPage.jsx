@@ -26,6 +26,9 @@ const parseFeatures = (plan) => {
 export default function PlansPage() {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [plans, setPlans] = useState([]);
+  const [filteredPlans, setFilteredPlans] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [billingFilter, setBillingFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
@@ -37,10 +40,22 @@ export default function PlansPage() {
 
   const load = () => {
     setLoading(true);
-    getPlans('?all=true').then(d => { setPlans(d); setLoading(false); }).catch(() => setLoading(false));
+    getPlans('?all=true').then(d => { setPlans(d); setFilteredPlans(d); setLoading(false); }).catch(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    let result = [...plans];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(p => p.name?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q));
+    }
+    if (billingFilter) {
+      result = result.filter(p => p.billing === billingFilter);
+    }
+    setFilteredPlans(result);
+  }, [plans, searchQuery, billingFilter]);
 
   const openCreate = () => {
     setEditTarget(null);
@@ -126,7 +141,10 @@ export default function PlansPage() {
       </div>
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
-        <TableFilterBar filters={[{ label: 'Billing Cycle', options: ['Monthly', 'Quarterly', 'Yearly'] }]} />
+        <TableFilterBar 
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Billing Cycle', options: ['Monthly', 'Quarterly', 'Yearly'], onChange: (e) => setBillingFilter(e.target.value) }]} 
+        />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center animate-pulse">Loading plans...</div>
@@ -149,7 +167,7 @@ export default function PlansPage() {
                 </tr>
               </thead>
               <tbody>
-                {plans.map((plan, idx) => (
+                {filteredPlans.map((plan, idx) => (
                   <motion.tr
                     key={plan.id}
                     initial={{ opacity: 0, x: -10 }}

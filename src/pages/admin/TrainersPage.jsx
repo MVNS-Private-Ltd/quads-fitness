@@ -19,6 +19,9 @@ const EMPTY_FORM = { name: '', specialty: '', bio: '', instagram: '', status: 'A
 export default function TrainersPage() {
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const [trainers, setTrainers] = useState([]);
+  const [filteredTrainers, setFilteredTrainers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
@@ -30,10 +33,22 @@ export default function TrainersPage() {
 
   const load = () => {
     setLoading(true);
-    getTrainers('?all=true').then(d => { setTrainers(d); setLoading(false); }).catch(() => setLoading(false));
+    getTrainers('?all=true').then(d => { setTrainers(d); setFilteredTrainers(d); setLoading(false); }).catch(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    let result = [...trainers];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(t => t.name?.toLowerCase().includes(q) || t.specialty?.toLowerCase().includes(q));
+    }
+    if (statusFilter) {
+      result = result.filter(t => t.status === statusFilter);
+    }
+    setFilteredTrainers(result);
+  }, [trainers, searchQuery, statusFilter]);
 
   const openCreate = () => {
     setEditTarget(null);
@@ -119,7 +134,10 @@ export default function TrainersPage() {
       </div>
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
-        <TableFilterBar filters={[{ label: 'Status', options: ['Active', 'Inactive'] }]} />
+        <TableFilterBar 
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Status', options: ['Active', 'Inactive'], onChange: (e) => setStatusFilter(e.target.value) }]} 
+        />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center animate-pulse">Loading trainers...</div>
@@ -141,7 +159,7 @@ export default function TrainersPage() {
                 </tr>
               </thead>
               <tbody>
-                {trainers.map((trainer, idx) => (
+                {filteredTrainers.map((trainer, idx) => (
                   <motion.tr
                     key={trainer.id}
                     initial={{ opacity: 0, x: -10 }}

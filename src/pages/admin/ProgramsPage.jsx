@@ -18,6 +18,9 @@ const EMPTY_FORM = { title: '', description: '', duration: '', instructor: '', s
 
 export default function ProgramsPage() {
   const [programs, setPrograms] = useState([]);
+  const [filteredPrograms, setFilteredPrograms] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
@@ -31,11 +34,24 @@ export default function ProgramsPage() {
     setLoading(true);
     getPrograms('?all=true').then(data => {
       setPrograms(data);
+      setFilteredPrograms(data);
       setLoading(false);
     }).catch(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
+
+  useEffect(() => {
+    let result = [...programs];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(p => p.title?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q) || p.instructor?.toLowerCase().includes(q));
+    }
+    if (statusFilter) {
+      result = result.filter(p => p.status === statusFilter);
+    }
+    setFilteredPrograms(result);
+  }, [programs, searchQuery, statusFilter]);
 
   const openCreate = () => {
     setEditTarget(null);
@@ -107,7 +123,10 @@ export default function ProgramsPage() {
       </div>
       
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
-        <TableFilterBar filters={[{ label: 'Status', options: ['Active', 'Draft'] }]} />
+        <TableFilterBar 
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Status', options: ['Active', 'Draft'], onChange: (e) => setStatusFilter(e.target.value) }]} 
+        />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center animate-pulse">Loading programs...</div>
@@ -120,7 +139,7 @@ export default function ProgramsPage() {
           />
         ) : (
           <div className="space-y-4">
-            {programs.map((program, idx) => (
+            {filteredPrograms.map((program, idx) => (
               <motion.div
                 key={program.id}
                 initial={{ opacity: 0, y: 10 }}

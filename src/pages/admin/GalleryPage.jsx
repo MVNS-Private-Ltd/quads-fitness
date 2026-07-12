@@ -13,6 +13,9 @@ const pageVariants = {
 export default function GalleryPage() {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [mediaItems, setMediaItems] = useState([]);
+  const [filteredMedia, setFilteredMedia] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -61,16 +64,36 @@ export default function GalleryPage() {
   };
 
   useEffect(() => {
-    getGallery('?all=true').then(data => {
-      console.log('[Admin Gallery] loaded:', data);
-      setMediaItems(Array.isArray(data) ? data : []);
-      setLoading(false);
-    }).catch(err => {
-      console.error('[Admin Gallery] load error:', err);
-      setError(err.message);
-      setLoading(false);
-    });
+    const fetchMedia = async () => {
+      try {
+        const data = await getGallery('?all=true');
+        setMediaItems(Array.isArray(data) ? data : []);
+        setFilteredMedia(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error('[Admin Gallery] load error:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMedia();
   }, []);
+
+  useEffect(() => {
+    let result = [...mediaItems];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(m => m.title?.toLowerCase().includes(q) || m.category?.toLowerCase().includes(q));
+    }
+    if (typeFilter) {
+      if (typeFilter === 'Images') {
+        result = result.filter(m => m.type !== 'VIDEO');
+      } else if (typeFilter === 'Videos') {
+        result = result.filter(m => m.type === 'VIDEO');
+      }
+    }
+    setFilteredMedia(result);
+  }, [mediaItems, searchQuery, typeFilter]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(undefined, { 
@@ -103,12 +126,13 @@ export default function GalleryPage() {
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
         <TableFilterBar 
-          filters={[{ label: 'Type', options: ['Images', 'Videos'] }, { label: 'Status', options: ['Published', 'Draft'] }]} 
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Type', options: ['Images', 'Videos'], onChange: (e) => setTypeFilter(e.target.value) }]} 
         />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center">Loading gallery...</div>
-        ) : mediaItems.length === 0 ? (
+        ) : filteredMedia.length === 0 ? (
           <EmptyState 
             title="Gallery is Empty" 
             message="Upload photos of your gym to attract more members." 
@@ -116,8 +140,8 @@ export default function GalleryPage() {
             action={<button onClick={handleUploadClick} disabled={uploading} className="px-6 py-2 bg-brand-dark border border-white/10 text-white rounded-xl hover:border-brand-gold transition-colors disabled:opacity-50">{uploading ? 'Uploading...' : 'Upload Now'}</button>}
           />
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {mediaItems.map((media, idx) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {filteredMedia.map((media, idx) => (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
