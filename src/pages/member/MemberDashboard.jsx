@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { getMe, getMemberOffers, getCachedMe, getCachedOffers } from '../../services/memberApi';
 import {
   Dumbbell, CalendarCheck, TrendingUp, UserCheck,
-  Megaphone, Clock, AlertCircle, ChevronRight, Target, Activity
+  Megaphone, Clock, AlertCircle, ChevronRight, Target, QrCode, Download, X, Smartphone
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import MemberQRScanner from '../../components/member/MemberQRScanner';
-import { QrCode } from 'lucide-react';
 
 export default function MemberDashboard() {
   const [member, setMember] = useState(getCachedMe() || null);
@@ -16,10 +15,36 @@ export default function MemberDashboard() {
   const [loading, setLoading] = useState(!getCachedMe());
   const [error, setError] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showIOSGuide, setShowIOSGuide] = useState(false);
 
   useEffect(() => {
     loadDashboard();
+
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
+
+  const handleInstallClick = async () => {
+    const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIOS()) {
+      setShowIOSGuide(true);
+      return;
+    }
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert("App installation is not supported on this browser, or it's already installed.");
+    }
+  };
 
   const loadDashboard = async () => {
     try {
@@ -88,7 +113,6 @@ export default function MemberDashboard() {
         transition={{ duration: 0.2 }}
         className="relative bg-gradient-to-br from-brand-dark via-brand-darker to-brand-dark border border-brand-gold/15 p-7 md:p-10 rounded-2xl overflow-hidden"
       >
-        {/* Decorative glow */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-brand-gold/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-10 w-40 h-40 bg-blue-500/3 rounded-full blur-2xl pointer-events-none" />
 
@@ -105,6 +129,15 @@ export default function MemberDashboard() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 flex-shrink-0">
+            {(!window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone) && (
+              <button
+                onClick={handleInstallClick}
+                className="flex items-center gap-2 bg-brand-dark border border-brand-gold/30 text-white font-bold px-5 py-3 rounded-xl hover:bg-brand-gold/10 transition-all hover:scale-105 active:scale-95 text-sm"
+              >
+                <Download size={18} className="text-brand-gold" />
+                Download App
+              </button>
+            )}
             <button
               onClick={() => setIsScannerOpen(true)}
               className="flex items-center gap-2 bg-brand-gold text-brand-darker font-bold px-5 py-3 rounded-xl hover:bg-brand-gold/90 transition-all hover:scale-105 active:scale-95 text-sm shadow-lg shadow-brand-gold/20"
@@ -296,7 +329,6 @@ export default function MemberDashboard() {
                 ))}
               </div>
             ) : (
-              // Plan active notice as fallback if no offers
               <div className="p-6 text-center">
                 {member.plan ? (
                   <div>
@@ -336,6 +368,51 @@ export default function MemberDashboard() {
           )}
         </motion.div>
       </div>
+
+      {/* iOS Manual Guide Modal */}
+      {showIOSGuide && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-end justify-center p-4 bg-black/70 backdrop-blur-sm"
+          onClick={() => setShowIOSGuide(false)}
+        >
+          <div 
+            className="bg-brand-dark border border-brand-gold/30 rounded-3xl p-6 w-full max-w-sm mb-4 safe-bottom relative overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold to-brand-gold/0 opacity-50" />
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold font-bold">Q</div>
+                <div>
+                  <p className="text-white font-bold text-sm">Install App</p>
+                  <p className="text-brand-gray text-xs">on your iPhone / iPad</p>
+                </div>
+              </div>
+              <button onClick={() => setShowIOSGuide(false)} className="p-2 -mr-2 bg-white/5 rounded-full text-brand-gray hover:text-white">
+                <X size={16} />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <div className="w-6 h-6 rounded-full bg-brand-gold text-brand-darker font-bold flex items-center justify-center text-sm flex-shrink-0">1</div>
+                <p className="text-sm text-brand-gray leading-snug">Tap the <strong>Share</strong> button <span className="inline-flex items-center justify-center w-6 h-6 bg-white/10 rounded-md mx-1">⬆️</span> at the bottom of Safari</p>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-6 h-6 rounded-full bg-brand-gold text-brand-darker font-bold flex items-center justify-center text-sm flex-shrink-0">2</div>
+                <p className="text-sm text-brand-gray leading-snug">Scroll down and tap <strong>"Add to Home Screen"</strong> <span className="inline-flex items-center justify-center w-6 h-6 bg-white/10 rounded-md mx-1">➕</span></p>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-6 h-6 rounded-full bg-brand-gold text-brand-darker font-bold flex items-center justify-center text-sm flex-shrink-0">3</div>
+                <p className="text-sm text-brand-gray leading-snug">Tap <strong>Add</strong> in the top right. Done! 🎉</p>
+              </div>
+            </div>
+            <div className="mt-6 p-3 bg-brand-gold/10 rounded-xl border border-brand-gold/20 flex items-start gap-3">
+              <Smartphone size={18} className="text-brand-gold flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-brand-gold/90 leading-snug">After installing, scan the QR code to check in instantly — no login needed!</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

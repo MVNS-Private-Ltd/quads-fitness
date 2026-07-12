@@ -2,8 +2,8 @@
   "name": "Quads Fitness",
   "short_name": "Quads",
   "description": "Quads Fitness Member Portal - Track your gym visits, progress, and membership",
-  "start_url": "https://thequadsfitness.com/member/attendance/mark",
-  "id": "https://thequadsfitness.com/member/attendance/mark",
+  "start_url": "/member/attendance/mark",
+  "id": "/member/attendance/mark",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0d0d0d",
@@ -71,14 +71,14 @@
       "name": "Mark Attendance",
       "short_name": "Check In",
       "description": "Mark your gym attendance",
-      "url": "https://thequadsfitness.com/member/attendance/mark",
+      "url": "/member/attendance/mark",
       "icons": [{ "src": "/logo-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "View your member dashboard",
-      "url": "https://thequadsfitness.com/member/dashboard",
+      "url": "/member/dashboard",
       "icons": [{ "src": "/logo-192x192.png", "sizes": "192x192" }]
     }
   ]
