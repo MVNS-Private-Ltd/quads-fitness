@@ -450,12 +450,36 @@ export default function AdminDashboard() {
               className="bg-transparent text-sm text-white focus:outline-none w-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  navigate(`/shubham8the8admin/users?search=${encodeURIComponent(searchQuery.trim())}`);
+                  setSearchQuery('');
+                }
+              }}
             />
-            {/* Search Dropdown Mock */}
             {searchQuery && (
               <div className="absolute top-full left-0 mt-2 w-full bg-brand-surface2 border border-white/5 rounded-xl shadow-2xl p-2 z-50">
-                <div className="px-3 py-2 text-xs font-bold text-brand-muted uppercase tracking-wider">Results for "{searchQuery}"</div>
-                <div className="p-3 text-sm text-brand-gold hover:bg-white/5 rounded-lg cursor-pointer">Searching...</div>
+                <div className="px-3 py-2 text-xs font-bold text-brand-muted uppercase tracking-wider">Quick Search</div>
+                <div 
+                  className="p-3 text-sm text-white hover:bg-white/5 rounded-lg cursor-pointer flex items-center gap-2"
+                  onClick={() => {
+                    navigate(`/shubham8the8admin/users?search=${encodeURIComponent(searchQuery.trim())}`);
+                    setSearchQuery('');
+                  }}
+                >
+                  <FiUsers size={14} className="text-brand-gold" />
+                  Search members for &ldquo;{searchQuery}&rdquo;
+                </div>
+                <div 
+                  className="p-3 text-sm text-white hover:bg-white/5 rounded-lg cursor-pointer flex items-center gap-2"
+                  onClick={() => {
+                    navigate(`/shubham8the8admin/leads?search=${encodeURIComponent(searchQuery.trim())}`);
+                    setSearchQuery('');
+                  }}
+                >
+                  <FiMessageCircle size={14} className="text-brand-gold" />
+                  Search inquiries for &ldquo;{searchQuery}&rdquo;
+                </div>
               </div>
             )}
           </div>

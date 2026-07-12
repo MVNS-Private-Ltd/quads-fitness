@@ -1,5 +1,6 @@
 import prisma from '../prisma.js';
 import { supabaseAdmin } from '../lib/supabaseAdmin.js';
+import { uploadToSupabase } from '../lib/uploadToSupabase.js';
 
 // Helper to log admin actions
 const log = async (action, details, entity = null, entityId = null) => {
@@ -64,6 +65,9 @@ export const createMember = async (req, res) => {
       return res.status(400).json({ error: 'Failed to create auth user: ' + authError.message });
     }
 
+    // Upload profile photo if provided
+    const profilePhoto = req.file ? await uploadToSupabase(req.file) : null;
+
     const member = await prisma.member.create({ 
       data: { 
         name, 
@@ -73,6 +77,7 @@ export const createMember = async (req, res) => {
         gender,
         emergencyContact,
         healthNotes,
+        profilePhoto,
         membershipExpiry: new Date(membershipExpiry),
         joinedAt: new Date(joinedAt),
         planId: Number(planId), 
@@ -96,6 +101,8 @@ export const updateMember = async (req, res) => {
   try {
     const { name, email, phone, planId, trainerId, status, age, gender,
       emergencyContact, healthNotes, fitnessGoals, membershipExpiry } = req.body;
+    // Upload new photo if provided
+    const profilePhoto = req.file ? await uploadToSupabase(req.file) : undefined;
     const member = await prisma.member.update({
       where: { id: Number(req.params.id) },
       data: {
@@ -107,6 +114,7 @@ export const updateMember = async (req, res) => {
         emergencyContact,
         healthNotes,
         fitnessGoals,
+        ...(profilePhoto ? { profilePhoto } : {}),
         membershipExpiry: membershipExpiry ? new Date(membershipExpiry) : undefined,
         planId: planId ? Number(planId) : null,
         trainerId: trainerId ? Number(trainerId) : null,

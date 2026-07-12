@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   StatusChip, EmptyState, TableFilterBar, PreviewDrawer,
   FormModal, ConfirmDialog, FormField, AvatarPlaceholder,
   inputCls, selectCls
 } from '../../components/admin/SharedAdminUI';
-import { FiUsers, FiPlus, FiEdit2, FiTrash2, FiEye, FiRefreshCw } from 'react-icons/fi';
+import { FiUsers, FiPlus, FiEdit2, FiTrash2, FiEye, FiRefreshCw, FiCamera } from 'react-icons/fi';
 import { getMembers, createMember, updateMember, deleteMember, getTrainers, getPlans } from '../../services/api';
 import MemberProfileDrawer from '../../components/admin/MemberProfileDrawer';
 
@@ -29,12 +30,18 @@ const EMPTY_FORM = {
 };
 
 export default function UsersPage() {
+  const [searchParams] = useSearchParams();
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [statusFilter, setStatusFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleting, setDeleting] = useState(false);
@@ -50,6 +57,7 @@ export default function UsersPage() {
     Promise.all([getMembers(), getTrainers(), getPlans()])
       .then(([m, t, p]) => {
         setUsers(m);
+        setFilteredUsers(m);
         setTrainers(t);
         setPlans(p);
         setLoading(false);
@@ -59,12 +67,31 @@ export default function UsersPage() {
 
   useEffect(() => { load(); }, []);
 
+  // Apply search + status filter whenever users or filters change
+  useEffect(() => {
+    let result = [...users];
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(u =>
+        u.name?.toLowerCase().includes(q) ||
+        u.email?.toLowerCase().includes(q) ||
+        u.phone?.includes(q)
+      );
+    }
+    if (statusFilter) {
+      result = result.filter(u => u.status === statusFilter);
+    }
+    setFilteredUsers(result);
+  }, [users, searchQuery, statusFilter]);
+
   const formatDate = (dateString) =>
     dateString ? new Date(dateString).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
 
   const openCreate = () => {
     setEditTarget(null);
     setForm(EMPTY_FORM);
+    setPhotoFile(null);
+    setPhotoPreview(null);
     setError('');
     setModalOpen(true);
   };
@@ -84,6 +111,8 @@ export default function UsersPage() {
       membershipExpiry: user.membershipExpiry ? new Date(user.membershipExpiry).toISOString().split('T')[0] : '',
       healthNotes: user.healthNotes || ''
     });
+    setPhotoFile(null);
+    setPhotoPreview(user.profilePhoto || null);
     setError('');
     setModalOpen(true);
     setSelectedUserId(null);
@@ -131,6 +160,13 @@ export default function UsersPage() {
     }
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) { setError('Name is required.'); return; }
@@ -145,8 +181,13 @@ export default function UsersPage() {
     setSubmitting(true);
     setError('');
     try {
-      if (editTarget) { await updateMember(editTarget.id, form); }
-      else { await createMember(form); }
+      // Build FormData to support photo upload
+      const fd = new FormData();
+      Object.entries(form).forEach(([k, v]) => { if (v !== '' && v !== null && v !== undefined) fd.append(k, v); });
+      if (photoFile) fd.append('profilePhoto', photoFile);
+
+      if (editTarget) { await updateMember(editTarget.id, fd); }
+      else { await createMember(fd); }
       setModalOpen(false);
       load();
     } catch (err) {
@@ -210,7 +251,12 @@ export default function UsersPage() {
       </div>
       
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl overflow-hidden p-6">
-        <TableFilterBar filters={[{ label: 'Status', options: ['Active', 'Inactive'] }]} />
+        <TableFilterBar
+          onSearch={setSearchQuery}
+          filters={[
+            { label: 'Status', options: ['Active', 'Inactive', 'Expired', 'Suspended'], onChange: (e) => setStatusFilter(e.target.value) }
+          ]}
+        />
 
         {loading ? (
           <div className="text-brand-muted py-8 text-center animate-pulse">Loading members...</div>
@@ -234,7 +280,7 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, idx) => (
+                {filteredUsers.map((user, idx) => (
                   <motion.tr
                     key={user.id}
                     initial={{ opacity: 0, x: -20 }}
@@ -289,14 +335,36 @@ export default function UsersPage() {
       />
 
       {/* Create / Edit Modal */}
-      <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onSubmit={handleSubmit} title={editTarget ? 'Edit Member' : 'Add Member'} submitting={submitting}>
+      <FormModal isOpen={modalOpen} onClose={() => { setModalOpen(false); setPhotoPreview(null); setPhotoFile(null); }} onSubmit={handleSubmit} title={editTarget ? 'Edit Member' : 'Add Member'} submitting={submitting}>
         {error && <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2">{error}</p>}
+
+        {/* Profile Photo Upload */}
+        <div className="flex items-center gap-5 mb-2">
+          <div className="relative w-20 h-20 rounded-full bg-brand-dark border-2 border-dashed border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 hover:border-brand-gold transition-colors group">
+            {photoPreview ? (
+              <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+            ) : (
+              <FiCamera className="w-7 h-7 text-brand-muted group-hover:text-brand-gold transition-colors" />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="absolute inset-0 opacity-0 cursor-pointer"
+              onChange={handlePhotoChange}
+            />
+          </div>
+          <div>
+            <p className="text-sm text-white font-medium">Profile Photo</p>
+            <p className="text-xs text-brand-muted mt-0.5">Click the circle to upload. JPG or PNG, max 5MB.</p>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <FormField label="Full Name" required>
-            <input className={inputCls} value={form.name} onChange={set('name')} placeholder="e.g. Alex Johnson" />
+            <input className={inputCls} value={form.name} onChange={set('name')} placeholder="e.g. Rahul Sharma" />
           </FormField>
           <FormField label="Email Address" required>
-            <input type="email" className={inputCls} value={form.email} onChange={set('email')} placeholder="alex@email.com" />
+            <input type="email" className={inputCls} value={form.email} onChange={set('email')} placeholder="rahul@email.com" />
           </FormField>
         </div>
         <div className="grid grid-cols-3 gap-4">

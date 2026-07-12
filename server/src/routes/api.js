@@ -38,8 +38,8 @@ const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } }); // 1
 // ── Members ──────────────────────────────────────────────────────────────────
 router.get('/members', requireAdmin, getMembers);
 router.get('/members/:id', requireAdmin, getMember);
-router.post('/members', requireAdmin, createMember);
-router.put('/members/:id', requireAdmin, updateMember);
+router.post('/members', requireAdmin, upload.single('profilePhoto'), createMember);
+router.put('/members/:id', requireAdmin, upload.single('profilePhoto'), updateMember);
 router.delete('/members/:id', requireAdmin, deleteMember);
 
 // ── Programs ─────────────────────────────────────────────────────────────────

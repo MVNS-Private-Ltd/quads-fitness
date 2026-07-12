@@ -23,6 +23,17 @@ const SITE_PAGES = [
 
 export default function CMSPage() {
   const [selectedPage, setSelectedPage] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+
+  const filteredPages = SITE_PAGES.filter(page => {
+    const matchesSearch = !searchQuery.trim() ||
+      page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      page.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      page.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = !statusFilter || page.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-6">
@@ -37,7 +48,10 @@ export default function CMSPage() {
       </div>
 
       <div className="bg-brand-surface2 border border-white/5 rounded-2xl p-6">
-        <TableFilterBar filters={[{ label: 'Status', options: ['Published', 'Draft'] }]} />
+        <TableFilterBar
+          onSearch={setSearchQuery}
+          filters={[{ label: 'Status', options: ['Published', 'Draft'], onChange: (e) => setStatusFilter(e.target.value) }]}
+        />
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -51,7 +65,7 @@ export default function CMSPage() {
               </tr>
             </thead>
             <tbody>
-              {SITE_PAGES.map((page, idx) => (
+              {filteredPages.map((page, idx) => (
                 <motion.tr
                   key={page.id}
                   initial={{ opacity: 0, x: -10 }}
