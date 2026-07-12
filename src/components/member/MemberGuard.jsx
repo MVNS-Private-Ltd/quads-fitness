@@ -64,9 +64,12 @@ export default function MemberGuard({ children }) {
           await getMe();
         } catch (err) {
           console.error("Member verification error:", err);
-          if (isMounted) {
-            setStatus('not-found');
-            supabase.auth.signOut().catch(console.error);
+          // Only set status to not-found if it's explicitly a 403 from memberApi.js
+          // Generic network errors should just show an error state or remain authenticated.
+          if (err.message && err.message.includes('403')) {
+            if (isMounted) setStatus('not-found');
+          } else {
+            // Keep authenticated but maybe show a warning (currently we just ignore network errors to let them use the app if cached)
           }
         }
       } catch (outerErr) {
@@ -88,9 +91,10 @@ export default function MemberGuard({ children }) {
         if (isMounted) setStatus('authenticated');
         try {
           await getMe();
-        } catch {
-          if (isMounted) setStatus('not-found');
-          supabase.auth.signOut().catch(console.error);
+        } catch (err) {
+          if (err.message && err.message.includes('403')) {
+            if (isMounted) setStatus('not-found');
+          }
         }
       }
     });

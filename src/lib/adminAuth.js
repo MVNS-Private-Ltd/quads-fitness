@@ -68,9 +68,14 @@ export const verifyAdminSession = async () => {
   try {
     await verifyTokenWithBackend(session.access_token);
     return true;
-  } catch {
-    await supabase.auth.signOut();
-    return false;
+  } catch (err) {
+    // Only sign out if it's explicitly an auth error, to avoid logging out on network errors/cold starts
+    if (err.message && (err.message.includes('401') || err.message.includes('403') || err.message.includes('Admin access required'))) {
+      await supabase.auth.signOut();
+      return false;
+    }
+    // If it's a network error, we assume the token is still valid
+    return true;
   }
 };
 
