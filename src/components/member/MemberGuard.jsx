@@ -98,10 +98,17 @@ export default function MemberGuard({ children }) {
         }
       }
     });
+    
+    // Proactively refresh the session every 10 minutes while the tab is open
+    // to prevent the token from expiring if the user stays on the page
+    const interval = setInterval(() => {
+      supabase.auth.getSession().catch(console.error);
+    }, 10 * 60 * 1000);
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
+      clearInterval(interval);
     };
   }, []);
 
