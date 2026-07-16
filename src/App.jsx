@@ -55,6 +55,7 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
 const ChatBot = lazy(() => import('./components/ChatBot'))
 const CookieBanner = lazy(() => import('./components/CookieBanner'))
 const WhatsAppButton = lazy(() => import('./components/WhatsAppButton'))
+const InstagramButton = lazy(() => import('./components/InstagramButton'))
 const PWAUpdatePrompt = lazy(() => import('./components/member/PWAUpdatePrompt'))
 
 export default function App() {
@@ -183,6 +184,7 @@ export default function App() {
       {!hidePublicNavbar && <Footer />}
       {!hidePublicNavbar && <ChatBot />}
       {!hidePublicNavbar && <CookieBanner />}
+      {!hidePublicNavbar && <InstagramButton />}
       {!hidePublicNavbar && <WhatsAppButton />}
     </div>
   )
