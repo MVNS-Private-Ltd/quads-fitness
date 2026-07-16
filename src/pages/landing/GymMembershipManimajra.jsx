@@ -7,15 +7,15 @@ import { useSettings } from '../../contexts/SettingsContext';
 const plans = [
   { name: '3 Months Plan', price: '₹2,800', per: '≈ ₹933/month', features: ['Full gym access', 'All equipment', 'Morning & evening slots', 'No joining fee'], highlight: false },
   { name: '13 Months Plan', price: '₹8,000', per: '≈ ₹615/month', features: ['Full gym access', 'All equipment', 'Priority slot booking', 'Best value long-term', 'No joining fee'], highlight: true },
-  { name: 'PT — 1 Month', price: '₹5,000', per: 'Full coaching cycle', features: ['1-on-1 personal trainer', 'Custom programme', 'Nutritional guidance', 'Progress tracking'], highlight: false },
-  { name: 'PT — 3 Months', price: '₹12,000', per: 'Full transformation', features: ['1-on-1 personal trainer', 'Progressive periodisation', 'Diet & recovery support', 'Monthly assessments'], highlight: false },
+  { name: 'PT: 1 Month', price: '₹5,000', per: 'Full coaching cycle', features: ['1-on-1 personal trainer', 'Custom programme', 'Nutritional guidance', 'Progress tracking'], highlight: false },
+  { name: 'PT: 3 Months', price: '₹12,000', per: 'Full transformation', features: ['1-on-1 personal trainer', 'Progressive periodisation', 'Diet & recovery support', 'Monthly assessments'], highlight: false },
 ];
 
 const faqItems = [
-  { question: 'How much is gym membership in Manimajra?', answer: 'At Quads Fitness, gym membership starts at ₹2,800 for 3 months. Our 13-month plan at ₹8,000 works out to just ₹615/month — the best value premium membership in Manimajra.' },
+  { question: 'How much is gym membership in Manimajra?', answer: 'At Quads Fitness, gym membership starts at ₹2,800 for 3 months. Our 13-month plan at ₹8,000 works out to just ₹615/month, the best value premium membership in Manimajra.' },
   { question: 'Are there any joining fees or hidden charges?', answer: 'No joining fees, no registration charges, no hidden costs. The price you see is the price you pay.' },
-  { question: 'Can I upgrade my membership plan later?', answer: 'Yes — contact our front desk at any time to discuss upgrading your plan or adding personal training to your existing membership.' },
-  { question: 'Does the membership include access to all equipment?', answer: 'All memberships include full access to our complete equipment floor — free weights, machines, cables, and cardio zones — during all open hours.' },
+  { question: 'Can I upgrade my membership plan later?', answer: 'Yes. Contact our front desk at any time to discuss upgrading your plan or adding personal training to your existing membership.' },
+  { question: 'Does the membership include access to all equipment?', answer: 'All memberships include full access to our complete equipment floor: free weights, machines, cables, and cardio zones, during all open hours.' },
 ];
 
 export default function GymMembershipManimajra() {
@@ -98,9 +98,9 @@ export default function GymMembershipManimajra() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               { title: 'Zero Hidden Fees', body: 'The price you see is what you pay. No registration fees, no towel fees, no locker fees.' },
-              { title: 'Premium Equipment Included', body: 'Full access to every piece of equipment on our floor — free weights, machines, cables, cardio.' },
-              { title: 'Flexible Timings', body: 'Two session windows daily: 5AM–10AM and 11AM–9PM. Train when it works for your schedule.' },
-              { title: 'Real Coaching', body: 'Our trained staff are on the floor during all hours to answer questions and correct form — included at no extra cost.' },
+              { title: 'Premium Equipment Included', body: 'Full access to every piece of equipment on our floor: free weights, machines, cables, cardio.' },
+              { title: 'Flexible Timings', body: 'Two session windows daily: 5AM-10AM and 11AM-9PM. Train when it works for your schedule.' },
+              { title: 'Real Coaching', body: 'Our trained staff are on the floor during all hours to answer questions and correct form, included at no extra cost.' },
             ].map(item => (
               <div key={item.title} className="flex gap-4 p-6 bg-brand-surface2 border border-white/5">
                 <span className="text-brand-gold text-xl font-bold shrink-0">→</span>

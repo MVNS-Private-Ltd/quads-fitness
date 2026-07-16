@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { buildApiUrl } from '../lib/apiBase'
 
 const faqs = [
-  { q: "What are your timings?", a: "We're open Mon–Sat: 5 AM – 10 PM and Evening: 11 AM – 9 PM. We are closed on Sundays. 💪" },
+  { q: "What are your timings?", a: "" },
   { q: "Do you offer a free trial?", a: "Yes! Your first class is absolutely FREE. Just walk in or WhatsApp us to book your slot. 🎉" },
   { q: "What programs do you offer?", a: "We offer Strength Training, HIIT, Yoga, Zumba, CrossFit, Boxing, and Personal Training. 🏋️" },
   { q: "Monthly membership price?", a: "Plans start from ₹999/month. We also have 3-month and yearly packages with great discounts! 📋" },
@@ -47,13 +47,19 @@ export default function ChatBot() {
     Promise.all([
       fetch(buildApiUrl('programs')).then(r => r.ok ? r.json() : []),
       fetch(buildApiUrl('plans')).then(r => r.ok ? r.json() : []),
-      fetch(buildApiUrl('trainers')).then(r => r.ok ? r.json() : [])
-    ]).then(([programs, plans, trainers]) => {
+      fetch(buildApiUrl('trainers')).then(r => r.ok ? r.json() : []),
+      fetch(buildApiUrl('settings')).then(r => r.ok ? r.json() : {})
+    ]).then(([programs, plans, trainers, gymSettings]) => {
+      const mondayHours = gymSettings?.mondayHours || 'Contact us for current schedule';
+      const saturdayHours = gymSettings?.saturdayHours || mondayHours;
+      const sundayHours = gymSettings?.sundayHours || 'Closed';
       const contextStr = `
 Programs: ${JSON.stringify(programs)}
 Plans: ${JSON.stringify(plans)}
 Trainers: ${JSON.stringify(trainers)}
-Timings: Morning 5 AM-10 AM, Evening 11 AM-9 PM. Sunday Closed.
+Gym Timings (Mon–Fri): ${mondayHours}
+Gym Timings (Saturday): ${saturdayHours}
+Gym Timings (Sunday): ${sundayHours}
 `;
       const fullPrompt = BASE_SYSTEM_PROMPT + contextStr;
       setSystemPrompt(fullPrompt);

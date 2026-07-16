@@ -14,12 +14,14 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
 };
 
-const faqItems = [
-  { question: "What are the gym timings?", answer: "We are open Morning: 5:00 AM – 10:00 AM and Evening: 11:00 AM – 9:00 PM, six days a week (Closed on Sunday). No matter your schedule, there is no excuse not to show up." },
-  { question: "What membership plans are available?", answer: "We offer a 3 Months Plan, a 13 Months Plan, and dedicated Personal Training packages for 1 and 3 months — designed for every level of commitment." },
-  { question: "Do you offer personal training?", answer: "Yes. Our certified coaches provide 1-on-1 personal training tailored to your goals — whether that is building strength, losing weight, or transforming your body from the ground up." },
+const buildFaqItems = (mondayHours) => [
+  { question: "What are the gym timings?", answer: mondayHours
+      ? `We are open ${mondayHours}, six days a week (Closed on Sunday). No matter your schedule, there is no excuse not to show up.`
+      : "We are open six days a week (Closed on Sunday). Contact us for today's schedule." },
+  { question: "What membership plans are available?", answer: "We offer a 3 Months Plan, a 13 Months Plan, and dedicated Personal Training packages for 1 and 3 months, designed for every level of commitment." },
+  { question: "Do you offer personal training?", answer: "Yes. Our certified coaches provide 1-on-1 personal training tailored to your goals: whether that is building strength, losing weight, or transforming your body from the ground up." },
   { question: "Where is Quads Fitness located?", answer: "Quads Fitness is located at Manimajra near Shivalik Garden, Police Station Shubhash Nagar, Manimajra. Contact us or view the map on our Contact page for exact directions." },
-  { question: "How much does gym membership cost in Manimajra?", answer: "Our memberships start at ₹2,800 for 3 months — the best value for a serious training facility in Manimajra." }
+  { question: "How much does gym membership cost in Manimajra?", answer: "Our memberships start at ₹2,800 for 3 months, the best value for a serious training facility in Manimajra." }
 ];
 
 export default function HomePage() {
@@ -35,6 +37,8 @@ export default function HomePage() {
   const averageRating = reviews.length > 0 
     ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) 
     : null;
+
+  const faqItems = buildFaqItems(settings?.mondayHours);
 
   return (
     <PageTransition>
@@ -62,10 +66,10 @@ export default function HomePage() {
           </div>
           <div className="lg:col-span-7 space-y-6 border-l border-white/5 pl-0 lg:pl-8">
             <p className="text-white/70 font-body text-base leading-relaxed">
-              Quads Fitness is the <strong>best gym in Manimajra</strong> for people who are serious about changing. We cut out everything that doesn't build you up. What remains is pure work — heavy iron, honest coaching, and a culture where progress is the only goal.
+              Quads Fitness is the <strong>best gym in Manimajra</strong> for people who are serious about changing. We cut out everything that doesn't build you up. What remains is pure work: heavy iron, honest coaching, and a culture where progress is the only goal.
             </p>
             <p className="text-white/70 font-body text-base leading-relaxed">
-              Whether you're looking for a premier <strong>fitness centre in Manimajra</strong> or a high-intensity <strong>gym near me Manimajra</strong>, our facility gives you everything you need to move forward — and nothing that holds you back.
+              Whether you're looking for a premier <strong>fitness centre in Manimajra</strong> or simply the most serious training facility in the area, our gym gives you everything you need to move forward. Nothing holds you back.
             </p>
             <div className="flex gap-4 pt-4">
               <Link to="/about" className="btn-aggressive bg-gradient-to-r from-brand-orange to-brand-gold text-brand-dark font-accent font-bold uppercase tracking-widest px-6 py-3 rounded-none shadow-glow-gold">
@@ -227,7 +231,7 @@ export default function HomePage() {
       {/* Final CTA */}
       <section className="py-24 px-6 bg-gradient-to-t from-brand-orange/10 to-transparent border-t border-white/5 text-center">
         <h2 className="text-4xl md:text-5xl font-display text-white uppercase mb-6">The best gym in <span className="text-gradient">Manimajra</span> is waiting for you</h2>
-        <p className="text-white/60 mb-10 max-w-xl mx-auto">Every champion started exactly where you are. Stop waiting for the right moment. Devote your heart — and begin.</p>
+        <p className="text-white/60 mb-10 max-w-xl mx-auto">Every champion started exactly where you are. Stop waiting for the right moment. Devote your heart and begin.</p>
         <Link to="/programs" className="btn-aggressive bg-brand-orange text-white font-accent font-bold uppercase tracking-widest px-10 py-5 text-lg shadow-glow-gold">
           Start Your Transformation
         </Link>

@@ -150,7 +150,7 @@ export default function ContactPage() {
                         </span>
                       </div>
                     )}
-                    <p className="text-[10px] font-accent text-white/30 pt-1">Mon – Sat &nbsp;|&nbsp; Closed on Sundays</p>
+
                   </div>
                 </div>
               </div>
@@ -218,9 +218,9 @@ export default function ContactPage() {
                   onChange={set('subject')}
                   className="w-full bg-brand-dark/80 border border-white/10 px-4 py-3 text-sm text-white/80 focus:outline-none focus:border-brand-orange transition-colors rounded-none font-accent tracking-wider appearance-none cursor-pointer"
                 >
-                  <option value="hypertrophy">BUILD MUSCLE — STRENGTH TRAINING</option>
-                  <option value="athleticism">ATHLETIC PERFORMANCE — SPEED & POWER</option>
-                  <option value="combat">FAT LOSS — CONDITIONING</option>
+                  <option value="hypertrophy">BUILD MUSCLE: STRENGTH TRAINING</option>
+                  <option value="athleticism">ATHLETIC PERFORMANCE: SPEED & POWER</option>
+                  <option value="combat">FAT LOSS: CONDITIONING</option>
                   <option value="transformation">FULL BODY TRANSFORMATION</option>
                 </select>
               </div>
@@ -239,7 +239,7 @@ export default function ContactPage() {
 
               {success && (
                 <div className="text-green-400 text-xs font-accent bg-green-500/10 border border-green-500/20 px-4 py-3 uppercase tracking-widest">
-                  ✓ Message received — we will respond within 24 hours.
+                  ✓ Message received. We will respond within 24 hours.
                 </div>
               )}
               {error && (

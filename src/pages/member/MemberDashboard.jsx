@@ -408,7 +408,7 @@ export default function MemberDashboard() {
             </div>
             <div className="mt-6 p-3 bg-brand-gold/10 rounded-xl border border-brand-gold/20 flex items-start gap-3">
               <Smartphone size={18} className="text-brand-gold flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-brand-gold/90 leading-snug">After installing, scan the QR code to check in instantly — no login needed!</p>
+              <p className="text-xs text-brand-gold/90 leading-snug">After installing, scan the QR code to check in instantly. No login needed!</p>
             </div>
           </div>
         </div>

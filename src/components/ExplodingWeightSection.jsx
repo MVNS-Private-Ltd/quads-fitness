@@ -4,6 +4,7 @@ import { Float, Sparkles, PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
 import { FaBolt, FaCrosshairs, FaShieldAlt, FaDumbbell, FaUsers, FaCalendarAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { useSettings } from '../contexts/SettingsContext'
 
 // --- CACHED GEOMETRIES & MATERIALS ---
 const plateGeo1 = new THREE.CylinderGeometry(1, 1, 1, 24, 1, false)
@@ -132,6 +133,7 @@ export default function ExplodingWeightSection() {
   const sectionRef = useRef(null);
   const progressRef = useRef(0);
   const [htmlProgress, setHtmlProgress] = useState(0);
+  const { settings } = useSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -230,7 +232,7 @@ export default function ExplodingWeightSection() {
                   <FaBolt className="text-brand-orange text-2xl shrink-0 mt-1" />
                   <div>
                     <h4 className="text-white font-display tracking-wider mb-1">STRENGTH BUILDING</h4>
-                    <p className="text-white/60 text-xs font-body leading-relaxed">Those who hesitate die weak. Our progressive overload system forges muscle that doesn't lie — earned set by set, rep by rep, session by session.</p>
+                    <p className="text-white/60 text-xs font-body leading-relaxed">Those who hesitate die weak. Our progressive overload system forges muscle that doesn't lie: earned set by set, rep by rep, session by session.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -264,7 +266,7 @@ export default function ExplodingWeightSection() {
                   <FaDumbbell className="text-brand-orange text-2xl shrink-0" />
                   <div>
                     <h3 className="text-white font-display tracking-wider mb-1">Elite Equipment</h3>
-                    <p className="text-white/60 text-xs font-body leading-relaxed">A soldier does not go to battle with broken weapons. Our facility is loaded with premium iron — because your effort deserves tools worthy of it.</p>
+                    <p className="text-white/60 text-xs font-body leading-relaxed">A soldier does not go to battle with broken weapons. Our facility is loaded with premium iron, because your effort deserves tools worthy of it.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
@@ -291,14 +293,14 @@ export default function ExplodingWeightSection() {
                   <FaShieldAlt className="text-brand-orange text-2xl shrink-0" />
                   <div>
                     <h3 className="text-white font-display tracking-wider mb-1">A Brotherhood That Pushes Back</h3>
-                    <p className="text-white/60 text-xs font-body leading-relaxed">The greatest soldiers never fight alone. At Quads, you train among people who understand sacrifice — who will push you when your own will falters.</p>
+                    <p className="text-white/60 text-xs font-body leading-relaxed">The greatest soldiers never fight alone. At Quads, you train among people who understand sacrifice. They will push you when your own will falters.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
                   <FaCalendarAlt className="text-brand-gold text-2xl shrink-0" />
                   <div>
                     <h3 className="text-white font-display tracking-wider mb-1">No Rest for the Devoted</h3>
-                    <p className="text-white/60 text-xs font-body leading-relaxed">Morning: 5 AM – 10 AM. Evening: 11 AM – 9 PM. Six days a week. The doors are open. The only question is whether you will walk through them.</p>
+                    <p className="text-white/60 text-xs font-body leading-relaxed">{settings?.mondayHours || 'Contact us for current schedule'}. Six days a week. The doors are open. The only question is whether you will walk through them.</p>
                   </div>
                 </div>
               </div>

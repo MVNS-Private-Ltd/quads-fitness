@@ -194,7 +194,7 @@ export default function MemberAttendancePage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-between px-6 py-4 border-t border-brand-gray/10">
                 <p className="text-brand-gray text-sm">
-                  Page {page} of {totalPages} — {attendance.length} total visits
+                  Page {page} of {totalPages}. {attendance.length} total visits
                 </p>
                 <div className="flex gap-2">
                   <button

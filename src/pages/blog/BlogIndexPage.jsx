@@ -51,7 +51,7 @@ export default function BlogIndexPage() {
     <PageTransition>
       <SEO
         title="Fitness Blog | Gym Tips & Guides | Quads Fitness Manimajra"
-        description="Expert gym tips, fitness guides, and membership advice from Quads Fitness — Manimajra's best gym. Read our latest articles and join today."
+        description="Expert gym tips, fitness guides, and membership advice from Quads Fitness, Manimajra's best gym. Read our latest articles and join today."
         keywords="fitness blog Manimajra, gym tips Manimajra, personal training guide, gym membership advice"
         url="/blog"
         breadcrumbs={[{ name: 'Blog', url: '/blog' }]}
@@ -71,7 +71,7 @@ export default function BlogIndexPage() {
           </motion.h1>
           <div className="hazard-line mb-6" />
           <p className="text-white/55 font-body text-base max-w-2xl">
-            Real advice from Manimajra's most results-focused gym. No fluff — just actionable fitness knowledge to help you train smarter.
+            Real advice from Manimajra's most results-focused gym. No fluff. Just actionable fitness knowledge to help you train smarter.
           </p>
         </div>
       </section>

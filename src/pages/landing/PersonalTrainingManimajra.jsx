@@ -7,7 +7,7 @@ import { useSettings } from '../../contexts/SettingsContext';
 const faqItems = [
   { question: 'How much does personal training cost in Manimajra?', answer: 'At Quads Fitness, personal training starts at ₹5,000 for one month and ₹12,000 for three months, with fully personalised programming included.' },
   { question: 'How often will I train with my personal trainer?', answer: 'Typically 3–5 sessions per week, depending on your goals and recovery. Your trainer will design the optimal schedule for you.' },
-  { question: 'Do personal trainers at Quads Fitness design diet plans?', answer: 'Yes — our coaches provide nutritional guidelines alongside your training programme to maximise your results.' },
+  { question: 'Do personal trainers at Quads Fitness design diet plans?', answer: 'Yes. Our coaches provide nutritional guidelines alongside your training programme to maximise your results.' },
   { question: 'Can beginners sign up for personal training in Manimajra?', answer: 'Absolutely. Our personal trainers work with all levels, from complete beginners to competitive athletes.' },
 ];
 
@@ -43,7 +43,7 @@ export default function PersonalTrainingManimajra() {
             </motion.h1>
             <div className="hazard-line mb-6" />
             <p className="text-white/65 font-body text-lg leading-relaxed mb-8">
-              Stop guessing. Start progressing. Our certified personal trainers in Manimajra build programmes around your body, your goals, and your schedule — delivering real, measurable results in the fastest possible timeframe.
+              Stop guessing. Start progressing. Our certified personal trainers in Manimajra build programmes around your body, your goals, and your schedule, delivering real, measurable results in the fastest possible timeframe.
             </p>
             <div className="flex flex-wrap gap-4">
               <a href={whatsappHref} target="_blank" rel="noopener noreferrer"
@@ -82,10 +82,10 @@ export default function PersonalTrainingManimajra() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: 'Custom Programming', body: 'Every workout is designed for your specific goals, movement patterns, and recovery capacity — not a generic template.' },
+              { title: 'Custom Programming', body: 'Every workout is designed for your specific goals, movement patterns, and recovery capacity, not a generic template.' },
               { title: 'Injury Prevention', body: 'Your trainer corrects form in real time, eliminating the bad habits that lead to joint pain and long-term injury.' },
               { title: 'Faster Results', body: 'Structured periodisation and regular load progressions mean you progress systematically rather than randomly.' },
-              { title: 'Nutritional Guidance', body: 'Complementary dietary frameworks tailored to support your training — whether you are losing fat, building muscle, or both.' },
+              { title: 'Nutritional Guidance', body: 'Complementary dietary frameworks tailored to support your training, whether you are losing fat, building muscle, or both.' },
               { title: 'Full Accountability', body: 'Booked sessions create commitment. Your trainer also checks in between sessions to support your adherence.' },
               { title: 'Expert Knowledge', body: 'Our Manimajra-based coaches hold recognised certifications and stay current with evidence-based training methods.' },
             ].map((b) => (

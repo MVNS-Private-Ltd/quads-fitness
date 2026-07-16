@@ -199,9 +199,9 @@ model Settings {
   metaTitle       String @default("Quads Fitness - Train Hard. Live Strong.")
   metaDescription String @default("Premium fitness center offering elite training programs, nutrition coaching, and a supportive community.")
   heroTitle       String @default("FORGE YOUR BEST BODY EVER")
-  heroSubtitle    String @default("Chandigarh's most results-driven training facility. Certified coaches, heavy iron, and a culture built on discipline — for those who refuse to stop moving forward.")
+  heroSubtitle    String @default("Chandigarh's most results-driven training facility. Certified coaches, heavy iron, and a culture built on discipline for those who refuse to stop moving forward.")
   aboutTitle      String @default("MORE THAN JUST A GYM")
-  aboutSubtitle   String @default("We built this place for people who still show up when it hurts. No excuses, no shortcuts. Quads Fitness is where courage meets the barbell — and where ordinary people discover what they are truly made of.")
+  aboutSubtitle   String @default("We built this place for people who still show up when it hurts. No excuses, no shortcuts. Quads Fitness is where courage meets the barbell and where ordinary people discover what they are truly made of.")
   updatedAt       DateTime @updatedAt
 }
 

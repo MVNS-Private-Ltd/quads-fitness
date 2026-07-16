@@ -172,7 +172,7 @@ export default function PWAInstallPrompt() {
 
               <div className="mt-6 p-3 bg-brand-gold/10 border border-brand-gold/20 rounded-xl">
                 <p className="text-brand-gold text-xs text-center font-medium">
-                  📱 After installing, scan the QR code to check in instantly — no login needed!
+                  📱 After installing, scan the QR code to check in instantly. No login needed!
                 </p>
               </div>
             </motion.div>

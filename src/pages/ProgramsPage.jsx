@@ -241,7 +241,7 @@ export default function ProgramsPage() {
                 'Available for men, women & senior citizens',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-white/70 font-body">
-                  <span className="text-brand-orange font-bold">—</span> {item}
+                  <span className="text-brand-orange font-bold">›</span> {item}
                 </li>
               ))}
             </ul>
@@ -258,8 +258,8 @@ export default function ProgramsPage() {
           </div>
           <div className="space-y-4">
             {[
-              { plan: 'Personal Trainer — 1 Month', price: '₹5,000', desc: 'Ideal for rapid kickstart and goal-setting. Full 1-month coaching cycle.' },
-              { plan: 'Personal Trainer — 3 Months', price: '₹12,000', desc: 'Deep-dive programme for sustained strength gain and body recomposition over 3 months.' },
+              { plan: 'Personal Trainer: 1 Month', price: '₹5,000', desc: 'Ideal for rapid kickstart and goal-setting. Full 1-month coaching cycle.' },
+              { plan: 'Personal Trainer: 3 Months', price: '₹12,000', desc: 'Deep-dive programme for sustained strength gain and body recomposition over 3 months.' },
             ].map((item) => (
               <div key={item.plan} className="combat-plate p-8 rounded-none border border-white/10">
                 <div className="flex justify-between items-start mb-3">
@@ -272,7 +272,7 @@ export default function ProgramsPage() {
             <div className="bg-brand-orange/5 border border-brand-orange/20 p-6 rounded-none">
               <p className="text-white/60 font-body text-xs leading-relaxed">
                 <strong className="text-brand-gold uppercase tracking-widest text-[10px] block mb-2">GYM TIMINGS</strong>
-                Morning: 5:00 AM – 10:00 AM &nbsp;|&nbsp; Evening: 11:00 AM – 9:00 PM<br />
+                {settings?.mondayHours || 'Contact us for current schedule'}<br />
                 Personal Training sessions can be scheduled during any open slot.
               </p>
             </div>

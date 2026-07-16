@@ -5,7 +5,7 @@ import SEO from '../../components/SEO';
 import { useSettings } from '../../contexts/SettingsContext';
 
 const faqItems = [
-  { question: 'Can I lose weight by joining a gym in Manimajra?', answer: 'Yes — a structured combination of resistance training, cardio, and proper nutrition at Quads Fitness in Manimajra is one of the most effective approaches to sustainable fat loss.' },
+  { question: 'Can I lose weight by joining a gym in Manimajra?', answer: 'Yes. A structured combination of resistance training, cardio, and proper nutrition at Quads Fitness in Manimajra is one of the most effective approaches to sustainable fat loss.' },
   { question: 'How long does it take to see weight loss results at the gym?', answer: 'Most members notice visible changes in 6–8 weeks with consistent training 4 days per week and a caloric deficit. Your personal trainer will set realistic milestones.' },
   { question: 'Is cardio or weightlifting better for weight loss?', answer: 'Both have a role. Resistance training builds muscle that increases your resting metabolism, while cardio burns additional calories. A combined approach at Quads Fitness delivers the best fat loss results.' },
   { question: 'Do you offer diet plans alongside gym membership for weight loss?', answer: 'Our personal trainers provide nutritional frameworks and guidance as part of personal training packages. For medical-grade diet planning, we recommend consulting a registered dietitian.' },
@@ -43,7 +43,7 @@ export default function WeightLossGymManimajra() {
           </motion.h1>
           <div className="hazard-line max-w-xs mx-auto mb-6" />
           <p className="text-white/65 font-body text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-            Real fat loss requires more than running on a treadmill. Quads Fitness in Manimajra delivers structured, science-backed weight loss programmes that preserve muscle while stripping fat — permanently.
+            Real fat loss requires more than running on a treadmill. Quads Fitness in Manimajra delivers structured, science-backed weight loss programmes that preserve muscle while stripping fat, permanently.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href={whatsappHref} target="_blank" rel="noopener noreferrer"
@@ -70,7 +70,7 @@ export default function WeightLossGymManimajra() {
               { step: '02', title: 'Custom Fat-Loss Programme', body: 'A periodised resistance + cardio programme calibrated to your caloric needs and schedule — never a generic template.' },
               { step: '03', title: 'Nutritional Framework', body: 'Practical dietary guidance focused on protein targets, caloric deficit management, and sustainable eating habits.' },
               { step: '04', title: 'Progressive Overload', body: 'Your programme evolves every 4 weeks to prevent adaptation plateaus and keep your metabolism responding.' },
-              { step: '05', title: 'Cardio Integration', body: 'Strategic cardio programming — LISS, HIIT, or hybrid — selected based on your recovery capacity and timeline.' },
+              { step: '05', title: 'Cardio Integration', body: 'Strategic cardio programming (LISS, HIIT, or hybrid) selected based on your recovery capacity and timeline.' },
               { step: '06', title: 'Monthly Progress Reviews', body: 'Regular check-ins track body composition changes and adjust the programme to keep you on target.' },
             ].map(item => (
               <div key={item.step} className="combat-plate p-8 rounded-none">
@@ -90,8 +90,8 @@ export default function WeightLossGymManimajra() {
           <p className="text-white/50 font-body text-sm mb-12 max-w-xl mx-auto">For best results, we recommend personal training. But all memberships give you access to our structured group programming and floor coaching.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
             {[
-              { name: 'Personal Training — 1 Month', price: '₹5,000', ideal: 'Ideal for: kickstarting fat loss with expert guidance', features: ['Custom fat-loss programme', '1-on-1 sessions', 'Cardio & strength balanced', 'Nutritional guidance', 'Weekly progress check'] },
-              { name: 'Personal Training — 3 Months', price: '₹12,000', ideal: 'Ideal for: complete body recomposition over 12 weeks', features: ['3-phase progressive programme', 'Monthly body composition review', 'Full diet framework', 'HIIT & LISS cardio planning', 'Lifestyle habit coaching'] },
+              { name: 'Personal Training: 1 Month', price: '₹5,000', ideal: 'Ideal for: kickstarting fat loss with expert guidance', features: ['Custom fat-loss programme', '1-on-1 sessions', 'Cardio & strength balanced', 'Nutritional guidance', 'Weekly progress check'] },
+              { name: 'Personal Training: 3 Months', price: '₹12,000', ideal: 'Ideal for: complete body recomposition over 12 weeks', features: ['3-phase progressive programme', 'Monthly body composition review', 'Full diet framework', 'HIIT & LISS cardio planning', 'Lifestyle habit coaching'] },
             ].map(plan => (
               <div key={plan.name} className="combat-plate p-8 border border-white/10 rounded-none">
                 <h3 className="text-xl font-display text-white uppercase tracking-wide mb-1">{plan.name}</h3>
