@@ -61,7 +61,7 @@ export default function ProgramsPage() {
     <PageTransition>
       <SEO 
         title="Gym Programs & Membership Plans | Quads Fitness" 
-        description="Explore our training programs and membership plans in Manimajra. Hypertrophy, strength, and personal training — built for people who are serious about results." 
+        description="Explore our training programs and membership plans in Manimajra. Hypertrophy, strength, and personal training built for people who are serious about results." 
         url="/programs" 
       />
       {/* Cinematic Industrial Header */}
@@ -85,7 +85,7 @@ export default function ProgramsPage() {
           </motion.h1>
           <div className="hazard-line mb-6"></div>
           <p className="text-white/55 font-body text-base max-w-2xl leading-relaxed">
-            Manimajra's most results-focused training programmes — from 3-month strength cycles to 13-month full transformations, and 1-on-1 <strong className="text-white/80">personal training in Manimajra</strong>. Choose your path. Commit to it.
+            Manimajra's most results-focused training programmes: from 3-month strength cycles to 13-month full transformations, and 1-on-1 <strong className="text-white/80">personal training in Manimajra</strong>. Choose your path. Commit to it.
           </p>
         </div>
       </section>
@@ -228,7 +228,7 @@ export default function ProgramsPage() {
             </h2>
             <div className="hazard-line mb-6"></div>
             <p className="text-white/65 font-body text-base leading-relaxed mb-4">
-              Our certified personal trainers in Manimajra build programs completely around you — your schedule, your goals, your current level. Every session is purposeful. Nothing is wasted.
+              Our certified personal trainers in Manimajra build programs completely around you: your schedule, your goals, your current level. Every session is purposeful. Nothing is wasted.
             </p>
             <p className="text-white/65 font-body text-base leading-relaxed mb-8">
               Whether you are starting from zero or pushing past a plateau, our 1-month and 3-month personal training programmes are structured to deliver real, measurable results. You will know exactly how far you have come.

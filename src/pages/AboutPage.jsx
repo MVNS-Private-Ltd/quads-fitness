@@ -30,7 +30,7 @@ export default function AboutPage() {
           </motion.h1>
           <div className="hazard-line mb-8"></div>
           <p className="text-white/60 font-body text-base max-w-2xl leading-relaxed">
-            We built this place for people who still show up when it hurts. No excuses, no shortcuts. Quads Fitness is where courage meets the barbell — and where ordinary people discover what they are truly made of.
+            We built this place for people who still show up when it hurts. No excuses, no shortcuts. Quads Fitness is where courage meets the barbell, and where ordinary people discover what they are truly made of.
           </p>
         </div>
       </section>
@@ -49,7 +49,7 @@ export default function AboutPage() {
               <FaDumbbell className="text-2xl text-brand-orange mb-6" />
               <h3 className="text-2xl font-display text-white uppercase tracking-wider mb-3">ELITE EQUIPMENT</h3>
               <p className="text-white/50 font-body text-xs leading-relaxed">
-                Every machine, every rack, every barbell on our floor was chosen for one reason — to help you get stronger. No distractions. Just iron and intention.
+                Every machine, every rack, every barbell on our floor was chosen for one reason: to help you get stronger. No distractions. Just iron and intention.
               </p>
             </div>
           </motion.div>
@@ -59,7 +59,7 @@ export default function AboutPage() {
               <FaUsers className="text-2xl text-brand-gold mb-6" />
               <h3 className="text-2xl font-display text-white uppercase tracking-wider mb-3">DEDICATED COACHES</h3>
               <p className="text-white/50 font-body text-xs leading-relaxed">
-                Our trainers are certified professionals who specialise in building programs around you — your goals, your limits, your timeline. They don't give up when you want to.
+                Our trainers are certified professionals who specialise in building programs around you: your goals, your limits, your timeline. They don't give up when you want to.
               </p>
             </div>
           </motion.div>
@@ -69,7 +69,7 @@ export default function AboutPage() {
               <FaMedal className="text-2xl text-brand-orange mb-6" />
               <h3 className="text-2xl font-display text-white uppercase tracking-wider mb-3">REAL PROGRESS TRACKING</h3>
               <p className="text-white/50 font-body text-xs leading-relaxed">
-                We remove guesswork entirely. Your progress is tracked, measured, and adjusted every step of the way — because moving forward requires knowing where you stand.
+                We remove guesswork entirely. Your progress is tracked, measured, and adjusted every step of the way, because moving forward requires knowing where you stand.
               </p>
             </div>
           </motion.div>
