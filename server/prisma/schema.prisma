@@ -14,7 +14,7 @@ model Member {
   id               Int           @id @default(autoincrement())
   userId           String?       @unique // Supabase Auth UUID (optional/new)
   name             String
-  email            String        @unique
+  email            String?       @unique
   phone            String?
   age              Int?
   gender           String?

@@ -46,7 +46,7 @@ export const createMember = async (req, res) => {
       age, gender, emergencyContact, healthNotes, membershipExpiry, joinedAt 
     } = req.body;
 
-    if (!name || !email) return res.status(400).json({ error: 'Name and email are required' });
+    if (!name) return res.status(400).json({ error: 'Name is required' });
     if (!phone) return res.status(400).json({ error: 'Phone is required' });
     if (!gender) return res.status(400).json({ error: 'Gender is required' });
     if (!age) return res.status(400).json({ error: 'Age is required' });
@@ -54,15 +54,17 @@ export const createMember = async (req, res) => {
     if (!joinedAt) return res.status(400).json({ error: 'Membership start date is required' });
     if (!membershipExpiry) return res.status(400).json({ error: 'Membership expiry date is required' });
 
-    // Provision Supabase Auth account
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password: 'Welcome123!',
-      email_confirm: true
-    });
+    // Provision Supabase Auth account only if email is provided
+    if (email) {
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password: 'Welcome123!',
+        email_confirm: true
+      });
 
-    if (authError && !authError.message.toLowerCase().includes('already')) {
-      return res.status(400).json({ error: 'Failed to create auth user: ' + authError.message });
+      if (authError && !authError.message.toLowerCase().includes('already')) {
+        return res.status(400).json({ error: 'Failed to create auth user: ' + authError.message });
+      }
     }
 
     // Upload profile photo if provided
@@ -71,7 +73,7 @@ export const createMember = async (req, res) => {
     const member = await prisma.member.create({ 
       data: { 
         name, 
-        email, 
+        email: email || null, 
         phone, 
         age: Number(age),
         gender,
@@ -107,7 +109,7 @@ export const updateMember = async (req, res) => {
       where: { id: Number(req.params.id) },
       data: {
         name,
-        email,
+        email: email || null,
         phone,
         age: age ? Number(age) : undefined,
         gender,

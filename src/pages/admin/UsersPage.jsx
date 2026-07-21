@@ -170,7 +170,6 @@ export default function UsersPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) { setError('Name is required.'); return; }
-    if (!form.email.trim()) { setError('Email is required.'); return; }
     if (!form.phone.trim()) { setError('Phone number is required.'); return; }
     if (!form.age) { setError('Age is required.'); return; }
     if (!form.gender) { setError('Gender is required.'); return; }
@@ -363,7 +362,7 @@ export default function UsersPage() {
           <FormField label="Full Name" required>
             <input className={inputCls} value={form.name} onChange={set('name')} placeholder="e.g. Rahul Sharma" />
           </FormField>
-          <FormField label="Email Address" required>
+          <FormField label="Email Address">
             <input type="email" className={inputCls} value={form.email} onChange={set('email')} placeholder="rahul@email.com" />
           </FormField>
         </div>
