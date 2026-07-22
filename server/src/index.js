@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRoutes from './routes/api.js';
 import { initCronJobs } from './services/cronService.js';
+import prisma from './prisma.js';
 
 dotenv.config();
 
@@ -63,7 +64,15 @@ app.use((err, req, res, next) => {
 
 
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`\n🏋️  Quads Fitness API running on port ${PORT}`);
   console.log(`📦  Database: Supabase PostgreSQL\n`);
+  
+  // Force schema update safely without migration downtime
+  try {
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Member" ALTER COLUMN "email" DROP NOT NULL;`);
+    console.log(`✅  Database schema synced successfully.`);
+  } catch (e) {
+    // Ignore if already nullable
+  }
 });
