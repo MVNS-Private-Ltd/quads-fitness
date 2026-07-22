@@ -46,13 +46,7 @@ export const createMember = async (req, res) => {
       age, gender, emergencyContact, healthNotes, membershipExpiry, joinedAt 
     } = req.body;
 
-    if (!name) return res.status(400).json({ error: 'Name is required' });
-    if (!phone) return res.status(400).json({ error: 'Phone is required' });
-    if (!gender) return res.status(400).json({ error: 'Gender is required' });
-    if (!age) return res.status(400).json({ error: 'Age is required' });
-    if (!planId) return res.status(400).json({ error: 'Membership plan is required' });
-    if (!joinedAt) return res.status(400).json({ error: 'Membership start date is required' });
-    if (!membershipExpiry) return res.status(400).json({ error: 'Membership expiry date is required' });
+    const finalName = name || 'Unnamed Member';
 
     // Provision Supabase Auth account only if email is provided
     if (email) {
@@ -72,19 +66,19 @@ export const createMember = async (req, res) => {
 
     const member = await prisma.member.create({ 
       data: { 
-        name, 
+        name: finalName, 
         email: email || null, 
-        phone, 
-        age: Number(age),
-        gender,
-        emergencyContact,
-        healthNotes,
+        phone: phone || null, 
+        age: age ? Number(age) : null,
+        gender: gender || null,
+        emergencyContact: emergencyContact || null,
+        healthNotes: healthNotes || null,
         profilePhoto,
-        membershipExpiry: new Date(membershipExpiry),
-        joinedAt: new Date(joinedAt),
-        planId: Number(planId), 
+        membershipExpiry: membershipExpiry ? new Date(membershipExpiry) : null,
+        joinedAt: joinedAt ? new Date(joinedAt) : new Date(),
+        planId: planId ? Number(planId) : null, 
         trainerId: trainerId ? Number(trainerId) : null,
-        status 
+        status: status || 'Active' 
       } 
     });
     await log('Added Member', `${name} registered`, 'Member', member.id);
@@ -108,11 +102,11 @@ export const updateMember = async (req, res) => {
     const member = await prisma.member.update({
       where: { id: Number(req.params.id) },
       data: {
-        name,
+        name: name || undefined,
         email: email || null,
-        phone,
-        age: age ? Number(age) : undefined,
-        gender,
+        phone: phone || null,
+        age: age ? Number(age) : null,
+        gender: gender || null,
         emergencyContact,
         healthNotes,
         fitnessGoals,

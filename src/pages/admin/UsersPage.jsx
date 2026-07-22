@@ -173,17 +173,8 @@ export default function UsersPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim()) { setError('Name is required.'); return; }
-    if (!form.phone.trim()) { setError('Phone number is required.'); return; }
-    if (!form.age) { setError('Age is required.'); return; }
-    if (!form.gender) { setError('Gender is required.'); return; }
-    if (!form.planId) { setError('Membership plan is required.'); return; }
-    if (form.planId === 'custom') {
-      if (!form.customPrice) { setError('Custom price is required.'); return; }
-      if (!form.customMonths) { setError('Custom duration is required.'); return; }
-    }
-    if (!form.joinedAt) { setError('Start date is required.'); return; }
-    if (!form.membershipExpiry) { setError('Expiry date is required.'); return; }
+    setSubmitting(true);
+    setError('');
 
     setSubmitting(true);
     setError('');
@@ -191,8 +182,8 @@ export default function UsersPage() {
       let finalPlanId = form.planId;
       if (finalPlanId === 'custom') {
         const newPlan = await createPlan({
-          name: `Custom Plan (${form.customMonths} Months)`,
-          price: Number(form.customPrice),
+          name: `Custom Plan (${form.customMonths || 1} Months)`,
+          price: Number(form.customPrice || 0),
           billing: 'custom',
           status: 'Draft',
           features: JSON.stringify([])
@@ -387,7 +378,7 @@ export default function UsersPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField label="Full Name" required>
+          <FormField label="Full Name">
             <input className={inputCls} value={form.name} onChange={set('name')} placeholder="e.g. Rahul Sharma" />
           </FormField>
           <FormField label="Email Address">
@@ -395,13 +386,13 @@ export default function UsersPage() {
           </FormField>
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <FormField label="Phone" required>
+          <FormField label="Phone">
             <input className={inputCls} value={form.phone} onChange={set('phone')} placeholder="+91 98765 43210" />
           </FormField>
-          <FormField label="Age" required>
+          <FormField label="Age">
             <input type="number" className={inputCls} value={form.age} onChange={set('age')} placeholder="25" />
           </FormField>
-          <FormField label="Gender" required>
+          <FormField label="Gender">
             <select className={selectCls} value={form.gender} onChange={set('gender')}>
               <option value="">Select</option>
               <option value="Male">Male</option>
@@ -411,7 +402,7 @@ export default function UsersPage() {
           </FormField>
         </div>
         
-        <FormField label="Membership Plan" required>
+        <FormField label="Membership Plan">
           <select className={selectCls} value={form.planId} onChange={set('planId')}>
             <option value="">Select Plan...</option>
             {plans.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -421,10 +412,10 @@ export default function UsersPage() {
 
         {form.planId === 'custom' && (
           <div className="grid grid-cols-2 gap-4">
-            <FormField label="Custom Price (₹)" required>
+            <FormField label="Custom Price (₹)">
               <input type="number" className={inputCls} value={form.customPrice} onChange={set('customPrice')} placeholder="e.g. 5000" />
             </FormField>
-            <FormField label="Duration (Months)" required>
+            <FormField label="Duration (Months)">
               <input type="number" className={inputCls} value={form.customMonths} onChange={set('customMonths')} placeholder="e.g. 3" />
             </FormField>
           </div>
