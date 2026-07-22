@@ -7,7 +7,7 @@ import {
   inputCls, selectCls
 } from '../../components/admin/SharedAdminUI';
 import { FiUsers, FiPlus, FiEdit2, FiTrash2, FiEye, FiRefreshCw, FiCamera } from 'react-icons/fi';
-import { getMembers, createMember, updateMember, deleteMember, getTrainers, getPlans } from '../../services/api';
+import { getMembers, createMember, updateMember, deleteMember, getTrainers, getPlans, createPlan } from '../../services/api';
 import MemberProfileDrawer from '../../components/admin/MemberProfileDrawer';
 
 const pageVariants = {
@@ -22,6 +22,8 @@ const EMPTY_FORM = {
   phone: '', 
   status: 'Active', 
   planId: '', 
+  customPrice: '',
+  customMonths: '',
   age: '',
   gender: '',
   joinedAt: new Date().toISOString().split('T')[0],
@@ -105,6 +107,8 @@ export default function UsersPage() {
       phone: user.phone || '', 
       status: user.status || 'Active',
       planId: user.planId || '',
+      customPrice: '',
+      customMonths: '',
       age: user.age || '',
       gender: user.gender || '',
       joinedAt: user.joinedAt ? new Date(user.joinedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
@@ -174,15 +178,35 @@ export default function UsersPage() {
     if (!form.age) { setError('Age is required.'); return; }
     if (!form.gender) { setError('Gender is required.'); return; }
     if (!form.planId) { setError('Membership plan is required.'); return; }
+    if (form.planId === 'custom') {
+      if (!form.customPrice) { setError('Custom price is required.'); return; }
+      if (!form.customMonths) { setError('Custom duration is required.'); return; }
+    }
     if (!form.joinedAt) { setError('Start date is required.'); return; }
     if (!form.membershipExpiry) { setError('Expiry date is required.'); return; }
 
     setSubmitting(true);
     setError('');
     try {
+      let finalPlanId = form.planId;
+      if (finalPlanId === 'custom') {
+        const newPlan = await createPlan({
+          name: `Custom Plan (${form.customMonths} Months)`,
+          price: Number(form.customPrice),
+          billing: 'custom',
+          status: 'Draft',
+          features: JSON.stringify([])
+        });
+        finalPlanId = newPlan.id;
+      }
+
       // Build FormData to support photo upload
       const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => { if (v !== '' && v !== null && v !== undefined) fd.append(k, v); });
+      Object.entries(form).forEach(([k, v]) => { 
+        if (k === 'customPrice' || k === 'customMonths' || k === 'planId') return;
+        if (v !== '' && v !== null && v !== undefined) fd.append(k, v); 
+      });
+      fd.append('planId', finalPlanId);
       if (photoFile) fd.append('profilePhoto', photoFile);
 
       if (editTarget) { await updateMember(editTarget.id, fd); }
@@ -216,7 +240,7 @@ export default function UsersPage() {
       const newForm = { ...f, [field]: value };
       
       // Auto-calculate expiry date when plan changes
-      if (field === 'planId' && value && newForm.joinedAt) {
+      if (field === 'planId' && value && value !== 'custom' && newForm.joinedAt) {
         const plan = plans.find(p => p.id === Number(value));
         if (plan) {
           const startDate = new Date(newForm.joinedAt);
@@ -232,6 +256,10 @@ export default function UsersPage() {
           startDate.setMonth(startDate.getMonth() + monthsToAdd);
           newForm.membershipExpiry = startDate.toISOString().split('T')[0];
         }
+      } else if (field === 'customMonths' && value && newForm.joinedAt) {
+        const startDate = new Date(newForm.joinedAt);
+        startDate.setMonth(startDate.getMonth() + Number(value));
+        newForm.membershipExpiry = startDate.toISOString().split('T')[0];
       }
       return newForm;
     });
@@ -387,8 +415,20 @@ export default function UsersPage() {
           <select className={selectCls} value={form.planId} onChange={set('planId')}>
             <option value="">Select Plan...</option>
             {plans.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+            <option value="custom">Custom Plan</option>
           </select>
         </FormField>
+
+        {form.planId === 'custom' && (
+          <div className="grid grid-cols-2 gap-4">
+            <FormField label="Custom Price (₹)" required>
+              <input type="number" className={inputCls} value={form.customPrice} onChange={set('customPrice')} placeholder="e.g. 5000" />
+            </FormField>
+            <FormField label="Duration (Months)" required>
+              <input type="number" className={inputCls} value={form.customMonths} onChange={set('customMonths')} placeholder="e.g. 3" />
+            </FormField>
+          </div>
+        )}
 
         {form.joinedAt && form.membershipExpiry && form.planId && (
           <div className="bg-brand-dark/50 border border-brand-gold/10 p-3 rounded-lg flex justify-between text-sm text-brand-muted">

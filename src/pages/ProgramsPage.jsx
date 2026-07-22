@@ -147,7 +147,7 @@ export default function ProgramsPage() {
       {/* Heavy Duty Pricing Grid */}
       <section className="py-24 px-6 border-t border-white/5 bg-brand-dark">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16">
+//////////////////          <div className="mb-16">
 
             <h2 className="text-4xl md:text-5xl font-display text-white uppercase tracking-wide">MEMBERSHIP TIERS</h2>
           </div>
