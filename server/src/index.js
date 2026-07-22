@@ -68,11 +68,32 @@ app.listen(PORT, '0.0.0.0', async () => {
   console.log(`\n🏋️  Quads Fitness API running on port ${PORT}`);
   console.log(`📦  Database: Supabase PostgreSQL\n`);
   
-  // Force schema update safely without migration downtime
+  // Force email to be nullable (safe no-op if already nullable)
   try {
     await prisma.$executeRawUnsafe(`ALTER TABLE "Member" ALTER COLUMN "email" DROP NOT NULL;`);
     console.log(`✅  Database schema synced successfully.`);
   } catch (e) {
-    // Ignore if already nullable
+    // Already nullable — ignore
+  }
+
+  // Ensure the 1 Month Plan at ₹1000 exists
+  try {
+    const existing = await prisma.plan.findFirst({ where: { name: '1 Month Plan' } });
+    if (!existing) {
+      await prisma.plan.create({
+        data: {
+          name: '1 Month Plan',
+          price: 1000,
+          billing: '1 month',
+          description: 'Standard 1-month gym membership.',
+          features: JSON.stringify(['Full Gym Access', 'Locker Room', 'Free Wi-Fi', 'Basic Guidance']),
+          status: 'Active',
+          featured: false,
+        }
+      });
+      console.log(`✅  1 Month Plan (₹1000) added to database.`);
+    }
+  } catch (e) {
+    console.error('Could not insert 1 Month Plan:', e.message);
   }
 });
