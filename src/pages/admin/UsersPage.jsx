@@ -430,18 +430,19 @@ export default function UsersPage() {
         </FormField>
 
         {form.planId === 'custom' && (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <FormField label="Custom Price (₹)">
               <input type="number" className={inputCls} value={form.customPrice} onChange={set('customPrice')} placeholder="e.g. 5000" />
             </FormField>
             <FormField label="Duration (Months)">
               <input type="number" className={inputCls} value={form.customMonths} onChange={set('customMonths')} placeholder="e.g. 3" />
             </FormField>
-            <FormField label="Start Date">
-              <input type="date" className={inputCls} value={form.joinedAt} onChange={set('joinedAt')} />
-            </FormField>
           </div>
         )}
+
+        <FormField label="Start Date">
+          <input type="date" className={inputCls} value={form.joinedAt} onChange={set('joinedAt')} />
+        </FormField>
 
         {form.joinedAt && form.membershipExpiry && form.planId && (
           <div className="bg-brand-dark/50 border border-brand-gold/10 p-3 rounded-lg flex justify-between text-sm text-brand-muted">
