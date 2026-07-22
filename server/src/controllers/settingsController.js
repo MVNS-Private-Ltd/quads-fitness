@@ -120,10 +120,19 @@ export const getStats = async (req, res) => {
           
           if (member.plan && member.plan.price) {
             let mrr = member.plan.price;
-            // Standardize yearly plans to monthly recurring revenue
-            if (member.plan.billing === 'year') {
+            
+            // Standardize plans to monthly recurring revenue
+            const billing = (member.plan.billing || '').toLowerCase();
+            if (billing === 'year') {
               mrr = member.plan.price / 12;
+            } else if (billing.includes('month') && billing !== '1 month') {
+              const months = parseInt(billing) || 1;
+              mrr = member.plan.price / months;
+            } else if (billing.includes('day')) {
+              const days = parseInt(billing) || 30;
+              mrr = (member.plan.price / days) * 30;
             }
+            
             monthBucket.revenue += mrr;
           }
         }
