@@ -230,7 +230,6 @@ export default function UsersPage() {
     setForm(f => {
       const newForm = { ...f, [field]: value };
       
-      // Auto-calculate expiry date when plan changes
       if (field === 'planId' && value && value !== 'custom' && newForm.joinedAt) {
         const plan = plans.find(p => p.id === Number(value));
         if (plan) {
@@ -251,6 +250,26 @@ export default function UsersPage() {
         const startDate = new Date(newForm.joinedAt);
         startDate.setMonth(startDate.getMonth() + Number(value));
         newForm.membershipExpiry = startDate.toISOString().split('T')[0];
+      } else if (field === 'joinedAt' && value) {
+        if (newForm.planId === 'custom' && newForm.customMonths) {
+          const startDate = new Date(value);
+          startDate.setMonth(startDate.getMonth() + Number(newForm.customMonths));
+          newForm.membershipExpiry = startDate.toISOString().split('T')[0];
+        } else if (newForm.planId && newForm.planId !== 'custom') {
+          const plan = plans.find(p => p.id === Number(newForm.planId));
+          if (plan) {
+            const startDate = new Date(value);
+            let monthsToAdd = 1;
+            const planNameLower = plan.name.toLowerCase();
+            if (planNameLower.includes('3 months')) monthsToAdd = 3;
+            if (planNameLower.includes('6 months')) monthsToAdd = 6;
+            if (planNameLower.includes('12 months') || planNameLower.includes('1 year')) monthsToAdd = 12;
+            if (planNameLower.includes('13 months')) monthsToAdd = 13;
+            if (planNameLower.includes('1 month')) monthsToAdd = 1;
+            startDate.setMonth(startDate.getMonth() + monthsToAdd);
+            newForm.membershipExpiry = startDate.toISOString().split('T')[0];
+          }
+        }
       }
       return newForm;
     });
@@ -411,12 +430,15 @@ export default function UsersPage() {
         </FormField>
 
         {form.planId === 'custom' && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <FormField label="Custom Price (₹)">
               <input type="number" className={inputCls} value={form.customPrice} onChange={set('customPrice')} placeholder="e.g. 5000" />
             </FormField>
             <FormField label="Duration (Months)">
               <input type="number" className={inputCls} value={form.customMonths} onChange={set('customMonths')} placeholder="e.g. 3" />
+            </FormField>
+            <FormField label="Start Date">
+              <input type="date" className={inputCls} value={form.joinedAt} onChange={set('joinedAt')} />
             </FormField>
           </div>
         )}
