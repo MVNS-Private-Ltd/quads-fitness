@@ -331,7 +331,7 @@ export default function MemberProgressPage() {
                     </div>
                     <div className="text-center">
                       <p className="text-brand-gray text-xs uppercase tracking-wider mb-0.5">BMI</p>
-                      <p className="text-white font-bold text-lg">{log.bmi || '—'}</p>
+                      <p className="text-white font-bold text-lg">{log.bmi ? Number(log.bmi).toFixed(2) : '—'}</p>
                       {log.bmi && (
                         <p className={`text-xs font-medium ${getBmiCategory(log.bmi).color}`}>
                           {getBmiCategory(log.bmi).label}
