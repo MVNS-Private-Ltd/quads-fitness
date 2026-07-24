@@ -55,11 +55,11 @@ export default function HomePage() {
       <Hero />
 
       {/* 2. Systems Briefing Teaser & About SEO Section */}
-      <section className="py-24 px-6 max-w-7xl mx-auto relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="py-16 md:py-24 px-6 max-w-7xl mx-auto relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-5">
 
-            <h2 className="text-4xl md:text-5xl font-display text-white uppercase tracking-tight leading-none mb-4">
+            <h2 className="text-3xl md:text-5xl font-display text-white uppercase tracking-tight leading-none mb-4">
               ABOUT QUADS <br /> <span className="text-gradient">FITNESS</span>
             </h2>
             <div className="hazard-line mb-6"></div>
@@ -81,23 +81,23 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-6 border-y border-white/5 bg-brand-surface2">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section className="py-12 md:py-16 px-6 border-y border-white/5 bg-brand-surface2">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
           <div>
-            <p className="text-4xl font-display text-brand-gold font-black mb-2">5,000+</p>
-            <p className="text-xs font-accent uppercase tracking-widest text-white/50">Members Trained</p>
+            <p className="text-3xl md:text-4xl font-display text-brand-gold font-black mb-2">5,000+</p>
+            <p className="text-[10px] md:text-xs font-accent uppercase tracking-widest text-white/50">Members Trained</p>
           </div>
           <div>
-            <p className="text-4xl font-display text-brand-gold font-black mb-2">12+</p>
-            <p className="text-xs font-accent uppercase tracking-widest text-white/50">Expert Trainers</p>
+            <p className="text-3xl md:text-4xl font-display text-brand-gold font-black mb-2">12+</p>
+            <p className="text-[10px] md:text-xs font-accent uppercase tracking-widest text-white/50">Expert Trainers</p>
           </div>
           <div>
-            <p className="text-4xl font-display text-brand-gold font-black mb-2">6</p>
-            <p className="text-xs font-accent uppercase tracking-widest text-white/50">Days A Week</p>
+            <p className="text-3xl md:text-4xl font-display text-brand-gold font-black mb-2">6</p>
+            <p className="text-[10px] md:text-xs font-accent uppercase tracking-widest text-white/50">Days A Week</p>
           </div>
           <div>
-            <p className="text-4xl font-display text-brand-gold font-black mb-2">10+</p>
-            <p className="text-xs font-accent uppercase tracking-widest text-white/50">Years Experience</p>
+            <p className="text-3xl md:text-4xl font-display text-brand-gold font-black mb-2">10+</p>
+            <p className="text-[10px] md:text-xs font-accent uppercase tracking-widest text-white/50">Years Experience</p>
           </div>
         </div>
       </section>
@@ -106,12 +106,12 @@ export default function HomePage() {
       <ExplodingWeightSection />
 
       {/* 4. Real Member Reviews (Dynamic) */}
-      <section className="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
+      <section className="py-16 md:py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-orange/[0.01] pointer-events-none"></div>
         <div className="relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
 
-            <h3 className="text-4xl md:text-5xl font-display text-white uppercase tracking-wider mb-2">VERIFIED <span className="text-gradient">TESTIMONIALS</span></h3>
+            <h3 className="text-3xl md:text-5xl font-display text-white uppercase tracking-wider mb-2">VERIFIED <span className="text-gradient">TESTIMONIALS</span></h3>
             {averageRating && (
               <div className="flex items-center justify-center gap-2 mb-6">
                 <span className="text-white font-bold">{averageRating} / 5.0</span>
@@ -171,10 +171,10 @@ export default function HomePage() {
       </section>
 
       {/* Location Section */}
-      <section className="py-24 px-6 border-t border-white/5 bg-brand-dark">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="py-16 md:py-24 px-6 border-t border-white/5 bg-brand-dark">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-display text-white uppercase mb-6">Our Location in <span className="text-brand-orange">Manimajra</span></h2>
+            <h2 className="text-3xl md:text-4xl font-display text-white uppercase mb-6">Our Location in <span className="text-brand-orange">Manimajra</span></h2>
             <p className="text-white/60 font-body mb-8">Located strategically in Manimajra, Quads Fitness provides a massive training floor easily accessible with ample parking. Come visit us during operating hours.</p>
             <div className="space-y-4">
               <div className="flex items-start gap-4 p-4 border border-white/10 bg-brand-surface2">
@@ -191,7 +191,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="h-96 bg-brand-surface2 border border-white/10 p-2">
+          <div className="h-64 lg:h-96 bg-brand-surface2 border border-white/10 p-2 mt-8 lg:mt-0">
             {/* Dark mode styled Google Map Embed */}
             {settings?.address ? (
               <iframe
@@ -210,9 +210,9 @@ export default function HomePage() {
       </section>
 
       {/* 5. Frequently Asked Questions (SEO) */}
-      <section className="py-24 px-6 border-t border-white/5 bg-brand-darker">
+      <section className="py-16 md:py-24 px-6 border-t border-white/5 bg-brand-darker">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
 
             <h3 className="text-3xl md:text-4xl font-display text-white uppercase tracking-wider mb-6">FREQUENTLY ASKED <span className="text-gradient">QUESTIONS</span></h3>
           </div>
@@ -229,10 +229,10 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-6 bg-gradient-to-t from-brand-orange/10 to-transparent border-t border-white/5 text-center">
-        <h2 className="text-4xl md:text-5xl font-display text-white uppercase mb-6">The best gym in <span className="text-gradient">Manimajra</span> is waiting for you</h2>
-        <p className="text-white/60 mb-10 max-w-xl mx-auto">Every champion started exactly where you are. Stop waiting for the right moment. Devote your heart and begin.</p>
-        <Link to="/programs" className="btn-aggressive bg-brand-orange text-white font-accent font-bold uppercase tracking-widest px-10 py-5 text-lg shadow-glow-gold">
+      <section className="py-16 md:py-24 px-6 bg-gradient-to-t from-brand-orange/10 to-transparent border-t border-white/5 text-center">
+        <h2 className="text-3xl md:text-5xl font-display text-white uppercase mb-6">The best gym in <span className="text-gradient">Manimajra</span> is waiting for you</h2>
+        <p className="text-white/60 mb-8 md:mb-10 max-w-xl mx-auto text-sm md:text-base">Every champion started exactly where you are. Stop waiting for the right moment. Devote your heart and begin.</p>
+        <Link to="/programs" className="btn-aggressive bg-brand-orange text-white font-accent font-bold uppercase tracking-widest px-8 md:px-10 py-4 md:py-5 text-base md:text-lg shadow-glow-gold">
           Start Your Transformation
         </Link>
       </section>

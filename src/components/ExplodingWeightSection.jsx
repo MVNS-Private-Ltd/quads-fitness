@@ -210,12 +210,12 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
             style={{ opacity: o1, transform: `translateY(${(1 - o1) * 20}px)` }}
           >
-            <div className="text-center translate-y-32">
-              <span className="text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-2">// FORWARD. ALWAYS FORWARD.</span>
-              <h2 className="text-3xl md:text-5xl font-display text-white uppercase tracking-wider max-w-2xl mx-auto">
+            <div className="text-center md:translate-y-32">
+              <span className="text-[10px] md:text-xs font-accent uppercase tracking-[0.3em] text-brand-orange block mb-2">// FORWARD. ALWAYS FORWARD.</span>
+              <h2 className="text-2xl md:text-5xl font-display text-white uppercase tracking-wider max-w-2xl mx-auto px-4">
                 Sacrifice Now. <span className="text-brand-orange">Rise Forever.</span>
               </h2>
-              <p className="text-white/50 mt-4 text-sm uppercase tracking-widest">Scroll Down To Begin</p>
+              <p className="text-white/50 mt-4 text-xs md:text-sm uppercase tracking-widest">Scroll Down To Begin</p>
             </div>
           </div>
 
@@ -224,9 +224,9 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o2, transform: `translateY(${(1 - o2) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
-              <span className="text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// THE PATH FORWARD</span>
-              <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">Your Mission, Chosen</h2>
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-6 md:p-8 pointer-events-auto">
+              <span className="text-[10px] md:text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// THE PATH FORWARD</span>
+              <h2 className="text-2xl md:text-3xl font-display text-white uppercase tracking-wider mb-4 md:mb-6">Your Mission, Chosen</h2>
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <FaBolt className="text-brand-orange text-2xl shrink-0 mt-1" />
@@ -258,9 +258,9 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o3, transform: `translateY(${(1 - o3) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-brand-orange/20 p-8 shadow-[0_0_30px_rgba(255,107,0,0.1)] pointer-events-auto">
-              <span className="text-xs font-accent tracking-widest text-brand-orange uppercase block mb-1">// PREPARE FOR WAR</span>
-              <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">The Arsenal</h2>
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-brand-orange/20 p-6 md:p-8 shadow-[0_0_30px_rgba(255,107,0,0.1)] pointer-events-auto">
+              <span className="text-[10px] md:text-xs font-accent tracking-widest text-brand-orange uppercase block mb-1">// PREPARE FOR WAR</span>
+              <h2 className="text-2xl md:text-3xl font-display text-white uppercase tracking-wider mb-4 md:mb-6">The Arsenal</h2>
               <div className="space-y-6">
                 <div className="flex gap-4 items-start">
                   <FaDumbbell className="text-brand-orange text-2xl shrink-0" />
@@ -285,9 +285,9 @@ export default function ExplodingWeightSection() {
             className="absolute inset-0 flex items-center justify-end px-6 lg:px-24 transition-opacity duration-300"
             style={{ opacity: o4, transform: `translateY(${(1 - o4) * 20}px)` }}
           >
-            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-8 pointer-events-auto">
-              <span className="text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// WHERE CHAMPIONS ARE MADE</span>
-              <h2 className="text-3xl font-display text-white uppercase tracking-wider mb-6">The Environment</h2>
+            <div className="w-full md:w-1/2 lg:w-5/12 bg-black/95 backdrop-blur-md border border-white/10 p-6 md:p-8 pointer-events-auto">
+              <span className="text-[10px] md:text-xs font-accent tracking-widest text-brand-gold uppercase block mb-1">// WHERE CHAMPIONS ARE MADE</span>
+              <h2 className="text-2xl md:text-3xl font-display text-white uppercase tracking-wider mb-4 md:mb-6">The Environment</h2>
               <div className="space-y-6">
                 <div className="flex gap-4 items-start">
                   <FaShieldAlt className="text-brand-orange text-2xl shrink-0" />

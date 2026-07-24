@@ -52,20 +52,20 @@ export default function Hero() {
       </div>
 
       {/* content */}
-      <div className="relative z-20 min-h-screen max-w-7xl mx-auto px-6 pt-36 pb-12 flex items-center">
-        <div className="w-full max-w-3xl flex flex-col gap-10">
+      <div className="relative z-20 min-h-screen max-w-7xl mx-auto px-6 pt-32 pb-12 flex items-center">
+        <div className="w-full max-w-3xl flex flex-col gap-6 md:gap-10">
 
-          <h1 className="fade-in-up hero-d0 font-display text-[clamp(3.5rem,8.5vw,7.5rem)] leading-[0.95] tracking-tight uppercase text-white">
+          <h1 className="fade-in-up hero-d0 font-display text-[clamp(2.75rem,8vw,7.5rem)] leading-[0.95] tracking-tight uppercase text-white">
             {heroTitle}
           </h1>
 
           {heroSubtitle && (
-            <p className="fade-in-up hero-d1 text-white/65 text-base md:text-lg leading-relaxed max-w-xl font-body">
+            <p className="fade-in-up hero-d1 text-white/65 text-sm md:text-lg leading-relaxed max-w-xl font-body">
               {heroSubtitle}
             </p>
           )}
 
-          <div className="fade-in-up hero-d2 flex flex-wrap gap-6 mt-2">
+          <div className="fade-in-up hero-d2 flex flex-wrap gap-4 md:gap-6 mt-2">
             {whatsappHref && (
               <a
                 href={whatsappHref}
@@ -94,14 +94,14 @@ export default function Hero() {
             </div>
           )}
 
-          <div className="fade-in-up hero-d4 flex flex-wrap gap-8 pt-6 border-t border-white/10 mt-4 max-w-xl">
+          <div className="fade-in-up hero-d4 flex flex-wrap gap-4 md:gap-8 pt-6 border-t border-white/10 mt-4 max-w-xl">
             {[
               { val: '480+', label: 'Lives Transformed' },
               { val: '15+', label: 'Expert Coaches' },
               { val: '100%', label: 'Commitment Required' }
             ].map((s) => (
               <div key={s.label}>
-                <p className="font-display text-2xl md:text-3xl text-brand-orange tracking-tight">
+                <p className="font-display text-xl md:text-3xl text-brand-orange tracking-tight">
                   {s.val}
                 </p>
                 <p className="text-white/40 text-[10px] font-accent uppercase tracking-widest mt-1">

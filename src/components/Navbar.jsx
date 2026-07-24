@@ -132,14 +132,15 @@ export default function Navbar() {
           open ? 'max-h-[100vh] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-            <ul className="px-6 flex flex-col items-center justify-center h-[80vh] gap-8">
+            <ul className="px-6 flex flex-col items-center justify-center h-[80vh] gap-6">
               {navLinks.map(link => {
                 const isActive = location.pathname === link.path;
                 return (
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className={`block font-heading text-2xl tracking-widest uppercase transition-colors duration-200 ${
+                      onClick={() => setOpen(false)}
+                      className={`block font-heading text-xl tracking-widest uppercase transition-colors duration-200 ${
                         isActive ? 'text-brand-gold' : 'text-white/80 hover:text-white'
                       }`}
                     >
