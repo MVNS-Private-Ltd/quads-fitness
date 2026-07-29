@@ -1,6 +1,6 @@
 const trimTrailingSlash = (value) => value.replace(/\/+$/, '');
 
-const railwayFallback = 'https://quads-fitness-production.up.railway.app';
+const railwayFallback = 'https://quads-fitness.onrender.com';
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() || railwayFallback;
 
 export const hasConfiguredApiBaseUrl = Boolean(configuredApiBaseUrl);
