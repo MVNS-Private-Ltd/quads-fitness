@@ -70,17 +70,18 @@ model Plan {
 
 // ─── TRAINERS ─────────────────────────────────────────────────────────────────
 model Trainer {
-  id          Int      @id @default(autoincrement())
-  name        String
-  specialty   String?
-  bio         String?
-  imageUrl    String?
-  instagram   String?
-  status      String   @default("Active") // Active | Inactive
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  members     Member[]
+  id             Int      @id @default(autoincrement())
+  name           String
+  specialty      String?
+  bio            String?
+  imageUrl       String?
+  imagePosition  Int      @default(50)  // vertical focal point 0-100 (top to bottom)
+  instagram      String?
+  status         String   @default("Active") // Active | Inactive
+  featured       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  members        Member[]
 }
 
 // ─── DIET PLANS ───────────────────────────────────────────────────────────────

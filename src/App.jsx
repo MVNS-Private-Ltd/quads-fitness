@@ -99,7 +99,7 @@ export default function App() {
   return (
     <div className="bg-brand-darker min-h-screen bg-noise flex flex-col">
       <ScrollToTop />
-      <PWAUpdatePrompt />
+      <Suspense fallback={null}><PWAUpdatePrompt /></Suspense>
       {!hidePublicNavbar && <Navbar />}
 
       <main className={(isAdminRoute || (isMemberRoute && !isLoginPage)) && !isLoginPage ? "flex-grow flex flex-col h-screen overflow-hidden" : "flex-grow"}>
@@ -182,10 +182,10 @@ export default function App() {
       </main>
 
       {!hidePublicNavbar && <Footer />}
-      {!hidePublicNavbar && <ChatBot />}
-      {!hidePublicNavbar && <CookieBanner />}
-      {!hidePublicNavbar && <InstagramButton />}
-      {!hidePublicNavbar && <WhatsAppButton />}
+      {!hidePublicNavbar && <Suspense fallback={null}><ChatBot /></Suspense>}
+      {!hidePublicNavbar && <Suspense fallback={null}><CookieBanner /></Suspense>}
+      {!hidePublicNavbar && <Suspense fallback={null}><InstagramButton /></Suspense>}
+      {!hidePublicNavbar && <Suspense fallback={null}><WhatsAppButton /></Suspense>}
     </div>
   )
 }

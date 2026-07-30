@@ -14,7 +14,7 @@ const pageVariants = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.2, ease: 'easeIn' } }
 };
 
-const EMPTY_FORM = { name: '', specialty: '', bio: '', instagram: '', status: 'Active', featured: false, image: null };
+const EMPTY_FORM = { name: '', specialty: '', bio: '', instagram: '', status: 'Active', featured: false, image: null, imagePosition: 50 };
 
 export default function TrainersPage() {
   const [selectedTrainer, setSelectedTrainer] = useState(null);
@@ -67,7 +67,8 @@ export default function TrainersPage() {
       instagram: trainer.instagram || '',
       status: trainer.status || 'Active',
       featured: !!trainer.featured,
-      image: null
+      image: null,
+      imagePosition: trainer.imagePosition ?? 50
     });
     setError('');
     setModalOpen(true);
@@ -256,6 +257,59 @@ export default function TrainersPage() {
         <FormField label="Profile Image">
           <input type="file" className={inputCls} onChange={set('image')} accept="image/*" />
         </FormField>
+        {/* Image Position Slider — shown when trainer has an existing image */}
+        {(editTarget?.imageUrl || form.image) && (
+          <FormField label="Photo Focal Point (drag to reframe)">
+            <div className="space-y-3">
+              <div
+                className="relative w-full h-48 overflow-hidden rounded-xl border border-white/10 bg-brand-dark cursor-ns-resize select-none"
+                onMouseDown={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const move = (ev) => {
+                    const y = Math.max(0, Math.min(1, (ev.clientY - rect.top) / rect.height));
+                    setForm(f => ({ ...f, imagePosition: Math.round(y * 100) }));
+                  };
+                  const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+                  window.addEventListener('mousemove', move);
+                  window.addEventListener('mouseup', up);
+                }}
+                onTouchStart={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const move = (ev) => {
+                    const touch = ev.touches[0];
+                    const y = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+                    setForm(f => ({ ...f, imagePosition: Math.round(y * 100) }));
+                  };
+                  const up = () => { window.removeEventListener('touchmove', move); window.removeEventListener('touchend', up); };
+                  window.addEventListener('touchmove', move);
+                  window.addEventListener('touchend', up);
+                }}
+              >
+                <img
+                  src={form.image ? URL.createObjectURL(form.image) : editTarget?.imageUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover pointer-events-none"
+                  style={{ objectPosition: `center ${form.imagePosition}%` }}
+                />
+                {/* Focus line indicator */}
+                <div
+                  className="absolute left-0 right-0 h-0.5 bg-brand-orange/80 pointer-events-none transition-all duration-75"
+                  style={{ top: `${form.imagePosition}%` }}
+                />
+                <div className="absolute inset-0 flex items-end justify-center pb-2 pointer-events-none">
+                  <span className="text-[10px] text-white/60 bg-black/50 px-2 py-0.5 rounded-full">↕ Drag to reframe</span>
+                </div>
+              </div>
+              <input
+                type="range" min="0" max="100"
+                value={form.imagePosition}
+                onChange={(e) => setForm(f => ({ ...f, imagePosition: Number(e.target.value) }))}
+                className="w-full accent-brand-orange"
+              />
+              <p className="text-xs text-brand-muted text-center">Position: {form.imagePosition}% from top</p>
+            </div>
+          </FormField>
+        )}
         <FormField label="Specialty">
           <input className={inputCls} value={form.specialty} onChange={set('specialty')} placeholder="e.g. Strength & Conditioning" />
         </FormField>

@@ -18,19 +18,20 @@ export const getTrainer = async (req, res) => {
 };
 
 export const createTrainer = async (req, res) => {
-  const { name, specialty, bio, instagram, status, featured } = req.body;
+  const { name, specialty, bio, instagram, status, featured, imagePosition } = req.body;
   if (!name) return res.status(400).json({ error: 'Name is required' });
   const imageUrl = req.file ? await uploadToSupabase(req.file) : null;
-  const trainer = await prisma.trainer.create({ data: { name, specialty, bio, imageUrl, instagram, status, featured: featured === true || featured === 'true' } });
+  const trainer = await prisma.trainer.create({ data: { name, specialty, bio, imageUrl, instagram, status, featured: featured === true || featured === 'true', imagePosition: imagePosition !== undefined ? parseInt(imagePosition, 10) : 50 } });
   await log('Added Trainer', `${name} joined the team`, 'Trainer', trainer.id);
   res.status(201).json(trainer);
 };
 
 export const updateTrainer = async (req, res) => {
-  const { name, specialty, bio, instagram, status, featured } = req.body;
+  const { name, specialty, bio, instagram, status, featured, imagePosition } = req.body;
   const imageUrl = req.file ? await uploadToSupabase(req.file) : undefined;
   const data = { name, specialty, bio, instagram, status, featured: featured === true || featured === 'true' };
   if (imageUrl) data.imageUrl = imageUrl;
+  if (imagePosition !== undefined) data.imagePosition = parseInt(imagePosition, 10);
   const trainer = await prisma.trainer.update({ where: { id: Number(req.params.id) }, data });
   await log('Updated Trainer', `${name} profile updated`, 'Trainer', trainer.id);
   res.json(trainer);

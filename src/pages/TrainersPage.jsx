@@ -79,7 +79,7 @@ export default function TrainersPage() {
                 >
                   <div className="relative h-80 overflow-hidden bg-brand-darker">
                     {imgUrl ? (
-                      <img src={imgUrl} alt={`${trainer.name} - Personal Trainer at Quads Fitness, Manimajra`} loading="lazy" className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity hover:mix-blend-normal" />
+                      <img src={imgUrl} alt={`${trainer.name} - Personal Trainer at Quads Fitness, Manimajra`} loading="lazy" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity hover:mix-blend-normal" style={{ objectPosition: `center ${trainer.imagePosition ?? 50}%` }} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-brand-muted font-display text-4xl opacity-20 uppercase tracking-widest">{trainer.name?.charAt(0) || 'T'}</div>
                     )}
