@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "npx prisma db push && npx prisma generate",
     "build": "npx prisma db push && npx prisma generate",
-    "start": "node src/index.js",
+    "start": "npx prisma db push && node src/index.js",
     "dev": "node --watch src/index.js",
     "migrate": "npx prisma migrate dev --name init",
     "studio": "npx prisma studio",
