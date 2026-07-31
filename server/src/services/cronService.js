@@ -89,8 +89,8 @@ export const initCronJobs = () => {
 
   console.log('[CRON] Daily membership check job scheduled.');
 
-  // Keep-alive cron job to prevent Render from spinning down (runs every 14 minutes)
-  cron.schedule('*/14 * * * *', async () => {
+  // Keep-alive cron job to prevent Render from spinning down (runs every 5 minutes)
+  cron.schedule('*/5 * * * *', async () => {
     try {
       const url = process.env.RENDER_EXTERNAL_URL || 'https://quads-fitness.onrender.com/';
       await fetch(url);
@@ -99,5 +99,5 @@ export const initCronJobs = () => {
       console.error('[CRON] Keep-alive ping failed:', err.message);
     }
   });
-  console.log('[CRON] Keep-alive job scheduled (every 14 minutes).');
+  console.log('[CRON] Keep-alive job scheduled (every 5 minutes).');
 };
