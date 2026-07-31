@@ -8,8 +8,8 @@
     "node": ">=20.19.0"
   },
   "scripts": {
-    "postinstall": "npx prisma db push && npx prisma generate",
-    "build": "npx prisma db push && npx prisma generate",
+    "postinstall": "npx prisma generate",
+    "build": "npx prisma generate",
     "start": "npx prisma db push && node src/index.js",
     "dev": "node --watch src/index.js",
     "migrate": "npx prisma migrate dev --name init",
