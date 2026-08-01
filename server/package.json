@@ -9,8 +9,8 @@
   },
   "scripts": {
     "postinstall": "npx prisma generate",
-    "build": "npx prisma generate",
-    "start": "npx prisma db push && node src/index.js",
+    "build": "npx prisma generate && npx prisma db push --accept-data-loss",
+    "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "migrate": "npx prisma migrate dev --name init",
     "studio": "npx prisma studio",
