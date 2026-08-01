@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSave, FiUpload, FiX } from 'react-icons/fi';
 import { getSettings, updateSettings } from '../../services/api';
+import { useSettings } from '../../contexts/SettingsContext';
 import BrandLogo from '../../components/BrandLogo';
 
 const pageVariants = {
@@ -11,6 +12,7 @@ const pageVariants = {
 };
 
 export default function SettingsPage() {
+  const { setSettings: setGlobalSettings } = useSettings();
   const [activeTab, setActiveTab] = useState('general');
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -71,6 +73,7 @@ export default function SettingsPage() {
         updated = await updateSettings(dataToSave);
       }
       setSettings(updated);
+      setGlobalSettings(updated);  // ← propagate to all consumers (Navbar, favicon, etc.)
       clearLogoFile();
       alert('Settings saved successfully!');
     } catch (err) {

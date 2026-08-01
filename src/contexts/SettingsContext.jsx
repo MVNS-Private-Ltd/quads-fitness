@@ -39,6 +39,23 @@ export function SettingsProvider({ children }) {
     };
   }, []);
 
+  // Dynamically update the favicon + apple-touch-icon whenever logoUrl changes
+  useEffect(() => {
+    const logoUrl = settings?.logoUrl;
+    if (!logoUrl) return;
+
+    // Update all favicon/icon link tags
+    const selectors = [
+      'link[rel="icon"]',
+      'link[rel="apple-touch-icon"]',
+    ];
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.setAttribute('href', logoUrl);
+      });
+    });
+  }, [settings?.logoUrl]);
+
   return (
     <SettingsContext.Provider value={{ settings, setSettings, loading, error }}>
       {children}
@@ -47,3 +64,4 @@ export function SettingsProvider({ children }) {
 }
 
 export const useSettings = () => useContext(SettingsContext);
+
