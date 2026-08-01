@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FiSave, FiUpload } from 'react-icons/fi';
-import { getSettings, updateSettings } from '../../services/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiSave, FiUpload, FiImage, FiX, FiCheck } from 'react-icons/fi';
+import { getSettings, updateSettings, getGallery } from '../../services/api';
 import BrandLogo from '../../components/BrandLogo';
 
 const pageVariants = {
@@ -14,6 +14,29 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('general');
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+
+  const openGalleryPicker = async () => {
+    setGalleryOpen(true);
+    if (galleryImages.length === 0) {
+      setGalleryLoading(true);
+      try {
+        const data = await getGallery();
+        setGalleryImages(Array.isArray(data) ? data : data.items || []);
+      } catch (e) {
+        console.error('Failed to load gallery', e);
+      } finally {
+        setGalleryLoading(false);
+      }
+    }
+  };
+
+  const pickFromGallery = (imageUrl) => {
+    setSettings(prev => ({ ...prev, logoUrl: imageUrl }));
+    setGalleryOpen(false);
+  };
 
   useEffect(() => {
     getSettings().then(setSettings).catch(console.error);
@@ -131,10 +154,102 @@ export default function SettingsPage() {
                   <BrandLogo settings={settings} className="w-24 h-24 bg-brand-dark rounded-xl border border-white/10 p-2" alt="Logo" />
                   <div className="flex-1">
                     <input type="text" name="logoUrl" value={settings.logoUrl || ''} onChange={handleChange} placeholder="/logo.png" className="w-full bg-brand-dark border border-white/10 rounded-xl px-4 py-3 text-white focus:border-brand-gold focus:outline-none mb-2" />
-                    <p className="text-brand-muted text-xs">Enter full URL or relative path.</p>
+                    <div className="flex items-center gap-3">
+                      <p className="text-brand-muted text-xs">Enter full URL or relative path.</p>
+                      <button
+                        type="button"
+                        onClick={openGalleryPicker}
+                        className="flex items-center gap-1.5 text-xs text-brand-gold hover:text-white border border-brand-gold/30 hover:border-brand-gold/60 bg-brand-gold/5 hover:bg-brand-gold/10 px-3 py-1.5 rounded-lg transition-all"
+                      >
+                        <FiImage size={12} />
+                        Pick from Gallery
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* Gallery Picker Modal */}
+              <AnimatePresence>
+                {galleryOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                    style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
+                    onClick={() => setGalleryOpen(false)}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.95, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.95, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="bg-brand-surface2 border border-white/10 rounded-2xl w-full max-w-3xl max-h-[80vh] flex flex-col shadow-2xl"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      {/* Modal Header */}
+                      <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                        <div>
+                          <h3 className="text-white font-heading font-semibold">Pick from Gallery</h3>
+                          <p className="text-brand-muted text-xs mt-0.5">Click an image to use it as your logo</p>
+                        </div>
+                        <button onClick={() => setGalleryOpen(false)} className="text-brand-muted hover:text-white transition-colors p-1">
+                          <FiX size={20} />
+                        </button>
+                      </div>
+
+                      {/* Modal Body */}
+                      <div className="overflow-y-auto flex-1 p-6">
+                        {galleryLoading ? (
+                          <div className="flex items-center justify-center h-40 text-brand-muted">
+                            <div className="animate-spin w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full" />
+                          </div>
+                        ) : galleryImages.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center h-40 text-brand-muted gap-3">
+                            <FiImage size={32} />
+                            <p className="text-sm">No gallery images found. Upload some in the Gallery section first.</p>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                            {galleryImages.map(img => {
+                              const isSelected = settings.logoUrl === img.imageUrl;
+                              return (
+                                <button
+                                  key={img.id}
+                                  type="button"
+                                  onClick={() => pickFromGallery(img.imageUrl)}
+                                  className={`relative group aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+                                    isSelected
+                                      ? 'border-brand-gold shadow-glow-gold'
+                                      : 'border-white/10 hover:border-brand-gold/50'
+                                  }`}
+                                >
+                                  <img src={img.imageUrl} alt={img.title || 'Gallery image'} className="w-full h-full object-cover" />
+                                  <div className={`absolute inset-0 transition-all flex items-center justify-center ${
+                                    isSelected ? 'bg-brand-gold/20' : 'bg-black/0 group-hover:bg-black/30'
+                                  }`}>
+                                    {isSelected && (
+                                      <div className="w-7 h-7 bg-brand-gold rounded-full flex items-center justify-center">
+                                        <FiCheck size={14} className="text-brand-darker" />
+                                      </div>
+                                    )}
+                                  </div>
+                                  {img.title && (
+                                    <div className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[10px] px-2 py-1 truncate opacity-0 group-hover:opacity-100 transition-opacity">
+                                      {img.title}
+                                    </div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <div className="pt-6">
                 <label className="text-xs text-brand-muted uppercase tracking-wider mb-2 block">Primary Brand Color</label>
                 <div className="flex items-center gap-4">
