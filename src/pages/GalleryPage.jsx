@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getGallery } from '../services/api';
 import PageTransition from '../components/PageTransition';
 import SEO from '../components/SEO';
-import PremiumGallery from '../components/PremiumGallery';
+import SpiralGallery from '../components/SpiralGallery';
 
 export default function GalleryPage() {
   const [images, setImages] = useState([]);
@@ -32,7 +32,7 @@ export default function GalleryPage() {
           <p className="text-brand-muted font-body text-lg">No photos uploaded yet. Check back soon.</p>
         </div>
       ) : (
-        <PremiumGallery images={images} />
+        <SpiralGallery images={images} />
       )}
     </PageTransition>
   );
